@@ -348,11 +348,24 @@ public class WndEditCompartment extends javax.swing.JDialog {
 
         // List des noms deja existants
         ArrayList<String> lst_str = new ArrayList<>();        
-        for (Entity entity : entities) {
-            lst_str.add(entity._etiquettes);       
+        for (Compartment comp : compartment) {
+            lst_str.add(comp.getEtiquette());       
         }
 
         lst_str.remove(_old_name);
+        
+        // Verif que le nom n'est pas deja attribue a une entite
+        for (int n = 0; n < entities.size(); n++) {
+            if (entities.get(n).TrouveEtiquette(textBox1.getText()) >= 0) {
+                // Cas ou le nom existe deja
+                if (Lang.getInstance().getLang().equals("FR")) {
+                    JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                } else {
+                    JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+            }
+        }
 
         // Verif que le nom n'est pas deja attribue a un comportement
         for (int n = 0; n < behaviours.size(); n++) {

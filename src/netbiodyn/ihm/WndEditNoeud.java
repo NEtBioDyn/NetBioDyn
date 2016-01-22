@@ -33,6 +33,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import netbiodyn.Behavior;
+import netbiodyn.Compartment;
 import netbiodyn.Entity;
 import netbiodyn.util.Lang;
 import netbiodyn.util.RandomGen;
@@ -45,6 +46,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
 
     private final ArrayList<Entity> entities;
     private final ArrayList<Behavior> behaviours;
+    private final ArrayList<Compartment> compartment;    
     private String DialogResult = "";
     public Entity _cli = null;
     String _old_name = "";
@@ -56,10 +58,11 @@ public class WndEditNoeud extends javax.swing.JDialog {
      * @param entities
      * @param behaviours
      */
-    public WndEditNoeud(ArrayList<Entity> entities, ArrayList<Behavior> behaviours) {
+    public WndEditNoeud(ArrayList<Entity> entities, ArrayList<Behavior> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.entities=entities;
         this.behaviours=behaviours;
+        this.compartment = compartment;
         initComponents();
     }
     
@@ -467,6 +470,19 @@ public class WndEditNoeud extends javax.swing.JDialog {
         // Verif que le nom n'est pas deja attribue a un comportement
         for (int n = 0; n < behaviours.size(); n++) {
             if (behaviours.get(n).TrouveEtiquette(textBox1.getText()) >= 0) {
+                // Cas ou le nom existe deja
+                if (Lang.getInstance().getLang().equals("FR")) {
+                    JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                } else {
+                    JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+            }
+        }
+        
+        // Verif que le nom n'est pas deja attribue a une compartment
+        for (int n = 0; n < compartment.size(); n++) {
+            if (compartment.get(n).getEtiquette().equals(textBox1.getText())) {
                 // Cas ou le nom existe deja
                 if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);

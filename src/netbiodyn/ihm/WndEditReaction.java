@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import netbiodyn.Behavior;
+import netbiodyn.Compartment;
 import netbiodyn.Entity;
 import netbiodyn.util.Lang;
 
@@ -48,16 +49,18 @@ public class WndEditReaction extends javax.swing.JDialog {
     private int _mouseX = 0, _mouseY = 0;
     private final ArrayList<Behavior> lstCmpt;
     private final ArrayList<Entity> entities;
+    private final ArrayList<Compartment> compartment;
 
     /**
      * Creates new form WndEditReaction
      * @param entities
      * @param behaviours
      */
-    public WndEditReaction(ArrayList<Entity> entities, ArrayList<Behavior> behaviours) {
+    public WndEditReaction(ArrayList<Entity> entities, ArrayList<Behavior> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         lstCmpt=behaviours;
-        this.entities=entities;                
+        this.entities=entities;
+        this.compartment = compartment;
         setSize(new Dimension(644, 446));
         initComponents();
     }
@@ -678,7 +681,14 @@ public class WndEditReaction extends javax.swing.JDialog {
                 nom_existe = true;
             }
         }
+        
+        for (Compartment comp : compartment) {
+            if (comp.getEtiquette().equals(str2)) {
+                nom_existe = true;
+            }
+        }
 
+        
         if (nom_existe == true) {
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "Ce nom existe deja. Veuillez en changer.");

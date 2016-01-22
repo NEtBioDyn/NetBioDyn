@@ -183,7 +183,7 @@ public class Controller {
             this.pauseSimulation();
         }
 
-        WndEditNoeud wc = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions()/*,model.getListManipulesCompartments()*/);
+        WndEditNoeud wc = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wc.WndCliValue_Load(null);
         wc.setVisible(true);
         if (wc.getDialogResult().equals("OK") && !wc._cli._etiquettes.equals("")) {
@@ -201,7 +201,7 @@ public class Controller {
             this.pauseSimulation();
         }
 
-        WndEditReaction w = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions()/*,model.getListManipulesCompartments()*/);
+        WndEditReaction w = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions() ,model.getListManipulesCompartment());
         w.WndCliEditReaction3_Load(null);
         w.setVisible(true);
         String r = w.getDialogResult();
@@ -225,6 +225,28 @@ public class Controller {
             model.addCompartment(wC._cli);
         }
     }
+    
+    public void addMembrane(int index, UtilPoint3D center, ArrayList<UtilPoint3D> lst_pts){
+        String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
+        Compartment comp = model.getCompartment(name);
+        comp.entity_property();
+        comp.setCenter(center);
+        model.addProtoReaxel(comp.getEnt());
+        addEntityInstances2(comp, lst_pts);
+    }
+    
+    public boolean verificationPourMembrane(int index){
+        String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
+        Compartment comp = model.getCompartment(name);
+        UtilPoint3D center = comp.getCenter();
+        if(center.x == 0 && center.y == 0){
+        	return true;
+        }
+        else{
+        	return false;
+        }
+    }
+    
     /**
      * Change the probability of the Behaviour name by value. Called by
      * Environment
@@ -261,7 +283,7 @@ public class Controller {
         if (i >= 0) {
             String name = env.getDataGridView_comportements().getSelectedValue().toString();
             Behavior cpt = model.getBehaviour((String) env.getDataGridView_comportements().getModel().getElementAt(i));
-            WndEditReaction wc = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions());
+            WndEditReaction wc = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
             wc.WndCliEditReaction3_Load(cpt);
             wc.setVisible(true);
             String r = wc.getDialogResult();
@@ -299,6 +321,9 @@ public class Controller {
      * @param tab an array of indexes - the entities selected by the user in the
      * the main ihm
      */
+    
+     
+    
     public void delEntity(int[] tab) {
         if (simulator.isRunning()) {
             this.pauseSimulation();
@@ -463,6 +488,14 @@ public class Controller {
             command.execute();
         }
     }
+    
+    public void addEntityInstances2(Compartment comp, ArrayList<UtilPoint3D> points) {
+       String etiquette = comp.getEnt().getEtiquettes();
+       AddCommand command = new AddCommand(model, simulator, points, etiquette);
+       command.setOpposite(new RemoveCommand(model, simulator, points));
+       this.memorizeCommand(command);
+       command.execute();
+    }
 
     /**
      * Edit an existing Entity. Called by Environment
@@ -478,8 +511,7 @@ public class Controller {
             String name = UtilDivers.str_originale(env.getDataGridView_entites().getSelectedValue().toString());
             Entity p = model.getProtoReaxel(name);
 
-            WndEditNoeud wc = new WndEditNoeud(model.getListManipulesNoeuds(),
-                    model.getListManipulesReactions());
+            WndEditNoeud wc = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
             wc.WndCliValue_Load(p);
             wc.setVisible(true);
             if (wc.getDialogResult().equals("OK") && !p._etiquettes.equals("")) {

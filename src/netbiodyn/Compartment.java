@@ -9,11 +9,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 import netbiodyn.util.RandomGen;
+import netbiodyn.util.UtilPoint3D;
 
 public class Compartment{
 	private String name;
-	private ArrayList<Integer> center= new ArrayList<Integer>();
-	private ArrayList<Integer> radius= new ArrayList<Integer>();
+	private UtilPoint3D center = new UtilPoint3D();
+	private int radius = 0;
 	private Entity ent= new Entity();
 	public Color Couleur = Color.RED;
 	public boolean _visibleDansPanel = true;
@@ -24,6 +25,9 @@ public class Compartment{
 	
     public Compartment clone() {
         Compartment comp = new Compartment();
+        comp.center = center;
+        comp.radius = radius;
+        comp.ent = ent;
         comp.setEtiquette(getEtiquette());
         comp.Couleur = Couleur;
         comp._visibleDansPanel = _visibleDansPanel;
@@ -39,63 +43,50 @@ public class Compartment{
 		this._description = _description;
 	}
 
-	public void Addcenter(int x,int y){
-		center.add(x);
-		center.add(y);
+
+	public Entity entity_property(){
+		ent.setEtiquettes('m'+name);
+		ent.Couleur = this.Couleur;
+		ent._visibleDansPanel=false;
+		ent.Vidable = this.Vidable;
+		ent.DemieVie = 0;
+		ent._forme = 1;
+		ent._taille = 0;
+		
+		return ent;
+	}
+
+	public String getEtiquette() {
+		return name;
+	}
+
+	public void setEtiquette(String name) {
+		this.name = name;
+	}
+
+	public UtilPoint3D getCenter() {
+		return center;
+	}
+
+	public void setCenter(UtilPoint3D center) {
+		this.center.x = center.x;
+		this.center.y = center.y;
 		
 	}
-public void Addradius(int len){
-	radius.add(len);
-	
-}
 
+	public int getRadius() {
+		return radius;
+	}
 
-public Entity entity_property(){
-	 ent.setEtiquettes(name);
-     ent.Couleur = new Color(RandomGen.getInstance().nextInt(250),RandomGen.getInstance().nextInt(250), RandomGen.getInstance().nextInt(250));
-     ent._visibleDansPanel=true;
-     ent.Vidable = true;
-     ent.DemieVie=0;
-     ent._forme = 0;
-     ent._taille = 0;
-//     if (BackgroundImage != null) {
-//         ent._str_image_deco=_str_image_deco;
-//     }
-//	
-	return ent;
-}
+	public void setRadius(int radius) {
+		this.radius = radius;
+	}
 
+	public Entity getEnt() {
+		return ent;
+	}
 
-public String getEtiquette() {
-	return name;
-}
-
-public void setEtiquette(String name) {
-	this.name = name;
-}
-
-public ArrayList<Integer> getCenter() {
-	return center;
-}
-
-public void setCenter(ArrayList<Integer> center) {
-	this.center = center;
-}
-
-public ArrayList<Integer> getRadius() {
-	return radius;
-}
-
-public void setRadius(ArrayList<Integer> radius) {
-	this.radius = radius;
-}
-
-public Entity getEnt() {
-	return ent;
-}
-
-public void setEnt(Entity ent) {
-	this.ent = ent;
-}
-
+	public void setEnt(Entity ent) {
+		this.ent = ent;
+	}
 }

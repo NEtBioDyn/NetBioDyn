@@ -30,7 +30,7 @@ public class Model {
     private final EventListenerList listeners; //Liste des listeners
     private Env_Parameters parameters; //Paramètres de l'environnement
 
-    private ArrayList<Compartment> compartment; // Comportements
+    private ArrayList<Compartment> compartment; // Compartements
     private ArrayList<Entity> entities; // Types d'entités
     private ArrayList<Behavior> behaviors; // Comportements
     private AllInstances instances; //Instances
@@ -220,6 +220,7 @@ public class Model {
 
     }
 
+    
     public void addEntityInstances(ArrayList<UtilPoint3D> points, String etiquette) {
         boolean toUpdate = false;
         for (UtilPoint3D point : points) {
@@ -252,14 +253,29 @@ public class Model {
         }
     }
     
-    public void delCompartment(ArrayList<String> compartment) {
-        for (String name : compartment) {
-            Compartment r = this.getCompartment(name);
-            compartment.remove(r);
+    public void delCompartment(ArrayList<String> compartments) {
+        for (String name : compartments) {
+            Compartment comp = this.getCompartment(name);
+            Entity entity = comp.getEnt();
+            System.out.println("blop");
+            System.out.println(entity._etiquettes);
+            this.entities.remove(entity);
+            this.instances.removeEntityType(entity.getEtiquettes());
+            this.removeCompart(comp);
         }
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
+        	listen.protoEntityUpdate(getCopyListManipulesNoeuds(), getInitialState());
+            listen.matrixUpdate(getInstances(), getInitialState(), 0);
             listen.CompartmentUpdate(getCopyListManipulesCompartment());
         }
+    }
+    
+    public void removeCompart(Compartment comp){
+         for (int i = 0; i < compartment.size(); i++) {
+             if (compartment.get(i).getEtiquette().equals(comp.getEtiquette())) { 
+             		compartment.remove(i);
+             }
+    	}
     }
     
     public void editCompartment(Compartment m, String old_name) {
@@ -512,11 +528,11 @@ public class Model {
     }
     
     public ArrayList<Compartment> getCopyListManipulesCompartment() {
-        ArrayList<Compartment> moteurs = new ArrayList<>();
+        ArrayList<Compartment> comps = new ArrayList<>();
         for (Compartment r : compartment) {
-            moteurs.add(r.clone());
+            comps.add(r.clone());
         }
-        return moteurs;
+        return comps;
     }
 
     public Env_Parameters getParameters() {

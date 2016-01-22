@@ -127,7 +127,7 @@ public class UtilPoint3D {
     }
     
     
-    public static ArrayList<UtilPoint3D> BresenhamRond3D(int x1, int y1, int z1, int x2, int y2, int z2) {
+    public static ArrayList<UtilPoint3D> BresenhamRond3D(int x1, int y1, int z1, int x2, int y2, int z2, int zMax) {
         ArrayList<UtilPoint3D> lst_pts = new ArrayList<>();
         int r = (int) Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1,2));
         int xmin = x1 -r -1;
@@ -142,8 +142,10 @@ public class UtilPoint3D {
         		int dy = y1-j;
         		int rTmp = (int) Math.sqrt(Math.pow(dx, 2)+Math.pow(dy,2));
         		if(rTmp == r){
-        			lst_pts.add(new UtilPoint3D(i, j, z1));
-        		}
+        			for(int z = 0; z < zMax; z++){
+        				lst_pts.add(new UtilPoint3D(i, j, z));
+        			}
+           		}
         	}
         }
         return lst_pts;   

@@ -618,11 +618,10 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
             .addGroup(jPanelCompartmentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            	.addGroup(jPanelCompartmentLayout.createSequentialGroup()
-                    .addComponent(checkBox_paint_rond, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, 0)))
+                    .addComponent(jLabelCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelCompartmentLayout.createSequentialGroup()
+                        .addComponent(checkBox_paint_rond, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jScrollPane_Compartment, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanelCompartmentLayout.setVerticalGroup(
@@ -640,12 +639,12 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                 .addComponent(jScrollPane_Compartment, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                 .addGap(12, 12, 12)
                 .addGroup(jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(checkBox_paint_rond, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(checkBox_paint_rond, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-
+		
         add(jPanelCompartment);
-        jPanelCompartment.setBounds(10, 30, 160, 230);
+        jPanelCompartment.setBounds(10, 30, 165, 230);
         
         
         // Entities
@@ -831,7 +830,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelEntities);
-        jPanelEntities.setBounds(10, 260, 160, 230);
+        jPanelEntities.setBounds(10, 260, 165, 230);
 
         jPanelBehaviors.setBackground(new java.awt.Color(153, 153, 255));
         jPanelBehaviors.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -947,7 +946,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelBehaviors);
-        jPanelBehaviors.setBounds(10, 490, 160, 220);
+        jPanelBehaviors.setBounds(10, 490, 165, 220);
 
         jPanelEnv.setBackground(new java.awt.Color(153, 153, 255));
         jPanelEnv.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1395,7 +1394,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelSimulator);
-        jPanelSimulator.setBounds(170, 30, 730, 680);
+        jPanelSimulator.setBounds(175, 30, 730, 680);
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_play1MouseClicked(java.awt.event.MouseEvent evt) {
@@ -1588,15 +1587,18 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
             }
         } 
         else if (checkBox_paint_rond.getBackground().equals(Color.GREEN)) { //.getX() == jLabel_sel.getX()) {
-            if (dataGridView_entites.getSelectedIndex() >= 0) {
+            if (dataGridView_Compartment.getSelectedIndex() >= 0) {
                 int mouseX = evt.getX();
                 int mouseY = evt.getY();
                 int new_x = (int) windowToUniverse(_observed_left, _observed_left + _observed_width, pictureBox_Env.getWidth(), mouseX);
                 int new_y = (int) windowToUniverse(_observed_top, _observed_top + _observed_height, pictureBox_Env.getHeight(), mouseY);
                 int new_z = jSliderZ.getValue();
                 if (new_x >= 0 && new_y >= 0 && new_x < getTailleX() && new_y < getTailleY()) {
-                    ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(_case_x0, _case_y0, new_z, new_x, new_y, new_z);
-                    controller.addEntityInstances(lst_pts);
+                	UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
+                	if (controller.verificationPourMembrane(dataGridView_Compartment.getSelectedIndex())){
+                		ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(_case_x0, _case_y0, new_z, new_x, new_y, new_z, getTailleZ());
+                		controller.addMembrane(dataGridView_Compartment.getSelectedIndex(), center, lst_pts);
+                	}
                 }
             }
         } 
@@ -1806,11 +1808,11 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }//GEN-LAST:event_jSliderProbaStateChanged
     
-    private void dataGridView_ComportmentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_entitesMouseClicked
-//        if (evt.getClickCount() == 2 && !evt.isConsumed() && !freezed) {
-//            evt.consume();
-//            controller.editComportment();
-//       }
+    private void dataGridView_CompartmentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_entitesMouseClicked
+        if (evt.getClickCount() == 2 && !evt.isConsumed() && !freezed) {
+            evt.consume();
+            controller.editCompartment();
+       }
     }//GEN-LAST:event_dataGridView_entitesMouseClicked
 
     private void dataGridView_entitesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_entitesMouseClicked
@@ -2592,7 +2594,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                         Paint_Ligne(pictureBox_Env.getMousePosition().x, pictureBox_Env.getMousePosition().y);
                     }
                     if (checkBox_paint_rond.getBackground().equals(Color.GREEN)) {
-                        Paint_Ligne(pictureBox_Env.getMousePosition().x, pictureBox_Env.getMousePosition().y);
+                        Paint_Rond(pictureBox_Env.getMousePosition().x, pictureBox_Env.getMousePosition().y);
                     }
                     if (checkBox_paint_random.getBackground().equals(Color.GREEN)) {
                         Paint_Aleat(pictureBox_Env.getMousePosition().x, pictureBox_Env.getMousePosition().y);
