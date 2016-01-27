@@ -236,6 +236,10 @@ public class Controller {
     public void editCompartmentMembrane(int index, UtilPoint3D center, int radius){
     	String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
         Compartment cpt = model.getCompartment(name);
+        int old_centerX = cpt.getCenter().x;
+        int old_centerY = cpt.getCenter().y;
+        int old_centerZ = cpt.getCenter().z;
+        int old_radius = cpt.getRadius();
         WndEditCompartment wC = new WndEditCompartment(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wC.WndCliValue_Load(cpt);
         wC.setVisible(false);
@@ -244,7 +248,8 @@ public class Controller {
         wC.setTextBoxRadius(Integer.toString(radius));
         wC.button_OKActionPerformed();
         model.editCompartment(wC._cli, name);
-        System.out.println(wC._cli.getRadius());
+        ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
+    	delMembrane(old_lst_pts);
         ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
         addEntityInstances2(wC._cli, lst_pts);
     }

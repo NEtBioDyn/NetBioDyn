@@ -1599,6 +1599,27 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                     	int radius = (int) Math.sqrt(Math.pow(new_x-_case_x0, 2) + Math.pow( new_y-_case_y0,2));
                     	controller.editCompartmentMembrane(dataGridView_Compartment.getSelectedIndex(), center, radius);
                 	}
+                	else{
+                        if (Lang.getInstance().getLang().equals("FR")) {
+                            JOptionPane jop = new JOptionPane();			
+                            int option = jop.showConfirmDialog(null, "Voulez-vous redessiner le compartiment ?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            if (option == 0){
+                        		UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
+                            	int radius = (int) Math.sqrt(Math.pow(new_x-_case_x0, 2) + Math.pow( new_y-_case_y0,2));
+                            	controller.editCompartmentMembrane(dataGridView_Compartment.getSelectedIndex(), center, radius);
+                            }
+                        } else {
+                            JOptionPane jop = new JOptionPane();			
+                            int option = jop.showConfirmDialog(null, "Voulez-vous redessiner le compartiment ?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            if (option == 0){
+                        		UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
+                            	int radius = (int) Math.sqrt(Math.pow(new_x-_case_x0, 2) + Math.pow( new_y-_case_y0,2));
+                            	controller.editCompartmentMembrane(dataGridView_Compartment.getSelectedIndex(), center, radius);
+                            }
+                        }
+                	}
+                checkBox_paint_rond.setBackground(Color.RED);
+                return;
                 }
             }
         } 

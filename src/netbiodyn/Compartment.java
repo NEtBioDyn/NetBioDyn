@@ -47,6 +47,7 @@ public class Compartment{
 	public Entity entity_property(){
 		ent.setEtiquettes('m'+name);
 		ent.Couleur = this.Couleur;
+		ent.Compartment = getEtiquette();
 		ent._visibleDansPanel=true;
 		ent.Vidable = this.Vidable;
 		ent.DemieVie = 0;
