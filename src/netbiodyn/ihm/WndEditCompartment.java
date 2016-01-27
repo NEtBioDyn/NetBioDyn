@@ -22,6 +22,8 @@
 package netbiodyn.ihm;
 
 import netbiodyn.util.UtilFileFilter;
+import netbiodyn.util.UtilPoint3D;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -47,7 +49,7 @@ public class WndEditCompartment extends javax.swing.JDialog {
     private final ArrayList<Entity> entities;
     private final ArrayList<Behavior> behaviours;
     private final ArrayList<Compartment> compartment;
-    private String DialogResult = "";
+    public String DialogResult = "";
     public Compartment _cli = null;
     String _old_name = "";
     Color _old_color = Color.black;
@@ -71,6 +73,8 @@ public class WndEditCompartment extends javax.swing.JDialog {
         // Set language
         if (Lang.getInstance().getLang().equals("FR")) {
             jLabelNom.setText("Nom");
+            jLabelCenter.setText("Centre");
+            jLabelRadius.setText("Rayon");
             jLabelApp.setText("Apparence");
             jCheckBox_vidable.setText("Vidable");
             jLabelDescr.setText("Description");
@@ -79,6 +83,8 @@ public class WndEditCompartment extends javax.swing.JDialog {
 
         } else {
             jLabelNom.setText("Name");
+            jLabelCenter.setText("Center");
+            jLabelRadius.setText("Radius");
             jLabelApp.setText("Appearance");
             jCheckBox_vidable.setText("Cleanable");
             jLabelDescr.setText("Description");
@@ -97,7 +103,9 @@ public class WndEditCompartment extends javax.swing.JDialog {
         _old_color = _cli.Couleur;
 
         textBox1.setText(_cli.getEtiquette());
-
+        textBoxCenterX.setText(Integer.toString(_cli.getCenter().x));
+        textBoxCenterY.setText(Integer.toString(_cli.getCenter().y));
+        textBoxRadius.setText(Integer.toString(_cli.getRadius()));
         // Apparence
         buttonCouleur.setBackground(_cli.Couleur);
         
@@ -127,6 +135,11 @@ public class WndEditCompartment extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabelNom = new javax.swing.JLabel();
+        jLabelCenter = new javax.swing.JLabel();
+        textBoxCenterX = new javax.swing.JTextField();
+        textBoxCenterY = new javax.swing.JTextField();
+        jLabelRadius = new javax.swing.JLabel();
+        textBoxRadius = new javax.swing.JTextField();
         jLabelApp = new javax.swing.JLabel();
         textBox1 = new javax.swing.JTextField();
         buttonCouleur = new javax.swing.JButton();
@@ -154,6 +167,45 @@ public class WndEditCompartment extends javax.swing.JDialog {
         getContentPane().add(jLabelNom);
         jLabelNom.setBounds(10, 40, 50, 15);
         
+        jLabelCenter.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        jLabelCenter.setText("Centre");
+        getContentPane().add(jLabelCenter);
+        jLabelCenter.setBounds(10, 70, 50, 15);
+        
+        textBoxCenterX.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        textBoxCenterX.setText("0");
+        textBoxCenterX.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textBoxNumberKeyTyped(evt);
+            }
+        });
+        getContentPane().add(textBoxCenterX);
+        textBoxCenterX.setBounds(60, 70, 100, 20);
+        
+        textBoxCenterY.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        textBoxCenterY.setText("0");
+        textBoxCenterY.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textBoxNumberKeyTyped(evt);
+            }
+        });
+        getContentPane().add(textBoxCenterY);
+        textBoxCenterY.setBounds(170, 70, 100, 20);
+        
+        jLabelRadius.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        jLabelRadius.setText("0");
+        getContentPane().add(jLabelRadius);
+        jLabelRadius.setBounds(10, 100, 50, 15);
+             
+        textBoxRadius.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        textBoxRadius.setText("rayon");
+        textBoxRadius.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textBoxNumberKeyTyped(evt);
+            }
+        });
+        getContentPane().add(textBoxRadius);
+        textBoxRadius.setBounds(60, 100, 220, 20);
 
         jLabelApp.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         jLabelApp.setText("Apparence");
@@ -280,6 +332,9 @@ public class WndEditCompartment extends javax.swing.JDialog {
         for (int ii = 0; ii < entities.size(); ii++) {
             lst_col.add((entities.get(ii)).Couleur);
         }
+        for (int ii = 0; ii < compartment.size(); ii++) {
+            lst_col.add((compartment.get(ii)).Couleur);
+        }
         JColorChooser colorDialog1 = new JColorChooser();
         colorDialog1.setColor(_cli.Couleur);
 
@@ -307,6 +362,8 @@ public class WndEditCompartment extends javax.swing.JDialog {
 
                     } else {
                         _cli.Couleur = returnColor;
+                        Entity ent = _cli.getEnt();
+                        ent.Couleur = returnColor;
                         buttonCouleur.setBackground(returnColor);
                         _old_color = _cli.Couleur;
                     }
@@ -320,6 +377,22 @@ public class WndEditCompartment extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_OKMouseClicked
 
+    private void textBoxNumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBox1KeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!(c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9')) {
+            evt.consume();
+            if (Lang.getInstance().getLang().equals("FR")) {
+                JOptionPane.showMessageDialog(this, "Les caracteres \\ / : ESPACE * ? \" < > , et | sont interdits. Merci de votre comprehension", "ATTENTION", JOptionPane.INFORMATION_MESSAGE, null);
+            } else {
+                JOptionPane.showMessageDialog(this, "Characteres \\ / : SPACE * ? \" < > , and | are forbiden.", "ATTENTION", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+        }
+        if (c == '\n') {
+            button_OKActionPerformed(null);
+        }
+    }//GEN-LAST:event_textBox1KeyTyped
+    
     private void textBox1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBox1KeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
@@ -391,6 +464,8 @@ public class WndEditCompartment extends javax.swing.JDialog {
         }
         try {
             _cli.setEtiquette(textBox1.getText());
+            _cli.setCenter(new UtilPoint3D(Integer.parseInt(textBoxCenterX.getText()), Integer.parseInt(textBoxCenterY.getText()), 0));
+            _cli.setRadius(Integer.parseInt(textBoxRadius.getText()));
             _cli.getDescription().setText(richTextBox_description.getText());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
@@ -398,7 +473,80 @@ public class WndEditCompartment extends javax.swing.JDialog {
         // Apparence
         _cli.Couleur = buttonCouleur.getBackground();
         
+        _cli.entity_property();
+
+        _cli.Vidable = jCheckBox_vidable.isSelected();
+
+        this.DialogResult = new String("OK");
+        setVisible(false);
         
+    }//GEN-LAST:event_button_OKActionPerformed
+    
+    public void button_OKActionPerformed() {//GEN-FIRST:event_button_OKActionPerformed
+        if (textBox1.getText().equals("")) {
+            if (Lang.getInstance().getLang().equals("FR")) {
+                JOptionPane.showMessageDialog(this, "Merci de nommer l'entité.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            } else {
+                JOptionPane.showMessageDialog(this, "Please name the entity.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+        }
+
+        // List des noms deja existants
+        ArrayList<String> lst_str = new ArrayList<>();        
+        for (Compartment comp : compartment) {
+            lst_str.add(comp.getEtiquette());       
+        }
+
+        lst_str.remove(_old_name);
+        
+        // Verif que le nom n'est pas deja attribue a une entite
+        for (int n = 0; n < entities.size(); n++) {
+            if (entities.get(n).TrouveEtiquette(textBox1.getText()) >= 0) {
+                // Cas ou le nom existe deja
+                if (Lang.getInstance().getLang().equals("FR")) {
+                    JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                } else {
+                    JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+            }
+        }
+
+        // Verif que le nom n'est pas deja attribue a un comportement
+        for (int n = 0; n < behaviours.size(); n++) {
+            if (behaviours.get(n).TrouveEtiquette(textBox1.getText()) >= 0) {
+                // Cas ou le nom existe deja
+                if (Lang.getInstance().getLang().equals("FR")) {
+                    JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                } else {
+                    JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+            }
+        }
+
+        if (lst_str.contains(textBox1.getText()) == true) {
+            // Cas ou le nom existe deja
+            if (Lang.getInstance().getLang().equals("FR")) {
+                JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            } else {
+                JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+        }
+        try {
+            _cli.setEtiquette(textBox1.getText());
+            _cli.setCenter(new UtilPoint3D(Integer.parseInt(textBoxCenterX.getText()), Integer.parseInt(textBoxCenterY.getText()), 0));
+            _cli.setRadius(Integer.parseInt(textBoxRadius.getText()));
+            _cli.getDescription().setText(richTextBox_description.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+        // Apparence
+        _cli.Couleur = buttonCouleur.getBackground();
+        
+        _cli.entity_property();
 
         _cli.Vidable = jCheckBox_vidable.isSelected();
 
@@ -429,9 +577,43 @@ public class WndEditCompartment extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelApp;
     private javax.swing.JLabel jLabelDescr;
     private javax.swing.JLabel jLabelNom;
+    private javax.swing.JLabel jLabelCenter;
+    private javax.swing.JLabel jLabelRadius;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea richTextBox_description;
     private javax.swing.JTextField textBox1;
+    private javax.swing.JTextField textBoxCenterX;
+	private javax.swing.JTextField textBoxCenterY;
+    private javax.swing.JTextField textBoxRadius;
     // End of variables declaration//GEN-END:variables
+    
+    public javax.swing.JTextField getTextBoxCenterX() {
+		return textBoxCenterX;
+	}
+
+
+	public void setTextBoxCenterX(String textBoxCenterX) {
+		this.textBoxCenterX.setText(textBoxCenterX);
+	}
+
+
+	public javax.swing.JTextField getTextBoxCenterY() {
+		return textBoxCenterY;
+	}
+
+
+	public void setTextBoxCenterY(String textBoxCenterY) {
+		this.textBoxCenterY.setText(textBoxCenterY);
+	}
+
+
+	public javax.swing.JTextField getTextBoxRadius() {
+		return textBoxRadius;
+	}
+
+
+	public void setTextBoxRadius(String textBoxRadius) {
+		this.textBoxRadius.setText(textBoxRadius);
+	}
 
 }

@@ -1594,10 +1594,10 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                 int new_y = (int) windowToUniverse(_observed_top, _observed_top + _observed_height, pictureBox_Env.getHeight(), mouseY);
                 int new_z = jSliderZ.getValue();
                 if (new_x >= 0 && new_y >= 0 && new_x < getTailleX() && new_y < getTailleY()) {
-                	UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
                 	if (controller.verificationPourMembrane(dataGridView_Compartment.getSelectedIndex())){
-                		ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(_case_x0, _case_y0, new_z, new_x, new_y, new_z, getTailleZ());
-                		controller.addMembrane(dataGridView_Compartment.getSelectedIndex(), center, lst_pts);
+                		UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
+                    	int radius = (int) Math.sqrt(Math.pow(new_x-_case_x0, 2) + Math.pow( new_y-_case_y0,2));
+                    	controller.editCompartmentMembrane(dataGridView_Compartment.getSelectedIndex(), center, radius);
                 	}
                 }
             }
@@ -1749,7 +1749,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     private void jButtonEditCompartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditEntityActionPerformed
         controller.editCompartment();
     }//GEN-LAST:event_jButtonEditEntityActionPerformed
-
+    
     private void dataGridView_entitesPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dataGridView_entitesPropertyChange
         dessinerCourbes();
     }//GEN-LAST:event_dataGridView_entitesPropertyChange
@@ -1761,7 +1761,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     private void jButtonAddEntityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddEntityActionPerformed
         controller.addEntity();
     }//GEN-LAST:event_jButtonAddEntityActionPerformed
-
 
     private void jButtonDelEntityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelEntityActionPerformed
         controller.delEntity(dataGridView_entites.getSelectedIndices());

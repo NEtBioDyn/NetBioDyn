@@ -68,6 +68,12 @@ public class WndEditNoeud extends javax.swing.JDialog {
     
 
     public void WndCliValue_Load(Entity reaxel) {
+    	
+        String[] comps = new String[compartment.size()];
+        for(int i = 0; i< compartment.size(); i++){
+        	comps[i] = compartment.get(i).getEtiquette();
+        }
+    	
         // Set language
         if (Lang.getInstance().getLang().equals("FR")) {
             jLabelNom.setText("Nom");
@@ -80,11 +86,12 @@ public class WndEditNoeud extends javax.swing.JDialog {
             button_CANCEL.setText("Annuler");
             buttonCouleur.setText("Couleur");
             button_pas_image.setText("Pas d'image");
-
+            
             String[] formes_fr = {"Disque", "Carre", "Triangle", "Losange", "Etoile", "Pois", "Bruit"};
             DefaultComboBoxModel model_fr = new DefaultComboBoxModel(formes_fr);
+            DefaultComboBoxModel comp_fr = new DefaultComboBoxModel(comps);
             comboBox_formes.setModel(model_fr);
-            comboBox_compartment.setModel(model_fr);
+            comboBox_compartment.setModel(comp_fr);
 
         } else {
             jLabelNom.setText("Name");
@@ -100,8 +107,9 @@ public class WndEditNoeud extends javax.swing.JDialog {
 
             String[] formes_fr = {"Disc", "Square", "Triangle", "Diamon", "Star", "Pots", "Noise"};
             DefaultComboBoxModel model_fr = new DefaultComboBoxModel(formes_fr);
+            DefaultComboBoxModel comp_fr = new DefaultComboBoxModel(comps);
             comboBox_formes.setModel(model_fr);
-            comboBox_compartment.setModel(model_fr);
+            comboBox_compartment.setModel(comp_fr);
         }
 
         if (reaxel != null) {
@@ -121,7 +129,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
         buttonCouleur.setBackground(_cli.Couleur);
         comboBox_formes.setSelectedIndex(_cli._forme);
         
-        comboBox_compartment.setSelectedIndex(_cli._forme);
+        comboBox_compartment.setSelectedItem(_cli.Compartment);
         richTextBox_description.setText(_cli.getDescription().getText());
         jCheckBox_vidable.setSelected(_cli.Vidable);
             //this.setSize(new Dimension(WndEditEntite.WIDTH,WndEditEntite.HEIGHT+320));
@@ -218,8 +226,13 @@ public class WndEditNoeud extends javax.swing.JDialog {
         getContentPane().add(comboBox_formes);
         comboBox_formes.setBounds(160, 130, 120, 21);
         
+        String[] comps = new String[compartment.size()];
+        for(int i = 0; i< compartment.size(); i++){
+        	comps[i] = compartment.get(i).getEtiquette();
+        }
+        
         comboBox_compartment.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        comboBox_compartment.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disque", "Carre", "Triangle", "Losange", "Etoile", "Pois", "Bruit" }));
+        comboBox_compartment.setModel(new javax.swing.DefaultComboBoxModel(comps));
         getContentPane().add(comboBox_compartment);
         comboBox_compartment.setBounds(120, 70, 120, 21);
 

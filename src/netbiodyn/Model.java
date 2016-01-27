@@ -90,6 +90,12 @@ public class Model {
     }
 
     public void clear_OnlyCleanable() {
+    	for(Compartment comp : compartment){
+    		if(comp.Vidable){
+    			comp.setRadius(0);
+    			comp.setCenter(new UtilPoint3D());
+    		}
+    	}
         for (int i = 0; i < parameters.getX(); i++) {
             for (int j = 0; j < parameters.getY(); j++) {
                 for (int k = 0; k < parameters.getZ(); k++) {
@@ -246,6 +252,7 @@ public class Model {
         }
     }
     
+    
     public void addCompartment(Compartment comp) {
         compartment.add(comp);
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
@@ -279,17 +286,30 @@ public class Model {
     }
     
     public void editCompartment(Compartment m, String old_name) {
-        int index = 0;
+        int index1 = 0;
+        int index2 = 0;
         for (int i = 0; i < compartment.size(); i++) {
             if (compartment.get(i).getEtiquette().equals(old_name)) {
+                for (int j = 0; j < entities.size(); j++) {
+                    if (entities.get(j).getEtiquettes().equals('m'+old_name)) {
+                    	entities.remove(j);
+                        index2 = j;
+                        j = entities.size();
+                    }
+                }
+                Entity entity = m.entity_property();
+                entities.add(index2, entity);
             	compartment.remove(i);
-                index = i;
+                index1 = i;
                 i = compartment.size();
             }
         }
-        compartment.add(index, m);
+        compartment.add(index1, m);
+        
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
             listen.CompartmentUpdate(getCopyListManipulesCompartment());
+            listen.protoEntityUpdate(getCopyListManipulesNoeuds(), getInitialState());
+            listen.matrixUpdate(getInstances(), getInitialState(), 0);
         }
     }
     

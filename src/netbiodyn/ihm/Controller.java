@@ -223,18 +223,42 @@ public class Controller {
         wC.setVisible(true);
         if (wC.getDialogResult().equals("OK") && !wC._cli.getEtiquette().equals("")) {
             model.addCompartment(wC._cli);
+            model.addProtoReaxel(wC._cli.getEnt());
+            if (wC._cli.getCenter().x != 0 && wC._cli.getCenter().x != 0 && wC._cli.getRadius() != 0){
+            	UtilPoint3D center = wC._cli.getCenter();
+            	int radius = wC._cli.getRadius();
+                ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
+                addEntityInstances2(wC._cli, lst_pts);
+            }
         }
     }
     
-    public void addMembrane(int index, UtilPoint3D center, ArrayList<UtilPoint3D> lst_pts){
+    public void editCompartmentMembrane(int index, UtilPoint3D center, int radius){
+    	String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
+        Compartment cpt = model.getCompartment(name);
+        WndEditCompartment wC = new WndEditCompartment(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wC.WndCliValue_Load(cpt);
+        wC.setVisible(false);
+        wC.setTextBoxCenterX(Integer.toString(center.x));
+        wC.setTextBoxCenterY(Integer.toString(center.y));
+        wC.setTextBoxRadius(Integer.toString(radius));
+        wC.button_OKActionPerformed();
+        model.editCompartment(wC._cli, name);
+        System.out.println(wC._cli.getRadius());
+        ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
+        addEntityInstances2(wC._cli, lst_pts);
+    }
+/*    
+    public void addMembrane(int index, UtilPoint3D center,int radius, ArrayList<UtilPoint3D> lst_pts){
         String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
         Compartment comp = model.getCompartment(name);
         comp.entity_property();
         comp.setCenter(center);
+        comp.setRadius(radius);
         model.addProtoReaxel(comp.getEnt());
         addEntityInstances2(comp, lst_pts);
     }
-    
+  */  
     public boolean verificationPourMembrane(int index){
         String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
         Compartment comp = model.getCompartment(name);
@@ -245,6 +269,12 @@ public class Controller {
         else{
         	return false;
         }
+    }
+    
+    public void delMembrane(ArrayList<UtilPoint3D> lst_pts){
+    	for (UtilPoint3D point: lst_pts){
+    		removeEntityInstance(point.x, point.y,point.z);
+    	}
     }
     
     /**
@@ -534,14 +564,30 @@ public class Controller {
         if (i >= 0) {
             String name = env.getDataGridView_Compartment().getSelectedValue().toString();
             Compartment cpt = model.getCompartment((String) env.getDataGridView_Compartment().getModel().getElementAt(i));
+            int old_centerX = cpt.getCenter().x;
+            int old_centerY = cpt.getCenter().y;
+            int old_centerZ = cpt.getCenter().z;
+            int old_radius = cpt.getRadius();
             WndEditCompartment wc = new WndEditCompartment(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
             wc.WndCliValue_Load(cpt);
             wc.setVisible(true);
             String r = wc.getDialogResult();
             if (r != null && r.equals("OK")) {
+                UtilPoint3D center = wc._cli.getCenter();
+                int radius = wc._cli.getRadius();
+                if (old_centerX != center.x || old_centerY != center.y || old_radius != radius ){
+                	System.out.println("blop");
+                	ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
+                	delMembrane(old_lst_pts);
+                	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x, center.y, center.z, radius, getEnv().getTailleZ());
+                	addEntityInstances2(wc._cli, lst_pts);
+                }
+                Entity entitie = wc._cli.getEnt();
+                model.editProtoReaxel(entitie,'m'+name , 0);
                 model.editCompartment(wc._cli, name);
             }
         }
+        
     }
   
     /**
