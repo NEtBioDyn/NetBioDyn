@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import netbiodyn.ihm.Env_Parameters;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
+import netbiodyn.Compartment;
 import netbiodyn.ProtoBioDyn;
 import netbiodyn.Entity;
 import netbiodyn.ihm.Controller;
@@ -75,6 +76,10 @@ public class FileSaverLoader extends SaverLoader {
         for (int i = 0; i < toSave.getListManipulesReactions().size(); i++) {
             list_BioDyn.add(toSave.getListManipulesReactions().get(i));
         }
+        System.out.println("lol"+toSave.getListManipulesCompartment());
+        for (int i = 0; i < toSave.getListManipulesCompartment().size(); i++) {
+            list_BioDyn.add(toSave.getListManipulesCompartment().get(i));        
+        }
 
         for (ProtoBioDyn list_BioDyn1 : list_BioDyn) {
             ArrayList<String> toString = list_BioDyn1.toSave();
@@ -96,13 +101,16 @@ public class FileSaverLoader extends SaverLoader {
                         ImageIO.write((RenderedImage) reaxel.BackgroundImage, ext, F);
                     }
                 }
+                else if (list_BioDyn1 instanceof Compartment) {
+					System.out.println("toto");
+				}
                 out.write("Fin\n");
                 out.write("\n");
             } catch (Exception e) {
                 erreur = true;
             }
-        }
-
+        }        
+        
         //Sauvegarde de l'environnement
         try {
 
@@ -135,12 +143,12 @@ public class FileSaverLoader extends SaverLoader {
         } catch (Exception e) {
             erreur = true;
         }
-
+                   
         // Sauvegarde des positions des reaxels // ======================================
         try {
             out.write("Reaxels" + "\n");
-            for (int i = 0; i < toSave.getInstances().getSize(); i++) {
-                InstanceReaxel r = toSave.getInstances().getInList(i);
+            for (int i1 = 0; i1 < toSave.getInstances().getSize(); i1++) {
+                InstanceReaxel r = toSave.getInstances().getInList(i1);
                 Integer x0, y0, z0;
                 x0 = r.getX();
                 y0 = r.getY();
@@ -570,7 +578,7 @@ public class FileSaverLoader extends SaverLoader {
         react3._positions = new ArrayList<>();
 
         boolean fin = false;
-        WndEditReaction tmp_wnd_react_cplx = new WndEditReaction(saved.getListManipulesNoeuds(), saved.getListManipulesReactions());
+        WndEditReaction tmp_wnd_react_cplx = new WndEditReaction(saved.getListManipulesNoeuds(), saved.getListManipulesReactions(),saved.getListManipulesCompartment());
         while (fin == false) {
             String ligne = null;
             try {

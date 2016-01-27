@@ -499,6 +499,7 @@ public class Model {
         Serialized toSave = new Serialized(parameters);
         toSave.setListManipulesNoeuds(entities);
         toSave.setListManipulesReactions(behaviors);
+        toSave.setListManipulesCompartment(compartment);
         toSave.setInstances(getInstances());
         toSave.setParameters(parameters);
         sl.save(toSave);

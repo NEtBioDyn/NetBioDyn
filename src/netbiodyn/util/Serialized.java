@@ -11,6 +11,7 @@ import java.util.HashMap;
 import netbiodyn.AllInstances;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
+import netbiodyn.Compartment;
 import netbiodyn.Entity;
 
 /**
@@ -21,6 +22,7 @@ public class Serialized {
 
     private ArrayList<Entity> _ListManipulesNoeuds; // Entity types
     private ArrayList<Behavior> _ListManipulesReactions; // Behaviour
+    private ArrayList<Compartment> _ListManipulesCompartments; //Compartments
     private AllInstances instances;
 
     private HashMap<String, Integer> entitesBook;
@@ -31,6 +33,7 @@ public class Serialized {
     public Serialized() {
         _ListManipulesNoeuds = new ArrayList<>();
         _ListManipulesReactions = new ArrayList<>();
+        _ListManipulesCompartments = new ArrayList<>();
         parameters = new Env_Parameters("FR", 0, 0, 0, "", null, "");
         instances = new AllInstances(parameters.getX(), parameters.getY(), parameters.getZ());
         entitesBook = new HashMap<>();
@@ -39,6 +42,7 @@ public class Serialized {
     public Serialized(Env_Parameters parameters) {
         _ListManipulesNoeuds = new ArrayList<>();
         _ListManipulesReactions = new ArrayList<>();
+        _ListManipulesCompartments = new ArrayList<>();
     }
 
     public ArrayList<Entity> getListManipulesNoeuds() {
@@ -60,6 +64,10 @@ public class Serialized {
     public void addMoteurReaction(Behavior m) {
         _ListManipulesReactions.add(m);
     }
+    
+    public void addProtoCompartment(Compartment c) {
+        _ListManipulesCompartments.add(c);
+    }
 
     public ArrayList<Behavior> getListManipulesReactions() {
         ArrayList<Behavior> moteurs = new ArrayList<>();
@@ -72,6 +80,23 @@ public class Serialized {
     public void setListManipulesReactions(ArrayList<Behavior> _ListManipulesReactions) {
         this._ListManipulesReactions = _ListManipulesReactions;
     }
+    
+    
+    public ArrayList<Compartment> getListManipulesCompartment() {
+        ArrayList<Compartment> comp = new ArrayList<>();
+        for (Compartment r : _ListManipulesCompartments) {
+            comp.add(r.clone());
+        }
+        return comp;
+    }
+
+    public void setListManipulesCompartment(ArrayList<Compartment> _ListManipulesCompartments) {
+        this._ListManipulesCompartments = _ListManipulesCompartments;
+    }
+    
+    
+    
+    
 
     public AllInstances getInstances() {
         return instances;
