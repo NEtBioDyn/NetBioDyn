@@ -222,14 +222,23 @@ public class Controller {
         wC.WndCliValue_Load(null);
         wC.setVisible(true);
         if (wC.getDialogResult().equals("OK") && !wC._cli.getEtiquette().equals("")) {
-            model.addCompartment(wC._cli);
-            model.addProtoReaxel(wC._cli.getEnt());
-            if (wC._cli.getCenter().x != 0 && wC._cli.getCenter().x != 0 && wC._cli.getRadius() != 0){
+        	model.addProtoReaxel(wC._cli.getEnt());
+        	if (wC._cli.getCenter().x != 0 && wC._cli.getCenter().x != 0 && wC._cli.getRadius() != 0){
             	UtilPoint3D center = wC._cli.getCenter();
             	int radius = wC._cli.getRadius();
-                ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
-                addEntityInstances2(wC._cli, lst_pts);
-            }
+            	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
+            	if(model.verifCollision(wC._cli.getEtiquette(),lst_pts )){
+            		addEntityInstances2(wC._cli, lst_pts);
+            	}else{
+            		wC.setTextBoxCenterX("0");
+                    wC.setTextBoxCenterY("0");
+                    wC.setTextBoxRadius("0");
+                    wC.button_OKActionPerformed();
+            		JOptionPane jop = new JOptionPane();
+            		jop.showMessageDialog(null, "Vous ne pouvais crée un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            	}
+           	}   
+        	model.addCompartment(wC._cli);
         }
     }
     
@@ -243,15 +252,24 @@ public class Controller {
         WndEditCompartment wC = new WndEditCompartment(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wC.WndCliValue_Load(cpt);
         wC.setVisible(false);
-        wC.setTextBoxCenterX(Integer.toString(center.x));
-        wC.setTextBoxCenterY(Integer.toString(center.y));
-        wC.setTextBoxRadius(Integer.toString(radius));
-        wC.button_OKActionPerformed();
-        model.editCompartment(wC._cli, name);
         ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
-    	delMembrane(old_lst_pts);
         ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
-        addEntityInstances2(wC._cli, lst_pts);
+    	if (model.verifCollision(wC._cli.getEtiquette(), lst_pts)){
+    		wC.setTextBoxCenterX(Integer.toString(center.x));
+            wC.setTextBoxCenterY(Integer.toString(center.y));
+            wC.setTextBoxRadius(Integer.toString(radius));
+            wC.button_OKActionPerformed();
+            delMembrane(old_lst_pts);
+    		addEntityInstances2(wC._cli, lst_pts);
+    	}else{
+    		wC.setTextBoxCenterX(Integer.toString(old_centerX));
+            wC.setTextBoxCenterY(Integer.toString(old_centerY));
+            wC.setTextBoxRadius(Integer.toString(old_radius));
+            wC.button_OKActionPerformed();
+    		JOptionPane jop = new JOptionPane();
+    		jop.showMessageDialog(null, "Vous ne pouvais crée un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+    	}
+    	model.editCompartment(wC._cli, name);
     }
 /*    
     public void addMembrane(int index, UtilPoint3D center,int radius, ArrayList<UtilPoint3D> lst_pts){
@@ -581,11 +599,19 @@ public class Controller {
                 UtilPoint3D center = wc._cli.getCenter();
                 int radius = wc._cli.getRadius();
                 if (old_centerX != center.x || old_centerY != center.y || old_radius != radius ){
-                	System.out.println("blop");
                 	ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
-                	delMembrane(old_lst_pts);
                 	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x, center.y, center.z, radius, getEnv().getTailleZ());
-                	addEntityInstances2(wc._cli, lst_pts);
+                	if(model.verifCollision(wc._cli.getEtiquette(), lst_pts)){
+                	   	delMembrane(old_lst_pts);
+                		addEntityInstances2(wc._cli, lst_pts);
+                	}else{
+                		wc.setTextBoxCenterX(Integer.toString(old_centerX));
+                        wc.setTextBoxCenterY(Integer.toString(old_centerY));
+                        wc.setTextBoxRadius(Integer.toString(old_radius));
+                        wc.button_OKActionPerformed();
+                		JOptionPane jop = new JOptionPane();
+                		jop.showMessageDialog(null, "Vous ne pouvais crée un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                	}
                 }
                 Entity entitie = wc._cli.getEnt();
                 model.editProtoReaxel(entitie,'m'+name , 0);

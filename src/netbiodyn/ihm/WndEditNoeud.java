@@ -69,7 +69,8 @@ public class WndEditNoeud extends javax.swing.JDialog {
 
     public void WndCliValue_Load(Entity reaxel) {
     	
-        String[] comps = new String[compartment.size()];
+        String[] comps = new String[compartment.size()+1];
+        comps[0] = "Cytosol";
         for(int i = 0; i< compartment.size(); i++){
         	comps[i] = compartment.get(i).getEtiquette();
         }

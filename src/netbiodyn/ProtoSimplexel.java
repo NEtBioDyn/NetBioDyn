@@ -55,7 +55,7 @@ public class ProtoSimplexel extends ProtoBioDyn {
     public double DemieVie = 0;
     public Color Couleur = Color.RED;
     public boolean Vidable = true;
-    public String Compartment="cytosol";
+    public String Compartment ="cytosol";
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JTextArea _description;

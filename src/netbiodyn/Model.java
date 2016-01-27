@@ -313,6 +313,26 @@ public class Model {
         }
     }
     
+    
+    public boolean verifCollision(String name, ArrayList<UtilPoint3D> points){
+    	boolean rep = false;
+    	for (Compartment comp: compartment){
+    		if (comp.getEtiquette().equals(name)){
+    			continue;
+    		}
+    		 ArrayList<UtilPoint3D> lst_pts_tmp = UtilPoint3D.BresenhamRond3D(comp.getCenter().x,comp.getCenter().y, comp.getCenter().z, comp.getRadius(), getParameters().getZ());
+    		 for (UtilPoint3D point : points){
+    			 for (UtilPoint3D point_tmp : lst_pts_tmp){
+    				 rep = point.equals(point_tmp);
+    				 if (rep == true){
+    					 return false;
+    				 }
+    			 }
+    		 }
+    	}
+    	return true;
+    }
+    
     public void addProtoReaxel(Entity entity) {
         entities.add(entity);
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {

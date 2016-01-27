@@ -578,19 +578,10 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         dataGridView_Compartment.setToolTipText("Created Compartment");
         dataGridView_Compartment.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dataGridView_entitesMouseClicked(evt);
+                dataGridView_CompartmentMouseClicked(evt);
             }
         });
-        dataGridView_Compartment.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                dataGridView_entitesValueChanged(evt);
-            }
-        });
-        dataGridView_Compartment.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                dataGridView_entitesPropertyChange(evt);
-            }
-        });
+
         jScrollPane_Compartment.setViewportView(dataGridView_Compartment);
         
         checkBox_paint_rond.setToolTipText("Circle");
@@ -1593,27 +1584,24 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                 int new_x = (int) windowToUniverse(_observed_left, _observed_left + _observed_width, pictureBox_Env.getWidth(), mouseX);
                 int new_y = (int) windowToUniverse(_observed_top, _observed_top + _observed_height, pictureBox_Env.getHeight(), mouseY);
                 int new_z = jSliderZ.getValue();
-                if (new_x >= 0 && new_y >= 0 && new_x < getTailleX() && new_y < getTailleY()) {
+
+        		UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
+            	int radius = (int) Math.sqrt(Math.pow(new_x-_case_x0, 2) + Math.pow( new_y-_case_y0,2));
+                if ((new_x >= 0 && new_y >= 0 && new_x < getTailleX() && new_y < getTailleY()) && (center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= getTailleX() && center.y + radius <= getTailleY())) {
                 	if (controller.verificationPourMembrane(dataGridView_Compartment.getSelectedIndex())){
-                		UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
-                    	int radius = (int) Math.sqrt(Math.pow(new_x-_case_x0, 2) + Math.pow( new_y-_case_y0,2));
-                    	controller.editCompartmentMembrane(dataGridView_Compartment.getSelectedIndex(), center, radius);
+                		controller.editCompartmentMembrane(dataGridView_Compartment.getSelectedIndex(), center, radius);
                 	}
                 	else{
                         if (Lang.getInstance().getLang().equals("FR")) {
                             JOptionPane jop = new JOptionPane();			
                             int option = jop.showConfirmDialog(null, "Voulez-vous redessiner le compartiment ?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                             if (option == 0){
-                        		UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
-                            	int radius = (int) Math.sqrt(Math.pow(new_x-_case_x0, 2) + Math.pow( new_y-_case_y0,2));
                             	controller.editCompartmentMembrane(dataGridView_Compartment.getSelectedIndex(), center, radius);
                             }
                         } else {
                             JOptionPane jop = new JOptionPane();			
                             int option = jop.showConfirmDialog(null, "Voulez-vous redessiner le compartiment ?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                             if (option == 0){
-                        		UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
-                            	int radius = (int) Math.sqrt(Math.pow(new_x-_case_x0, 2) + Math.pow( new_y-_case_y0,2));
                             	controller.editCompartmentMembrane(dataGridView_Compartment.getSelectedIndex(), center, radius);
                             }
                         }

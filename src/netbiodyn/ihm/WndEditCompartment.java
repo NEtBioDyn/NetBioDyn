@@ -472,11 +472,9 @@ public class WndEditCompartment extends javax.swing.JDialog {
         }
         // Apparence
         _cli.Couleur = buttonCouleur.getBackground();
-        
-        _cli.entity_property();
-
         _cli.Vidable = jCheckBox_vidable.isSelected();
-
+        _cli.entity_property();
+        
         this.DialogResult = new String("OK");
         setVisible(false);
         
