@@ -228,14 +228,23 @@ public class Controller {
             	int radius = wC._cli.getRadius();
             	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
             	if(model.verifCollision(wC._cli.getEtiquette(),lst_pts )){
-            		addEntityInstances2(wC._cli, lst_pts);
+            		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
+            			addEntityInstances2(wC._cli, lst_pts);
+            		}else{
+            			wC.setTextBoxCenterX("0");
+                        wC.setTextBoxCenterY("0");
+                        wC.setTextBoxRadius("0");
+                        wC.button_OKActionPerformed();
+                		JOptionPane jop = new JOptionPane();
+                		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            		}
             	}else{
             		wC.setTextBoxCenterX("0");
                     wC.setTextBoxCenterY("0");
                     wC.setTextBoxRadius("0");
                     wC.button_OKActionPerformed();
             		JOptionPane jop = new JOptionPane();
-            		jop.showMessageDialog(null, "Vous ne pouvais crée un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             	}
            	}   
         	model.addCompartment(wC._cli);
@@ -255,19 +264,28 @@ public class Controller {
         ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
         ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
     	if (model.verifCollision(wC._cli.getEtiquette(), lst_pts)){
-    		wC.setTextBoxCenterX(Integer.toString(center.x));
-            wC.setTextBoxCenterY(Integer.toString(center.y));
-            wC.setTextBoxRadius(Integer.toString(radius));
-            wC.button_OKActionPerformed();
-            delMembrane(old_lst_pts);
-    		addEntityInstances2(wC._cli, lst_pts);
+    		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
+    			wC.setTextBoxCenterX(Integer.toString(center.x));
+    			wC.setTextBoxCenterY(Integer.toString(center.y));
+    			wC.setTextBoxRadius(Integer.toString(radius));
+    			wC.button_OKActionPerformed();
+    			delMembrane(old_lst_pts);
+    			addEntityInstances2(wC._cli, lst_pts);
+    		}else{
+    			wC.setTextBoxCenterX(Integer.toString(old_centerX));
+                wC.setTextBoxCenterY(Integer.toString(old_centerY));
+                wC.setTextBoxRadius(Integer.toString(old_radius));
+                wC.button_OKActionPerformed();
+        		JOptionPane jop = new JOptionPane();
+        		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en dehors de l'envirronement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
+    		}
     	}else{
     		wC.setTextBoxCenterX(Integer.toString(old_centerX));
             wC.setTextBoxCenterY(Integer.toString(old_centerY));
             wC.setTextBoxRadius(Integer.toString(old_radius));
             wC.button_OKActionPerformed();
     		JOptionPane jop = new JOptionPane();
-    		jop.showMessageDialog(null, "Vous ne pouvais crée un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+    		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
     	}
     	model.editCompartment(wC._cli, name);
     }
@@ -602,15 +620,24 @@ public class Controller {
                 	ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
                 	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x, center.y, center.z, radius, getEnv().getTailleZ());
                 	if(model.verifCollision(wc._cli.getEtiquette(), lst_pts)){
-                	   	delMembrane(old_lst_pts);
-                		addEntityInstances2(wc._cli, lst_pts);
+                		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
+                			delMembrane(old_lst_pts);
+                			addEntityInstances2(wc._cli, lst_pts);
+                		}else{
+                			wc.setTextBoxCenterX(Integer.toString(old_centerX));
+                            wc.setTextBoxCenterY(Integer.toString(old_centerY));
+                            wc.setTextBoxRadius(Integer.toString(old_radius));
+                            wc.button_OKActionPerformed();
+                    		JOptionPane jop = new JOptionPane();
+                    		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		}
                 	}else{
                 		wc.setTextBoxCenterX(Integer.toString(old_centerX));
                         wc.setTextBoxCenterY(Integer.toString(old_centerY));
                         wc.setTextBoxRadius(Integer.toString(old_radius));
                         wc.button_OKActionPerformed();
                 		JOptionPane jop = new JOptionPane();
-                		jop.showMessageDialog(null, "Vous ne pouvais crée un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 	}
                 }
                 Entity entitie = wc._cli.getEnt();
