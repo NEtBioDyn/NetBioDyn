@@ -47,7 +47,7 @@ public class ProtoSimplexel extends ProtoBioDyn {
         toSave.add(new String("\tcouleur:").concat(((Integer) this.Couleur.getRGB()).toString()) + "\n");
         toSave.add(new String("\tdemie_vie:").concat(((Double) this.DemieVie).toString()) + "\n");
         toSave.add(new String("\tvidable:").concat(((Boolean) this.Vidable).toString()) + "\n");
-        toSave.add(new String("\tcompartment:").concat(((String) this.Compartment).toString()) + "\n");
+        toSave.add(new String("\tcompartment:").concat(((String) this._compartment).toString()) + "\n");
         return toSave;
     }
 
@@ -55,7 +55,7 @@ public class ProtoSimplexel extends ProtoBioDyn {
     public double DemieVie = 0;
     public Color Couleur = Color.RED;
     public boolean Vidable = true;
-    public String Compartment ="cytosol";
+    public String _compartment = "Cytsol";
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JTextArea _description;
@@ -65,6 +65,14 @@ public class ProtoSimplexel extends ProtoBioDyn {
     public JTextArea getDescription() {
         return _description;
     }
+
+	public String getCompartment() {
+		return _compartment;
+	}
+
+	public void setCompartment(String compartment) {
+		_compartment = compartment;
+	}
 
     
     

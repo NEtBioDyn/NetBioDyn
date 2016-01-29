@@ -264,8 +264,6 @@ public class Model {
         for (String name : compartments) {
             Compartment comp = this.getCompartment(name);
             Entity entity = comp.getEnt();
-            System.out.println("blop");
-            System.out.println(entity._etiquettes);
             this.entities.remove(entity);
             this.instances.removeEntityType(entity.getEtiquettes());
             this.removeCompart(comp);

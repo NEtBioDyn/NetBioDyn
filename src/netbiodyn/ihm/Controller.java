@@ -56,7 +56,7 @@ import netbiodyn.RunnableSimulator; //Permet de lancer l'application
  */
 public class Controller {
 
-    private final static int FRAME_WIDTH = 1210; //définit la largeur de la fenêtre de l'application
+    private final static int FRAME_WIDTH = 1220; //définit la largeur de la fenêtre de l'application
     private final static int FRAME_HEIGHT = 820; //définit la hauteur de la fenêtre de l'application
     private final int init_x = 100, init_y = 100, init_z = 1; //vue en 2D (chercher pour init_x et init_y, pas de différences si changement aux premiers tests)
 
@@ -212,12 +212,71 @@ public class Controller {
         }
     }
 
+    //
+    //
+    // Problème. ON supprime dans instances alors qu'on tourne dessus!!! 
+    //
+    //
+    
+    
+    
+    public void enleverMauvaisEntite(String name, UtilPoint3D center, int radius){
+    	ArrayList<UtilPoint3D> listAEnlever= new ArrayList<UtilPoint3D>();
+		AllInstances allInstances = model.getInstances();
+		for (InstanceReaxel reaxel : allInstances){
+			if (!(reaxel.get_compartment().equals(name))){
+				int x = reaxel.getX();
+				int y = reaxel.getY();
+				int z = reaxel.getZ();
+				int distance = (int) Math.sqrt(Math.pow(x-center.x, 2) + Math.pow(y-center.y, 2));
+				if (radius > distance){
+					listAEnlever.add(new UtilPoint3D(x,y,z));
+				}
+			}
+		}
+		for(UtilPoint3D point : listAEnlever){
+			removeEntityInstance(point.x, point.y,point.z);
+		}
+    }
+    
+    public void enleverAncienneEntite(String name, UtilPoint3D new_center, int new_radius){
+    	ArrayList<UtilPoint3D> listAEnlever= new ArrayList<UtilPoint3D>();
+		AllInstances allInstances = model.getInstances();
+		for (InstanceReaxel reaxel : allInstances){
+			if ((reaxel.get_compartment().equals(name))){
+				int x = reaxel.getX();
+				int y = reaxel.getY();
+				int z = reaxel.getZ();
+				int new_distance = (int) Math.sqrt(Math.pow(x-new_center.x, 2) + Math.pow(y-new_center.y, 2));
+				if (new_radius < new_distance){
+					listAEnlever.add(new UtilPoint3D(x,y,z));
+				}
+			}
+		}
+		for(UtilPoint3D point : listAEnlever){
+			removeEntityInstance(point.x, point.y,point.z);
+		}
+    }
+    
+    public void enleverEntiteCompartment(String name){
+    	ArrayList<UtilPoint3D> listAEnlever= new ArrayList<UtilPoint3D>();
+		AllInstances allInstances = model.getInstances();
+		for (InstanceReaxel reaxel : allInstances){
+			if ((reaxel.get_compartment().equals(name))){
+				listAEnlever.add(new UtilPoint3D(reaxel.getX(),reaxel.getY(),reaxel.getZ()));
+			}
+		}
+		for(UtilPoint3D point : listAEnlever){
+			removeEntityInstance(point.x, point.y,point.z);
+		}
+    }
+    
     
     public void addCompartment() {
         if (simulator.isRunning()) {
             this.pauseSimulation();
         }
-
+   
         WndEditCompartment wC = new WndEditCompartment(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wC.WndCliValue_Load(null);
         wC.setVisible(true);
@@ -229,6 +288,8 @@ public class Controller {
             	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
             	if(model.verifCollision(wC._cli.getEtiquette(),lst_pts )){
             		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
+            			enleverMauvaisEntite(wC._cli.getEtiquettes(), center, radius);
+            			delMembrane(lst_pts);
             			addEntityInstances2(wC._cli, lst_pts);
             		}else{
             			wC.setTextBoxCenterX("0");
@@ -269,7 +330,11 @@ public class Controller {
     			wC.setTextBoxCenterY(Integer.toString(center.y));
     			wC.setTextBoxRadius(Integer.toString(radius));
     			wC.button_OKActionPerformed();
+    			
+    			enleverAncienneEntite(wC._cli.getEtiquette(), center, radius);
     			delMembrane(old_lst_pts);
+    			enleverMauvaisEntite(wC._cli.getEtiquette(), center, radius);
+    			delMembrane(lst_pts);
     			addEntityInstances2(wC._cli, lst_pts);
     		}else{
     			wC.setTextBoxCenterX(Integer.toString(old_centerX));
@@ -423,6 +488,7 @@ public class Controller {
             if (i >= 0) {
                 String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(i);
                 compartments.add(name);
+                enleverEntiteCompartment(name);
             }
         }
         model.delCompartment(compartments);
@@ -552,11 +618,40 @@ public class Controller {
     public void addEntityInstances(ArrayList<UtilPoint3D> points) {
         int num_col = env.getDataGridView_entites().getSelectedIndex();
         if (num_col >= 0) {
+        	ArrayList<UtilPoint3D> pointsVerifier = new ArrayList<UtilPoint3D>();
             String etiquette = UtilDivers.str_originale(env.getDataGridView_entites().getModel().getElementAt(num_col).toString());
-            AddCommand command = new AddCommand(model, simulator, points, etiquette);
-            command.setOpposite(new RemoveCommand(model, simulator, points));
-            this.memorizeCommand(command);
-            command.execute();
+            Entity entity = model.getProtoReaxel(etiquette);
+            String nameComp = entity.getCompartment();
+            if (nameComp.equals("Cytosol")){
+            	for(UtilPoint3D point : points){
+            		boolean rep = true;
+            		for (Compartment comp : model.getCopyListManipulesCompartment()){
+            			int distance = (int) Math.sqrt(Math.pow(point.x-comp.getCenter().x, 2) + Math.pow(point.y-comp.getCenter().y, 2));
+        				if (comp.getRadius() > distance){
+        					rep = false;
+        					break;
+        				}	
+            		}
+            		if (rep){
+            			pointsVerifier.add(point);
+            		}
+            	}
+            }else{
+            	for (Compartment comp : model.getCopyListManipulesCompartment()){
+            		if(comp.getEtiquette().equals(nameComp)){
+            			for(UtilPoint3D point : points){
+            				int distance = (int) Math.sqrt(Math.pow(point.x-comp.getCenter().x, 2) + Math.pow(point.y-comp.getCenter().y, 2));
+            				if (comp.getRadius() > distance){
+            					pointsVerifier.add(point);
+            				}
+            			}
+            		}
+            	}
+            }
+			AddCommand command = new AddCommand(model, simulator, pointsVerifier, etiquette);
+			command.setOpposite(new RemoveCommand(model, simulator, pointsVerifier));
+			this.memorizeCommand(command);
+			command.execute();
         }
     }
     
@@ -587,7 +682,7 @@ public class Controller {
             wc.setVisible(true);
             if (wc.getDialogResult().equals("OK") && !p._etiquettes.equals("")) {
                 int time = simulator.getTime();
-                model.editProtoReaxel(p, name, time);
+                model.editProtoReaxel(wc._cli, name, time);
                 if (!simulator.isStopped()) {
                     simulator.ProtoReaxelEdited(p, name);
                 }
@@ -621,7 +716,10 @@ public class Controller {
                 	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x, center.y, center.z, radius, getEnv().getTailleZ());
                 	if(model.verifCollision(wc._cli.getEtiquette(), lst_pts)){
                 		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
+                			enleverAncienneEntite(wc._cli.getEtiquette(), center, radius);
                 			delMembrane(old_lst_pts);
+                			enleverMauvaisEntite(wc._cli.getEtiquette(), center, radius);
+                			delMembrane(lst_pts);
                 			addEntityInstances2(wc._cli, lst_pts);
                 		}else{
                 			wc.setTextBoxCenterX(Integer.toString(old_centerX));

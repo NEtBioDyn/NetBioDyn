@@ -71,8 +71,8 @@ public class WndEditNoeud extends javax.swing.JDialog {
     	
         String[] comps = new String[compartment.size()+1];
         comps[0] = "Cytosol";
-        for(int i = 0; i< compartment.size(); i++){
-        	comps[i] = compartment.get(i).getEtiquette();
+        for(int i = 1; i< compartment.size()+1; i++){
+        	comps[i] = compartment.get(i-1).getEtiquette();
         }
     	
         // Set language
@@ -129,8 +129,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
         // Apparence
         buttonCouleur.setBackground(_cli.Couleur);
         comboBox_formes.setSelectedIndex(_cli._forme);
-        
-        comboBox_compartment.setSelectedItem(_cli.Compartment);
+        comboBox_compartment.setSelectedItem(_cli._compartment);
         richTextBox_description.setText(_cli.getDescription().getText());
         jCheckBox_vidable.setSelected(_cli.Vidable);
             //this.setSize(new Dimension(WndEditEntite.WIDTH,WndEditEntite.HEIGHT+320));
@@ -227,9 +226,10 @@ public class WndEditNoeud extends javax.swing.JDialog {
         getContentPane().add(comboBox_formes);
         comboBox_formes.setBounds(160, 130, 120, 21);
         
-        String[] comps = new String[compartment.size()];
-        for(int i = 0; i< compartment.size(); i++){
-        	comps[i] = compartment.get(i).getEtiquette();
+        String[] comps = new String[compartment.size()+1];
+        comps[0] = "Cytosol";
+        for(int i = 1; i< compartment.size()+1; i++){
+        	comps[i] = compartment.get(i-1).getEtiquette();
         }
         
         comboBox_compartment.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
@@ -525,8 +525,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
         // Apparence
         _cli.Couleur = buttonCouleur.getBackground();
         _cli._forme = comboBox_formes.getSelectedIndex();
-        
-        // _cli._Compartment = comboBox_compartement.getSelectedIndex();
+        _cli._compartment = (String) comboBox_compartment.getSelectedItem();
         
         try {
             _cli.DemieVie = Double.parseDouble(textBox_demie_vie.getText());

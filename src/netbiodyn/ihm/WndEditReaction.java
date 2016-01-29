@@ -711,11 +711,65 @@ public class WndEditReaction extends javax.swing.JDialog {
         // Affectation de la valeur par defaut des combobox
         for (int r = 0; r < dataGridView_reactifs.getRowCount(); r++) {
             String str = dataGridView_reactifs.getValueAt(r, 0).toString();
-            _r3._reactifs.add(str);
+            if (r == 0){
+            	for(Compartment comp: compartment){
+            		if (comp.getEnt().getEtiquettes().equals(str)){
+            			if (dataGridView_produits.getValueAt(0, 0).toString().equals(str)){
+            				_r3._reactifs.add(str);
+            			}else{
+            	            if (Lang.getInstance().getLang().equals("FR")) {
+            	                JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactif.");
+            	            } else {
+            	                JOptionPane.showMessageDialog(this, "This name already exists. Please change it.");
+            	            }
+            	            return;
+            			}
+            		}
+            		
+            	}
+            }else{
+            	for(Compartment comp: compartment){
+            		if (comp.getEnt().getEtiquettes().equals(str)){
+            			if (Lang.getInstance().getLang().equals("FR")) {
+        	                JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactifs.");
+        	            } else {
+        	                JOptionPane.showMessageDialog(this, "This name already exists. Please change it.");
+        	            }
+            			return;
+            		}
+            	}
+            }
         }
         for (int p = 0; p < dataGridView_produits.getRowCount(); p++) {
             String str = dataGridView_produits.getValueAt(p, 0).toString();
-            _r3._produits.add(str);
+            if (p == 0){
+            	for(Compartment comp: compartment){
+            		if (comp.getEnt().getEtiquettes().equals(str)){
+            			if (dataGridView_reactifs.getValueAt(0, 0).toString().equals(str)){
+            				_r3._produits.add(str);
+            			}else{
+            	            if (Lang.getInstance().getLang().equals("FR")) {
+            	                JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactif.");
+            	            } else {
+            	                JOptionPane.showMessageDialog(this, "This name already exists. Please change it.");
+            	            }
+            	            return;
+            			}
+            		}
+            		
+            	}
+            }else{
+            	for(Compartment comp: compartment){
+            		if (comp.getEnt().getEtiquettes().equals(str)){
+            			if (Lang.getInstance().getLang().equals("FR")) {
+        	                JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactifs.");
+        	            } else {
+        	                JOptionPane.showMessageDialog(this, "This name already exists. Please change it.");
+        	            }
+            			return;
+            		}
+            	}
+            }
         }
 
         // Valeur d k

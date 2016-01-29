@@ -601,15 +601,15 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         jPanelCompartmentLayout.setHorizontalGroup(
             jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCompartmentLayout.createSequentialGroup()
-                .addComponent(jButtonAddCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonAddCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonEditCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonEditCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonDelCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                .addComponent(jButtonDelCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanelCompartmentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelCompartmentLayout.createSequentialGroup()
                         .addComponent(checkBox_paint_rond, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -772,15 +772,15 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         jPanelEntitiesLayout.setHorizontalGroup(
             jPanelEntitiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEntitiesLayout.createSequentialGroup()
-                .addComponent(jButtonAddEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonAddEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonEditEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonEditEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonDelEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                .addComponent(jButtonDelEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanelEntitiesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelEntitiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelEntites, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelEntites, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelEntitiesLayout.createSequentialGroup()
                         .addComponent(checkBox_paint_move, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
@@ -808,7 +808,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                         .addComponent(jButtonDelEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addComponent(jButtonEditEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane_Entities, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                .addComponent(jScrollPane_Entities, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                 .addGap(12, 12, 12)
                 .addGroup(jPanelEntitiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(checkBox_paint_move, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -910,7 +910,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                 .addGroup(jPanelBehaviorsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPaneBehaviors, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelBehaviorsLayout.createSequentialGroup()
-                        .addComponent(jButtonAddBehav, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonAddBehav, javax.swing.GroupLayout.PREFERRED_SIZE, 45,  javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonEditBehav, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1051,7 +1051,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelEnv);
-        jPanelEnv.setBounds(10, 710, 880, 70);
+        jPanelEnv.setBounds(10, 710, 890, 70);
 
         jPanelCurves.setBackground(new java.awt.Color(153, 153, 255));
         jPanelCurves.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1132,7 +1132,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         abscissaBox.getAccessibleContext().setAccessibleName("");
 
         add(jPanelCurves);
-        jPanelCurves.setBounds(890, 30, 300, 620);
+        jPanelCurves.setBounds(900, 30, 300, 620);
 
         jPanelMisc.setBackground(new java.awt.Color(153, 153, 255));
         jPanelMisc.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1246,7 +1246,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelMisc);
-        jPanelMisc.setBounds(890, 650, 300, 130);
+        jPanelMisc.setBounds(900, 650, 300, 130);
 
         jPanelSimulator.setBackground(new java.awt.Color(153, 153, 255));
         jPanelSimulator.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1385,7 +1385,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelSimulator);
-        jPanelSimulator.setBounds(175, 30, 730, 680);
+        jPanelSimulator.setBounds(175, 30, 725, 680);
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_play1MouseClicked(java.awt.event.MouseEvent evt) {
@@ -1941,9 +1941,9 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         // Move the Panels
         jPanelSimulator.setBounds(init_bounds_sim.x, init_bounds_sim.y, init_bounds_sim.width + dfx, init_bounds_sim.height + dfy);
         jPanelEnv.setBounds(init_bounds_env.x, init_bounds_env.y + dfy, init_bounds_env.width + dfx, init_bounds_env.height);
-        jPanelCompartment.setBounds(init_bounds_comp.x, init_bounds_comp.y, init_bounds_comp.width, init_bounds_comp.height + dfy / 2);
-        jPanelEntities.setBounds(init_bounds_ent.x, init_bounds_ent.y, init_bounds_ent.width, init_bounds_ent.height + dfy / 2);
-        jPanelBehaviors.setBounds(init_bounds_beh.x, init_bounds_beh.y + dfy / 2, init_bounds_beh.width, init_bounds_beh.height + dfy / 2);
+        jPanelCompartment.setBounds(init_bounds_comp.x, init_bounds_comp.y, init_bounds_comp.width, init_bounds_comp.height + dfy/3);
+        jPanelEntities.setBounds(init_bounds_ent.x, init_bounds_ent.y + dfy / 3, init_bounds_ent.width , init_bounds_ent.height + dfy / 3);
+        jPanelBehaviors.setBounds(init_bounds_beh.x, init_bounds_beh.y + 2*dfy/3 , init_bounds_beh.width, init_bounds_beh.height + dfy / 3);
         jPanelCurves.setBounds(init_bounds_curv.x + dfx, init_bounds_curv.y, init_bounds_curv.width, init_bounds_curv.height + dfy / 2);
         jPanelMisc.setBounds(init_bounds_misc.x + dfx, init_bounds_misc.y + dfy / 2, init_bounds_misc.width, init_bounds_misc.height + dfy / 2);
 

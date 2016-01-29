@@ -47,7 +47,7 @@ public class Compartment extends ProtoBioDyn{
 	public Entity entity_property(){
 		ent.setEtiquettes('m'+name);
 		ent.Couleur = this.Couleur;
-		ent.Compartment = getEtiquette();
+		ent._compartment = getEtiquette();
 		ent._visibleDansPanel=true;
 		ent.Vidable = this.Vidable;
 		ent.DemieVie = 0;
