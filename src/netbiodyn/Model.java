@@ -90,6 +90,12 @@ public class Model {
     }
 
     public void clear_OnlyCleanable() {
+    	for(Compartment comp : compartment){
+    		if(comp.Vidable){
+    			comp.setRadius(0);
+    			comp.setCenter(new UtilPoint3D());
+    		}
+    	}
         for (int i = 0; i < parameters.getX(); i++) {
             for (int j = 0; j < parameters.getY(); j++) {
                 for (int k = 0; k < parameters.getZ(); k++) {
@@ -246,6 +252,7 @@ public class Model {
         }
     }
     
+    
     public void addCompartment(Compartment comp) {
         compartment.add(comp);
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
@@ -257,8 +264,6 @@ public class Model {
         for (String name : compartments) {
             Compartment comp = this.getCompartment(name);
             Entity entity = comp.getEnt();
-            System.out.println("blop");
-            System.out.println(entity._etiquettes);
             this.entities.remove(entity);
             this.instances.removeEntityType(entity.getEtiquettes());
             this.removeCompart(comp);
@@ -279,18 +284,51 @@ public class Model {
     }
     
     public void editCompartment(Compartment m, String old_name) {
-        int index = 0;
+        int index1 = 0;
+        int index2 = 0;
         for (int i = 0; i < compartment.size(); i++) {
             if (compartment.get(i).getEtiquette().equals(old_name)) {
+                for (int j = 0; j < entities.size(); j++) {
+                    if (entities.get(j).getEtiquettes().equals('m'+old_name)) {
+                    	entities.remove(j);
+                        index2 = j;
+                        j = entities.size();
+                    }
+                }
+                Entity entity = m.entity_property();
+                entities.add(index2, entity);
             	compartment.remove(i);
-                index = i;
+                index1 = i;
                 i = compartment.size();
             }
         }
-        compartment.add(index, m);
+        compartment.add(index1, m);
+        
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
             listen.CompartmentUpdate(getCopyListManipulesCompartment());
+            listen.protoEntityUpdate(getCopyListManipulesNoeuds(), getInitialState());
+            listen.matrixUpdate(getInstances(), getInitialState(), 0);
         }
+    }
+    
+    
+    public boolean verifCollision(String name, ArrayList<UtilPoint3D> points){
+    	boolean rep = false;
+    	for (Compartment comp: compartment){
+    		if (comp.getEtiquette().equals(name)){
+    			continue;
+    		}
+    		 ArrayList<UtilPoint3D> lst_pts_tmp = UtilPoint3D.BresenhamRond3D(comp.getCenter().x,comp.getCenter().y, comp.getCenter().z, comp.getRadius(), getParameters().getZ());
+    		 for (UtilPoint3D point : points){
+    			 for (UtilPoint3D point_tmp : lst_pts_tmp){
+    				 rep = point.equals(point_tmp);
+    				 if (rep == true){
+    					 return false;
+    				 }
+    			 }
+    		 }
+    	}
+    	return true;
     }
     
     public void addProtoReaxel(Entity entity) {
@@ -466,8 +504,19 @@ public class Model {
             instances = new AllInstances(saved.getInstances());
             entities = saved.getListManipulesNoeuds();
             behaviors = saved.getListManipulesReactions();
+            compartment= saved.getListManipulesCompartment();
+ 
+//            for (int i = 0; i < compartment.size(); i++) {
+//        		System.out.println("lool"+compartment.get(i).getEtiquette());
+//        		System.out.println(compartment.get(i).getCenter());
+//        		System.out.println(compartment.get(i).getRadius());
+//        		System.out.println(compartment.get(i).getEnt().getEtiquettes());
+//        	}
+            
+            
             for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
                 listen.newEnvLoaded(saved, getInitialState());
+                listen.CompartmentUpdate(getCopyListManipulesCompartment());
             }
         }
     }
@@ -479,6 +528,7 @@ public class Model {
         Serialized toSave = new Serialized(parameters);
         toSave.setListManipulesNoeuds(entities);
         toSave.setListManipulesReactions(behaviors);
+        toSave.setListManipulesCompartment(compartment);
         toSave.setInstances(getInstances());
         toSave.setParameters(parameters);
         sl.save(toSave);

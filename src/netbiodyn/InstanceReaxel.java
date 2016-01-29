@@ -38,6 +38,7 @@ public class InstanceReaxel extends InstanceSimplexel implements Cloneable{
     private Color _couleur = Color.BLUE;
     private boolean _vidable = true;
     private double _taille = 1;
+    private String _compartment = "Cytosol";
     private int _forme = 0;
     private double _demie_vie = 0;
 
@@ -57,6 +58,7 @@ public class InstanceReaxel extends InstanceSimplexel implements Cloneable{
         InstanceReaxel clone = new InstanceReaxel();
         clone._couleur = _couleur;
         clone._taille = _taille;
+        clone._compartment = _compartment;
         clone._demie_vie = _demie_vie;
         clone._forme = _forme;
         clone._nom = _nom;
@@ -72,6 +74,7 @@ public class InstanceReaxel extends InstanceSimplexel implements Cloneable{
         InstanceReaxel r = new InstanceReaxel();
         r._couleur = cli.Couleur;
         r._taille = cli._taille;
+        r._compartment = cli._compartment;
         r._forme = cli._forme;
         r._demie_vie = cli.DemieVie;
         r._nom = cli.getEtiquettes();
@@ -80,7 +83,8 @@ public class InstanceReaxel extends InstanceSimplexel implements Cloneable{
         return r;
     }
     
-    @Override
+
+	@Override
     public boolean equals(Object o){
         if(o instanceof InstanceReaxel){
             InstanceReaxel r=(InstanceReaxel)o;
@@ -128,6 +132,14 @@ public class InstanceReaxel extends InstanceSimplexel implements Cloneable{
     public void setVidable(boolean _vidable) {
         this._vidable = _vidable;
     }
+    
+    public String get_compartment() {
+		return _compartment;
+	}
+
+	public void set_compartment(String _compartment) {
+		this._compartment = _compartment;
+	}
 
     public double getTaille() {
         return _taille;

@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import netbiodyn.ihm.Env_Parameters;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
+import netbiodyn.Compartment;
 import netbiodyn.ProtoBioDyn;
 import netbiodyn.Entity;
 import netbiodyn.ihm.Controller;
@@ -75,6 +76,10 @@ public class FileSaverLoader extends SaverLoader {
         for (int i = 0; i < toSave.getListManipulesReactions().size(); i++) {
             list_BioDyn.add(toSave.getListManipulesReactions().get(i));
         }
+        System.out.println("lol"+toSave.getListManipulesCompartment());
+        for (int i = 0; i < toSave.getListManipulesCompartment().size(); i++) {
+            list_BioDyn.add(toSave.getListManipulesCompartment().get(i));        
+        }
 
         for (ProtoBioDyn list_BioDyn1 : list_BioDyn) {
             ArrayList<String> toString = list_BioDyn1.toSave();
@@ -96,13 +101,16 @@ public class FileSaverLoader extends SaverLoader {
                         ImageIO.write((RenderedImage) reaxel.BackgroundImage, ext, F);
                     }
                 }
+                else if (list_BioDyn1 instanceof Compartment) {
+					System.out.println("toto");
+				}
                 out.write("Fin\n");
                 out.write("\n");
             } catch (Exception e) {
                 erreur = true;
             }
-        }
-
+        }        
+        
         //Sauvegarde de l'environnement
         try {
 
@@ -135,12 +143,12 @@ public class FileSaverLoader extends SaverLoader {
         } catch (Exception e) {
             erreur = true;
         }
-
+                   
         // Sauvegarde des positions des reaxels // ======================================
         try {
             out.write("Reaxels" + "\n");
-            for (int i = 0; i < toSave.getInstances().getSize(); i++) {
-                InstanceReaxel r = toSave.getInstances().getInList(i);
+            for (int i1 = 0; i1 < toSave.getInstances().getSize(); i1++) {
+                InstanceReaxel r = toSave.getInstances().getInList(i1);
                 Integer x0, y0, z0;
                 x0 = r.getX();
                 y0 = r.getY();
@@ -224,6 +232,10 @@ public class FileSaverLoader extends SaverLoader {
                         || lst_mots[0].equals("class netbiodyn.Behavior")) {
                     saved = ChargerReaction(in, saved);
                 }
+                // Chargement Compartment
+                if (lst_mots[0].equals("class netbiodyn.Compartment")) {
+                    saved = ChargerCompartment(chemin,in, saved);
+                }
                 if (lst_mots[0].equals("biodyn_net.CliEnvironnement") || lst_mots[0].equals("biodyn_net.Environnement") || lst_mots[0].equals("netbiodyn.Environnement")) {
                     saved = ChargerEnvironnement(chemin, in, saved);
                     if (version.equals("3d-1.0")) {
@@ -232,7 +244,14 @@ public class FileSaverLoader extends SaverLoader {
                 }
             }
             in.close();
-
+//            ArrayList<Compartment> comp = saved.getListManipulesCompartment();
+//
+//            for (int i = 0; i < comp.size(); i++) {
+//            		System.out.println(comp.get(i).getEtiquette());
+//            		System.out.println(comp.get(i).getCenter());
+//            		System.out.println(comp.get(i).getRadius());
+//            		System.out.println(comp.get(i).getEnt().getEtiquettes());
+//            	}
         } catch (Exception e) {
             JOptionPane.showMessageDialog(ihm, "while principal : " + e);
         }
@@ -564,13 +583,80 @@ public class FileSaverLoader extends SaverLoader {
         saved.addProtoReaxel(cli);
         return saved;
     }
+    
+    private Serialized ChargerCompartment(String abs_path, BufferedReader testLoad, Serialized saved) {
+        // Chargement Entite
+        Compartment comp = new Compartment();
+        UtilPoint3D center =new UtilPoint3D();
+
+        boolean fin_clinamon = false;
+        while (fin_clinamon == false) {
+            String ligne = null;
+            try {
+                ligne = testLoad.readLine();
+            } catch (Exception e) {
+                fin_clinamon = true;
+                JOptionPane.showMessageDialog(ihm, e);
+            }
+            String[] lst_mots = decoupeLigne(ligne);
+            if (lst_mots[0].equals("Fin")) {
+                fin_clinamon = true;
+            } else {
+                if (lst_mots.length == 2) { // Cas ou la valeur est ""
+                    String[] tmp = new String[3];
+                    tmp[0] = lst_mots[0];
+                    tmp[1] = lst_mots[1];
+                    tmp[2] = "";
+                    lst_mots = tmp;
+                }
+                if (lst_mots[1].equals("Etiquettes")) {
+                    // Etiquettes
+                    comp.setEtiquette(lst_mots[2]);
+//                	System.out.println(comp.getEtiquette());                   
+                    // Chargement de la description
+//                    String nom_fichier_description = path + "_Description_" + cli.getEtiquettes() + ".txt";
+//
+//                    if (fichierExiste("", nom_fichier_description) == true) {
+//                        cli.getDescription().setText(chargerTexte(nom_fichier_description));
+//                    }
+                }
+                if (lst_mots[1].equals("centerX")) {
+                    center.x=Integer.parseInt(lst_mots[2]);
+                }
+                if (lst_mots[1].equals("centerY")) {
+                	center.y=Integer.parseInt(lst_mots[2]);
+                }
+                if (lst_mots[1].equals("centerZ")) {
+                	center.z=Integer.parseInt(lst_mots[2]);
+                	comp.setCenter(center);
+                }
+                if (lst_mots[1].equals("radius")) {
+                    comp.setRadius(Integer.parseInt(lst_mots[2]));
+                }
+                if (lst_mots[1].equals("menbrane")) {
+                    ArrayList<Entity> noeuds = saved.getListManipulesNoeuds();
+
+                    for (int i = 0; i < noeuds.size(); i++) {
+                    	if (noeuds.get(i).getEtiquettes().equals(lst_mots[2])){
+                    		comp.setEnt(noeuds.get(i));
+                    	}
+                    }
+//                	System.out.println("toto"+saved.getListManipulesNoeuds());
+//                    comp.setEnt(saved.getListManipulesNoeuds());
+                }
+
+            }
+        }
+        saved.addProtoCompartment(comp);
+        return saved;
+    }
 
     private Serialized ChargerReaction(BufferedReader testLoad, Serialized saved) {
         Behavior react3 = new Behavior();
         react3._positions = new ArrayList<>();
 
         boolean fin = false;
-        WndEditReaction tmp_wnd_react_cplx = new WndEditReaction(saved.getListManipulesNoeuds(), saved.getListManipulesReactions());
+        WndEditReaction tmp_wnd_react_cplx = new WndEditReaction(saved.getListManipulesNoeuds(), saved.getListManipulesReactions(),saved.getListManipulesCompartment());
         while (fin == false) {
             String ligne = null;
             try {

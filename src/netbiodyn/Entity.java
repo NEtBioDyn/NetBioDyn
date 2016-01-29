@@ -46,6 +46,7 @@ public class Entity extends ProtoSimplexel {
         reaxel.setEtiquettes(getEtiquettes());
         reaxel.Couleur=Couleur;
         reaxel._visibleDansPanel=_visibleDansPanel;
+        reaxel._compartment = _compartment;
         reaxel.Vidable=Vidable;
         reaxel.DemieVie=DemieVie;
         reaxel._forme = _forme;
