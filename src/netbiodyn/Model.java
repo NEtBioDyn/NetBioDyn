@@ -491,8 +491,19 @@ public class Model {
             instances = new AllInstances(saved.getInstances());
             entities = saved.getListManipulesNoeuds();
             behaviors = saved.getListManipulesReactions();
+            compartment= saved.getListManipulesCompartment();
+ 
+//            for (int i = 0; i < compartment.size(); i++) {
+//        		System.out.println("lool"+compartment.get(i).getEtiquette());
+//        		System.out.println(compartment.get(i).getCenter());
+//        		System.out.println(compartment.get(i).getRadius());
+//        		System.out.println(compartment.get(i).getEnt().getEtiquettes());
+//        	}
+            
+            
             for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
                 listen.newEnvLoaded(saved, getInitialState());
+                listen.CompartmentUpdate(getCopyListManipulesCompartment());
             }
         }
     }
