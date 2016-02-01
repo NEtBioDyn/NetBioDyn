@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package netbiodyn;// On crée un package, cette ligne indiquant que le fichier actuel sera dans ce package 
+package netbiodyn;// Creation of a package, this line indicating that the actual file will be in this package
 
-import java.util.ArrayList; // Rend possible la création d'un tableau 
-import java.util.HashMap; // Rend possible la création d'un hashmap
+import java.util.ArrayList; //Possible creation of tables
+import java.util.HashMap; //Possible creation of hashmaps
 
 /**
  *
@@ -15,23 +15,27 @@ import java.util.HashMap; // Rend possible la création d'un hashmap
 
 public class AllInstances extends ArrayList<InstanceReaxel> implements Cloneable{
 
-    private final InstanceReaxel[][][] matrix; // position (accès rapide) des instances d'entites tableau a 3
-    private HashMap<String, Integer> entitiesBook; // Nombre d'entités par type
+    private final InstanceReaxel[][][] matrix; //Initialization of a matrix of coordinates
+    private HashMap<String, Integer> entitiesBook; //Initialization of the table of all entities ?
+    //Initialization of coordinates
     private int X;
     private int Y;
     private int Z;
 
+    //Creation of an AllInstances object, with coordinates as parameters
     public AllInstances(int x, int y, int z) {
-        super();
+        super(); //Creation of an InstanceReaxel which will have more parameters after
         X = x;
         Y = y;
         Z = z;
-        matrix = new InstanceReaxel[x][y][z];
-        entitiesBook = new HashMap<>();
+        matrix = new InstanceReaxel[x][y][z]; //Creation of an InstanceReaxel with these coordinates
+        entitiesBook = new HashMap<>(); //Creation of an empty Hashmap
     }
 
+    //Creation of an AllInstances object, with all possible parameters 
     public AllInstances(ArrayList<InstanceReaxel> l, InstanceReaxel[][][] m, int x, int y, int z) {
-        super(l);
+        super(l); //Creation from an ArrayList<InstanceReaxel>
+        //Put all parameters to values given into parameters
         this.matrix = m;
         X = x;
         Y = y;
@@ -39,44 +43,50 @@ public class AllInstances extends ArrayList<InstanceReaxel> implements Cloneable
         this.updateBook();
     }
 
+    //Creation of an AllInstances object, with an other one in parameter
     public AllInstances(AllInstances other) {
-        super(other.getList());
-        X = other.getX();
+        super(other.getList()); //Creation of the list of all InstanceReaxel
+        //Put all parameters to good values
+        X = other.getX(); 
         Y = other.getY();
         Z = other.getZ();
         matrix = other.getMatrix();
         updateBook();
     }
 
+    //Update of the hashmap
     private void updateBook() {
-        entitiesBook = new HashMap<>();
-        for (InstanceReaxel c : this) {
+        entitiesBook = new HashMap<>(); //Creation of a new hashmap
+        for (InstanceReaxel c : this) { //Path of all InstanceReaxel into the AllInstance object 
+        	//Verification if the hashmap contains something
             if (entitiesBook.containsKey(c.getNom()) == false) {
-                entitiesBook.put(c.getNom(), 1);
+                entitiesBook.put(c.getNom(), 1); //If the hashmap doesn't contain this InstanceReaxel, addition of this InstanceReaxel with the number 1
             } else {
-                int nbr = entitiesBook.get(c.getNom());
-                nbr += 1;
-                entitiesBook.put(c.getNom(), nbr);
+                int nbr = entitiesBook.get(c.getNom()); //If it contains this InstanceReaxel, get the number of this InstanceReaxel into the old hashmap 
+                nbr += 1; //Incrementation of his number to create a shift
+                entitiesBook.put(c.getNom(), nbr); //Addition of this InstanceReaxel into the hashmap at the incremented position 
             }
         }
     }
 
+    //Add an InstanceReaxel into the hashmap
     private void addInBook(String type) {
         if (!entitiesBook.containsKey(type)) {
-            entitiesBook.put(type, 1);
+            entitiesBook.put(type, 1); //if this InstanceReaxel isn't contained into the hashmap, add it with the number 1
         } else {
-            int nbr = entitiesBook.get(type);
-            nbr += 1;
-            entitiesBook.put(type, nbr);
+            int nbr = entitiesBook.get(type); //If it contains this InstanceReaxel, get the number of this InstanceReaxel into the old hashmap 
+            nbr += 1; //Incrementation of his number to create a shift
+            entitiesBook.put(type, nbr);//Addition of this InstanceReaxel into the hashmap at the incremented position 
         }
     }
-
+    
+    //Remove an InstanceReaxel into the hashmap ?
     private void removeInBook(InstanceReaxel reaxel) {
-        String type = reaxel.getNom();
-        if (entitiesBook.containsKey(type)) {
-            int nbr = entitiesBook.get(type);
+        String type = reaxel.getNom(); //Get the name of the InstanceReaxel
+        if (entitiesBook.containsKey(type)) { //Know if this is already into the hashmap
+            int nbr = entitiesBook.get(type); //If it's the case, get the number of it 
             if (nbr > 0) {
-                nbr -= 1;
+                nbr -= 1; //Diminution of this number
             }
             entitiesBook.put(type, nbr);
         }
