@@ -25,6 +25,7 @@ import netbiodyn.util.UtilFileFilter;
 import netbiodyn.util.UtilPoint3D;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
@@ -99,10 +100,10 @@ public class WndEditCompartment extends javax.swing.JDialog {
             _cli.Couleur = new Color(RandomGen.getInstance().nextInt(250),RandomGen.getInstance().nextInt(250), RandomGen.getInstance().nextInt(250));
         }
         
-        _old_name = _cli.getEtiquette();
+        _old_name = _cli.getEtiquettes();
         _old_color = _cli.Couleur;
 
-        textBox1.setText(_cli.getEtiquette());
+        textBox1.setText(_cli.getEtiquettes());
         textBoxCenterX.setText(Integer.toString(_cli.getCenter().x));
         textBoxCenterY.setText(Integer.toString(_cli.getCenter().y));
         textBoxRadius.setText(Integer.toString(_cli.getRadius()));
@@ -112,6 +113,7 @@ public class WndEditCompartment extends javax.swing.JDialog {
         richTextBox_description.setText(_cli.getDescription().getText());
         jCheckBox_vidable.setSelected(_cli.Vidable);
             //this.setSize(new Dimension(WndEditEntite.WIDTH,WndEditEntite.HEIGHT+320));
+        
     }
 
     public Compartment getCli() {
@@ -133,7 +135,8 @@ public class WndEditCompartment extends javax.swing.JDialog {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+    	
+    	jLabelCompartment = new javax.swing.JLabel();
         jLabelNom = new javax.swing.JLabel();
         jLabelCenter = new javax.swing.JLabel();
         textBoxCenterX = new javax.swing.JTextField();
@@ -174,21 +177,11 @@ public class WndEditCompartment extends javax.swing.JDialog {
         
         textBoxCenterX.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         textBoxCenterX.setText("0");
-        textBoxCenterX.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                textBoxNumberKeyTyped(evt);
-            }
-        });
         getContentPane().add(textBoxCenterX);
         textBoxCenterX.setBounds(60, 70, 100, 20);
         
         textBoxCenterY.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         textBoxCenterY.setText("0");
-        textBoxCenterY.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                textBoxNumberKeyTyped(evt);
-            }
-        });
         getContentPane().add(textBoxCenterY);
         textBoxCenterY.setBounds(170, 70, 100, 20);
         
@@ -199,11 +192,6 @@ public class WndEditCompartment extends javax.swing.JDialog {
              
         textBoxRadius.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         textBoxRadius.setText("rayon");
-        textBoxRadius.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                textBoxNumberKeyTyped(evt);
-            }
-        });
         getContentPane().add(textBoxRadius);
         textBoxRadius.setBounds(60, 100, 220, 20);
 
@@ -288,7 +276,14 @@ public class WndEditCompartment extends javax.swing.JDialog {
         });
         getContentPane().add(button_aide_description);
         button_aide_description.setBounds(447, 33, 40, 23);
-
+        
+        jLabelCompartment.setBackground(new java.awt.Color(153, 153, 255));
+        jLabelCompartment.setFont(new java.awt.Font("DejaVu Sans", 1, 24)); // NOI18N
+        jLabelCompartment.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelCompartment.setText("Compartment");
+        getContentPane().add(jLabelCompartment);
+        jLabelCompartment.setBounds(0, 0, 533, 28);
+        
         richTextBox_description.setColumns(20);
         richTextBox_description.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         richTextBox_description.setLineWrap(true);
@@ -302,7 +297,7 @@ public class WndEditCompartment extends javax.swing.JDialog {
         jLabel19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel19.setOpaque(true);
         getContentPane().add(jLabel19);
-        jLabel19.setBounds(0, 0, 500, 30);
+        jLabel19.setBounds(0, 0, 533, 30);
 
         setSize(new java.awt.Dimension(533, 300));
         setLocationRelativeTo(null);
@@ -362,8 +357,6 @@ public class WndEditCompartment extends javax.swing.JDialog {
 
                     } else {
                         _cli.Couleur = returnColor;
-                        Entity ent = _cli.getEnt();
-                        ent.Couleur = returnColor;
                         buttonCouleur.setBackground(returnColor);
                         _old_color = _cli.Couleur;
                     }
@@ -377,22 +370,6 @@ public class WndEditCompartment extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_OKMouseClicked
 
-    private void textBoxNumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBox1KeyTyped
-        // TODO add your handling code here:
-        char c = evt.getKeyChar();
-        if (!(c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9')) {
-            evt.consume();
-            if (Lang.getInstance().getLang().equals("FR")) {
-                JOptionPane.showMessageDialog(this, "Les caracteres \\ / : ESPACE * ? \" < > , et | sont interdits. Merci de votre comprehension", "ATTENTION", JOptionPane.INFORMATION_MESSAGE, null);
-            } else {
-                JOptionPane.showMessageDialog(this, "Characteres \\ / : SPACE * ? \" < > , and | are forbiden.", "ATTENTION", JOptionPane.INFORMATION_MESSAGE, null);
-            }
-        }
-        if (c == '\n') {
-            button_OKActionPerformed(null);
-        }
-    }//GEN-LAST:event_textBox1KeyTyped
-    
     private void textBox1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBox1KeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
@@ -409,7 +386,20 @@ public class WndEditCompartment extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_textBox1KeyTyped
 
-    private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+    public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+    	try{
+    		Integer.decode(textBoxCenterX.getText());
+    		Integer.decode(textBoxCenterX.getText());
+    		Integer.decode(textBoxCenterX.getText()); 
+    	}catch(Exception  e){
+            if (Lang.getInstance().getLang().equals("FR")) {
+                JOptionPane.showMessageDialog(this, "Les coordonnees du centre et le rayon doit etre des entiers", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            } else {
+                JOptionPane.showMessageDialog(this, "Please name the entity.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}
+        
         if (textBox1.getText().equals("")) {
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "Merci de nommer l'entité.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
@@ -422,7 +412,7 @@ public class WndEditCompartment extends javax.swing.JDialog {
         // List des noms deja existants
         ArrayList<String> lst_str = new ArrayList<>();        
         for (Compartment comp : compartment) {
-            lst_str.add(comp.getEtiquette());       
+            lst_str.add(comp.getEtiquettes());       
         }
 
         lst_str.remove(_old_name);
@@ -463,94 +453,24 @@ public class WndEditCompartment extends javax.swing.JDialog {
             return;
         }
         try {
-            _cli.setEtiquette(textBox1.getText());
+            _cli.setEtiquettes(textBox1.getText());
             _cli.setCenter(new UtilPoint3D(Integer.parseInt(textBoxCenterX.getText()), Integer.parseInt(textBoxCenterY.getText()), 0));
             _cli.setRadius(Integer.parseInt(textBoxRadius.getText()));
             _cli.getDescription().setText(richTextBox_description.getText());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
         }
+        
         // Apparence
         _cli.Couleur = buttonCouleur.getBackground();
         _cli.Vidable = jCheckBox_vidable.isSelected();
-        _cli.entity_property();
-        
+        //_cli.entity_property();
         this.DialogResult = new String("OK");
         setVisible(false);
         
     }//GEN-LAST:event_button_OKActionPerformed
     
-    public void button_OKActionPerformed() {//GEN-FIRST:event_button_OKActionPerformed
-        if (textBox1.getText().equals("")) {
-            if (Lang.getInstance().getLang().equals("FR")) {
-                JOptionPane.showMessageDialog(this, "Merci de nommer l'entité.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-            } else {
-                JOptionPane.showMessageDialog(this, "Please name the entity.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-            }
-            return;
-        }
-
-        // List des noms deja existants
-        ArrayList<String> lst_str = new ArrayList<>();        
-        for (Compartment comp : compartment) {
-            lst_str.add(comp.getEtiquette());       
-        }
-
-        lst_str.remove(_old_name);
-        
-        // Verif que le nom n'est pas deja attribue a une entite
-        for (int n = 0; n < entities.size(); n++) {
-            if (entities.get(n).TrouveEtiquette(textBox1.getText()) >= 0) {
-                // Cas ou le nom existe deja
-                if (Lang.getInstance().getLang().equals("FR")) {
-                    JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                } else {
-                    JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                }
-                return;
-            }
-        }
-
-        // Verif que le nom n'est pas deja attribue a un comportement
-        for (int n = 0; n < behaviours.size(); n++) {
-            if (behaviours.get(n).TrouveEtiquette(textBox1.getText()) >= 0) {
-                // Cas ou le nom existe deja
-                if (Lang.getInstance().getLang().equals("FR")) {
-                    JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                } else {
-                    JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                }
-                return;
-            }
-        }
-
-        if (lst_str.contains(textBox1.getText()) == true) {
-            // Cas ou le nom existe deja
-            if (Lang.getInstance().getLang().equals("FR")) {
-                JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-            } else {
-                JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-            }
-            return;
-        }
-        try {
-            _cli.setEtiquette(textBox1.getText());
-            _cli.setCenter(new UtilPoint3D(Integer.parseInt(textBoxCenterX.getText()), Integer.parseInt(textBoxCenterY.getText()), 0));
-            _cli.setRadius(Integer.parseInt(textBoxRadius.getText()));
-            _cli.getDescription().setText(richTextBox_description.getText());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e);
-        }
-        // Apparence
-        _cli.Couleur = buttonCouleur.getBackground();
-        
-        _cli.entity_property();
-
-        _cli.Vidable = jCheckBox_vidable.isSelected();
-
-        this.DialogResult = new String("OK");
-        setVisible(false);
-    }//GEN-LAST:event_button_OKActionPerformed
+    
 
     private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         // TODO add your handling code here:
@@ -573,6 +493,7 @@ public class WndEditCompartment extends javax.swing.JDialog {
     private javax.swing.JCheckBox jCheckBox_vidable;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabelApp;
+    private javax.swing.JLabel jLabelCompartment;
     private javax.swing.JLabel jLabelDescr;
     private javax.swing.JLabel jLabelNom;
     private javax.swing.JLabel jLabelCenter;

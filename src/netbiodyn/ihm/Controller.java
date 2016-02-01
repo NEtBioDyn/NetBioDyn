@@ -271,6 +271,10 @@ public class Controller {
 		}
     }
     
+    public void addReaction(){
+    	WndReactionGlobal wC = new WndReactionGlobal(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wC.setVisible(true);
+    }
     
     public void addCompartment() {
         if (simulator.isRunning()) {
@@ -280,13 +284,13 @@ public class Controller {
         WndEditCompartment wC = new WndEditCompartment(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wC.WndCliValue_Load(null);
         wC.setVisible(true);
-        if (wC.getDialogResult().equals("OK") && !wC._cli.getEtiquette().equals("")) {
-        	model.addProtoReaxel(wC._cli.getEnt());
+        if (wC.getDialogResult().equals("OK") && !wC._cli.getEtiquettes().equals("")) {
+        	addCompartmentMembrane(wC._cli);
         	if (wC._cli.getCenter().x != 0 && wC._cli.getCenter().x != 0 && wC._cli.getRadius() != 0){
             	UtilPoint3D center = wC._cli.getCenter();
             	int radius = wC._cli.getRadius();
             	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
-            	if(model.verifCollision(wC._cli.getEtiquette(),lst_pts )){
+            	if(model.verifCollision(wC._cli.getEtiquettes(),lst_pts )){
             		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
             			enleverMauvaisEntite(wC._cli.getEtiquettes(), center, radius);
             			delMembrane(lst_pts);
@@ -295,7 +299,7 @@ public class Controller {
             			wC.setTextBoxCenterX("0");
                         wC.setTextBoxCenterY("0");
                         wC.setTextBoxRadius("0");
-                        wC.button_OKActionPerformed();
+                        wC.button_OKActionPerformed(null);
                 		JOptionPane jop = new JOptionPane();
                 		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             		}
@@ -303,7 +307,7 @@ public class Controller {
             		wC.setTextBoxCenterX("0");
                     wC.setTextBoxCenterY("0");
                     wC.setTextBoxRadius("0");
-                    wC.button_OKActionPerformed();
+                    wC.button_OKActionPerformed(null);
             		JOptionPane jop = new JOptionPane();
             		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             	}
@@ -312,7 +316,19 @@ public class Controller {
         }
     }
     
-    public void editCompartmentMembrane(int index, UtilPoint3D center, int radius){
+    public void addCompartmentMembrane(Compartment comp){
+        WndEditNoeud wN = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wN.WndCliValue_Load(null);
+        wN.setVisible(false);
+        wN.setjCheckBox_vidable(comp.Vidable);
+        wN.setTextBox1("Membrane_"+comp.getEtiquettes());
+        wN.setButtonCouleur(comp.Couleur);
+        wN.setComboBox_compartment(comp.getEtiquettes());
+        wN.button_OKActionPerformed(null);
+        model.addProtoReaxel(wN._cli);
+    }
+    
+    public void editCompartmentGraphique(int index, UtilPoint3D center, int radius){
     	String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
         Compartment cpt = model.getCompartment(name);
         int old_centerX = cpt.getCenter().x;
@@ -324,23 +340,23 @@ public class Controller {
         wC.setVisible(false);
         ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
         ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
-    	if (model.verifCollision(wC._cli.getEtiquette(), lst_pts)){
+    	if (model.verifCollision(wC._cli.getEtiquettes(), lst_pts)){
     		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
     			wC.setTextBoxCenterX(Integer.toString(center.x));
     			wC.setTextBoxCenterY(Integer.toString(center.y));
     			wC.setTextBoxRadius(Integer.toString(radius));
-    			wC.button_OKActionPerformed();
+    			wC.button_OKActionPerformed(null);
     			
-    			enleverAncienneEntite(wC._cli.getEtiquette(), center, radius);
+    			enleverAncienneEntite(wC._cli.getEtiquettes(), center, radius);
     			delMembrane(old_lst_pts);
-    			enleverMauvaisEntite(wC._cli.getEtiquette(), center, radius);
+    			enleverMauvaisEntite(wC._cli.getEtiquettes(), center, radius);
     			delMembrane(lst_pts);
     			addEntityInstances2(wC._cli, lst_pts);
     		}else{
     			wC.setTextBoxCenterX(Integer.toString(old_centerX));
                 wC.setTextBoxCenterY(Integer.toString(old_centerY));
                 wC.setTextBoxRadius(Integer.toString(old_radius));
-                wC.button_OKActionPerformed();
+                wC.button_OKActionPerformed(null);
         		JOptionPane jop = new JOptionPane();
         		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en dehors de l'envirronement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
     		}
@@ -348,11 +364,12 @@ public class Controller {
     		wC.setTextBoxCenterX(Integer.toString(old_centerX));
             wC.setTextBoxCenterY(Integer.toString(old_centerY));
             wC.setTextBoxRadius(Integer.toString(old_radius));
-            wC.button_OKActionPerformed();
+            wC.button_OKActionPerformed(null);
     		JOptionPane jop = new JOptionPane();
     		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
     	}
     	model.editCompartment(wC._cli, name);
+        editCompartmentMembrane(wC._cli, name);
     }
 /*    
     public void addMembrane(int index, UtilPoint3D center,int radius, ArrayList<UtilPoint3D> lst_pts){
@@ -483,15 +500,17 @@ public class Controller {
             this.pauseSimulation();
         }
         ArrayList<String> compartments = new ArrayList<>();
+        ArrayList<String> entities = new ArrayList<>();
         for (int k = tab.length - 1; k >= 0; k--) {
             int i = tab[k];
             if (i >= 0) {
                 String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(i);
                 compartments.add(name);
-                enleverEntiteCompartment(name);
+                entities.add("Membrane_"+name);
             }
         }
         model.delCompartment(compartments);
+        model.delProtoReaxel(entities);
     }
 
     /**
@@ -637,15 +656,31 @@ public class Controller {
             		}
             	}
             }else{
-            	for (Compartment comp : model.getCopyListManipulesCompartment()){
-            		if(comp.getEtiquette().equals(nameComp)){
-            			for(UtilPoint3D point : points){
-            				int distance = (int) Math.sqrt(Math.pow(point.x-comp.getCenter().x, 2) + Math.pow(point.y-comp.getCenter().y, 2));
+            	for(UtilPoint3D point : points){
+            		boolean rep = true;
+            		for (Compartment comp : model.getCopyListManipulesCompartment()){
+        				int distance = (int) Math.sqrt(Math.pow(point.x-comp.getCenter().x, 2) + Math.pow(point.y-comp.getCenter().y, 2));
+            			if(comp.getEtiquettes().equals(nameComp)){
             				if (comp.getRadius() > distance){
-            					pointsVerifier.add(point);
+            					rep = true;
+            				}else{
+            					rep = false;
+            					break;
+            				}
+            			}else{
+            				if (comp.getRadius() < distance){
+            					rep = true;
+            				}else{
+            					rep = false;
+            					break;
             				}
             			}
             		}
+            		if (rep == false){
+        				continue;
+        			}else{
+        				pointsVerifier.add(point);
+        			}
             	}
             }
 			AddCommand command = new AddCommand(model, simulator, pointsVerifier, etiquette);
@@ -656,7 +691,7 @@ public class Controller {
     }
     
     public void addEntityInstances2(Compartment comp, ArrayList<UtilPoint3D> points) {
-       String etiquette = comp.getEnt().getEtiquettes();
+       String etiquette = "Membrane_"+comp.getEtiquettes();
        AddCommand command = new AddCommand(model, simulator, points, etiquette);
        command.setOpposite(new RemoveCommand(model, simulator, points));
        this.memorizeCommand(command);
@@ -714,18 +749,18 @@ public class Controller {
                 if (old_centerX != center.x || old_centerY != center.y || old_radius != radius ){
                 	ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
                 	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x, center.y, center.z, radius, getEnv().getTailleZ());
-                	if(model.verifCollision(wc._cli.getEtiquette(), lst_pts)){
+                	if(model.verifCollision(wc._cli.getEtiquettes(), lst_pts)){
                 		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
-                			enleverAncienneEntite(wc._cli.getEtiquette(), center, radius);
+                			enleverAncienneEntite(wc._cli.getEtiquettes(), center, radius);
                 			delMembrane(old_lst_pts);
-                			enleverMauvaisEntite(wc._cli.getEtiquette(), center, radius);
+                			enleverMauvaisEntite(wc._cli.getEtiquettes(), center, radius);
                 			delMembrane(lst_pts);
                 			addEntityInstances2(wc._cli, lst_pts);
                 		}else{
                 			wc.setTextBoxCenterX(Integer.toString(old_centerX));
                             wc.setTextBoxCenterY(Integer.toString(old_centerY));
                             wc.setTextBoxRadius(Integer.toString(old_radius));
-                            wc.button_OKActionPerformed();
+                            wc.button_OKActionPerformed(null);
                     		JOptionPane jop = new JOptionPane();
                     		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 		}
@@ -733,19 +768,37 @@ public class Controller {
                 		wc.setTextBoxCenterX(Integer.toString(old_centerX));
                         wc.setTextBoxCenterY(Integer.toString(old_centerY));
                         wc.setTextBoxRadius(Integer.toString(old_radius));
-                        wc.button_OKActionPerformed();
+                        wc.button_OKActionPerformed(null);
                 		JOptionPane jop = new JOptionPane();
                 		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 	}
                 }
-                Entity entitie = wc._cli.getEnt();
-                model.editProtoReaxel(entitie,'m'+name , 0);
+                
                 model.editCompartment(wc._cli, name);
+                editCompartmentMembrane(wc._cli, name);
             }
         }
         
     }
   
+    public void editCompartmentMembrane(Compartment comp, String name){
+    	Entity p = model.getProtoReaxel("Membrane_"+name);
+    	
+        WndEditNoeud wN = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wN.WndCliValue_Load(p);
+        wN.setVisible(false);
+        wN.setjCheckBox_vidable(comp.Vidable);
+        wN.setTextBox1("Membrane_"+comp.getEtiquettes());
+        wN.setButtonCouleur(comp.Couleur);
+        wN.setComboBox_compartment(comp.getEtiquettes());
+        wN.button_OKActionPerformed(null);
+        model.editProtoReaxel(wN._cli, "Membrane_"+name, 0);
+        if (!simulator.isStopped()) {
+            simulator.ProtoReaxelEdited(p, name);
+        }
+        
+    }
+    
     /**
      * Removes an Entity's instance defined by the coordinates x, y and z.
      * Called by Environment

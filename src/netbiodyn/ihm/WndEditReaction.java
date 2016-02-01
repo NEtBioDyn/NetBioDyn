@@ -524,7 +524,7 @@ public class WndEditReaction extends javax.swing.JDialog {
         jLabelComportement.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelComportement.setText("Comportement"); // NOI18N
         getContentPane().add(jLabelComportement);
-        jLabelComportement.setBounds(0, 0, 510, 27);
+        jLabelComportement.setBounds(0, 0, 533, 27);
 
         button_valider.setBackground(new java.awt.Color(153, 255, 153));
         button_valider.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
@@ -610,7 +610,7 @@ public class WndEditReaction extends javax.swing.JDialog {
         jLabel19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel19.setOpaque(true);
         getContentPane().add(jLabel19);
-        jLabel19.setBounds(0, 0, 510, 30);
+        jLabel19.setBounds(0, 0, 533, 30);
 
         jLabelDescription.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         jLabelDescription.setText("Descr."); // NOI18N
@@ -683,7 +683,7 @@ public class WndEditReaction extends javax.swing.JDialog {
         }
         
         for (Compartment comp : compartment) {
-            if (comp.getEtiquette().equals(str2)) {
+            if (comp.getEtiquettes().equals(str2)) {
                 nom_existe = true;
             }
         }
@@ -712,65 +712,78 @@ public class WndEditReaction extends javax.swing.JDialog {
         for (int r = 0; r < dataGridView_reactifs.getRowCount(); r++) {
             String str = dataGridView_reactifs.getValueAt(r, 0).toString();
             if (r == 0){
+            	boolean rep = false;
             	for(Compartment comp: compartment){
-            		if (comp.getEnt().getEtiquettes().equals(str)){
+            		if (str.equals("Membrane_"+comp.getEtiquettes())){
             			if (dataGridView_produits.getValueAt(0, 0).toString().equals(str)){
+            				rep = true;
             				_r3._reactifs.add(str);
             			}else{
-            	            if (Lang.getInstance().getLang().equals("FR")) {
-            	                JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactif.");
-            	            } else {
-            	                JOptionPane.showMessageDialog(this, "This name already exists. Please change it.");
-            	            }
-            	            return;
+            				if (Lang.getInstance().getLang().equals("FR")) {
+            					JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactif.");
+            				} else {
+            					JOptionPane.showMessageDialog(this, "Membrane. Please change it.");
+            				}
+            				return;
             			}
-            		}
-            		
+                	}
+            	}
+            	if(!rep){
+            	_r3._reactifs.add(str);
             	}
             }else{
             	for(Compartment comp: compartment){
-            		if (comp.getEnt().getEtiquettes().equals(str)){
+            		if (str.equals("Membrane_"+comp.getEtiquettes())){
             			if (Lang.getInstance().getLang().equals("FR")) {
-        	                JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactifs.");
-        	            } else {
-        	                JOptionPane.showMessageDialog(this, "This name already exists. Please change it.");
-        	            }
+            				JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactifs.");
+            			} else {
+            				JOptionPane.showMessageDialog(this, "Membrane. Please change it.");
+            			}
             			return;
             		}
             	}
+            	_r3._reactifs.add(str);
             }
         }
         for (int p = 0; p < dataGridView_produits.getRowCount(); p++) {
             String str = dataGridView_produits.getValueAt(p, 0).toString();
             if (p == 0){
+            	boolean rep = false;
             	for(Compartment comp: compartment){
-            		if (comp.getEnt().getEtiquettes().equals(str)){
+            		if (str.equals("Membrane_"+comp.getEtiquettes())){
             			if (dataGridView_reactifs.getValueAt(0, 0).toString().equals(str)){
+            				rep = true;
             				_r3._produits.add(str);
             			}else{
-            	            if (Lang.getInstance().getLang().equals("FR")) {
-            	                JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactif.");
-            	            } else {
-            	                JOptionPane.showMessageDialog(this, "This name already exists. Please change it.");
-            	            }
-            	            return;
+            				if (Lang.getInstance().getLang().equals("FR")) {
+            					JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactif.");
+            				} else {
+            					JOptionPane.showMessageDialog(this, "Membrane. Please change it.");
+            				}
+            				return;
             			}
             		}
-            		
+            	}
+            	if (!rep) {
+            		_r3._produits.add(str);
             	}
             }else{
             	for(Compartment comp: compartment){
-            		if (comp.getEnt().getEtiquettes().equals(str)){
+            		if (str.equals("Membrane_"+comp.getEtiquettes())){
             			if (Lang.getInstance().getLang().equals("FR")) {
-        	                JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactifs.");
-        	            } else {
-        	                JOptionPane.showMessageDialog(this, "This name already exists. Please change it.");
-        	            }
+            				JOptionPane.showMessageDialog(this, "Les membranes ne peuvent etre utilisée que dans un comportement de traversée. Elles doivent etres mise seulement sur la premiere ligne dans les produits et les reactifs.");
+            			} else {
+            				JOptionPane.showMessageDialog(this, "Membrane. Please change it.");
+            			}
             			return;
             		}
             	}
+            	_r3._produits.add(str);
             }
         }
+        
+        System.out.println(_r3._reactifs);
+        System.out.println(_r3._produits);
 
         // Valeur d k
         try {

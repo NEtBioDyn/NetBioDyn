@@ -83,6 +83,10 @@ public class Model {
     }
 
     public void clearEnvironment() {
+    	for(Compartment comp : compartment){
+    		comp.setRadius(0);
+    		comp.setCenter(new UtilPoint3D());
+    	}
         instances = new AllInstances(parameters.getX(), parameters.getY(), parameters.getZ());
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
             listen.matrixUpdate(getInstances(), getInitialState(), 0);
@@ -203,7 +207,7 @@ public class Model {
     public Compartment getCompartment(String name) {
         for (int i = compartment.size() - 1; i >= 0; i--) {
             Compartment comp = compartment.get(i);
-            if (comp.getEtiquette().equals(name)) {
+            if (comp.getEtiquettes().equals(name)) {
                 return comp.clone();
             }
         }
@@ -263,21 +267,16 @@ public class Model {
     public void delCompartment(ArrayList<String> compartments) {
         for (String name : compartments) {
             Compartment comp = this.getCompartment(name);
-            Entity entity = comp.getEnt();
-            this.entities.remove(entity);
-            this.instances.removeEntityType(entity.getEtiquettes());
             this.removeCompart(comp);
         }
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
-        	listen.protoEntityUpdate(getCopyListManipulesNoeuds(), getInitialState());
-            listen.matrixUpdate(getInstances(), getInitialState(), 0);
             listen.CompartmentUpdate(getCopyListManipulesCompartment());
         }
     }
     
     public void removeCompart(Compartment comp){
          for (int i = 0; i < compartment.size(); i++) {
-             if (compartment.get(i).getEtiquette().equals(comp.getEtiquette())) { 
+             if (compartment.get(i).getEtiquettes().equals(comp.getEtiquettes())) { 
              		compartment.remove(i);
              }
     	}
@@ -285,37 +284,25 @@ public class Model {
     
     public void editCompartment(Compartment m, String old_name) {
         int index1 = 0;
-        int index2 = 0;
         for (int i = 0; i < compartment.size(); i++) {
-            if (compartment.get(i).getEtiquette().equals(old_name)) {
-                for (int j = 0; j < entities.size(); j++) {
-                    if (entities.get(j).getEtiquettes().equals('m'+old_name)) {
-                    	entities.remove(j);
-                        index2 = j;
-                        j = entities.size();
-                    }
-                }
-                Entity entity = m.entity_property();
-                entities.add(index2, entity);
+            if (compartment.get(i).getEtiquettes().equals(old_name)) {
             	compartment.remove(i);
                 index1 = i;
                 i = compartment.size();
             }
-        }
+       }
         compartment.add(index1, m);
-        
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
             listen.CompartmentUpdate(getCopyListManipulesCompartment());
-            listen.protoEntityUpdate(getCopyListManipulesNoeuds(), getInitialState());
-            listen.matrixUpdate(getInstances(), getInitialState(), 0);
         }
     }
+    
     
     
     public boolean verifCollision(String name, ArrayList<UtilPoint3D> points){
     	boolean rep = false;
     	for (Compartment comp: compartment){
-    		if (comp.getEtiquette().equals(name)){
+    		if (comp.getEtiquettes().equals(name)){
     			continue;
     		}
     		 ArrayList<UtilPoint3D> lst_pts_tmp = UtilPoint3D.BresenhamRond3D(comp.getCenter().x,comp.getCenter().y, comp.getCenter().z, comp.getRadius(), getParameters().getZ());
@@ -341,7 +328,7 @@ public class Model {
     public void editProtoReaxel(Entity entity, String old_name, int time) {
         int index = 0;
         for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i)._etiquettes.equals(old_name)) {
+            if (entities.get(i).getEtiquettes().equals(old_name)) {
                 entities.remove(i);
                 index = i;
                 i = entities.size();

@@ -72,7 +72,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
         String[] comps = new String[compartment.size()+1];
         comps[0] = "Cytosol";
         for(int i = 1; i< compartment.size()+1; i++){
-        	comps[i] = compartment.get(i-1).getEtiquette();
+        	comps[i] = compartment.get(i-1).getEtiquettes();
         }
     	
         // Set language
@@ -229,7 +229,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
         String[] comps = new String[compartment.size()+1];
         comps[0] = "Cytosol";
         for(int i = 1; i< compartment.size()+1; i++){
-        	comps[i] = compartment.get(i-1).getEtiquette();
+        	comps[i] = compartment.get(i-1).getEtiquettes();
         }
         
         comboBox_compartment.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
@@ -329,7 +329,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
         jLabelEntite.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelEntite.setText("Entite");
         getContentPane().add(jLabelEntite);
-        jLabelEntite.setBounds(21, -2, 460, 34);
+        jLabelEntite.setBounds(0, 0, 533, 28);
 
         richTextBox_description.setColumns(20);
         richTextBox_description.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
@@ -344,7 +344,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
         jLabel19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel19.setOpaque(true);
         getContentPane().add(jLabel19);
-        jLabel19.setBounds(0, 0, 500, 30);
+        jLabel19.setBounds(0, 0, 533, 30);
 
         setSize(new java.awt.Dimension(533, 300));
         setLocationRelativeTo(null);
@@ -463,7 +463,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_textBox1KeyTyped
 
-    private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+    public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
         if (textBox1.getText().equals("")) {
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "Merci de nommer l'entité.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
@@ -496,7 +496,7 @@ public class WndEditNoeud extends javax.swing.JDialog {
         
         // Verif que le nom n'est pas deja attribue a une compartment
         for (int n = 0; n < compartment.size(); n++) {
-            if (compartment.get(n).getEtiquette().equals(textBox1.getText())) {
+            if (compartment.get(n).getEtiquettes().equals(textBox1.getText())) {
                 // Cas ou le nom existe deja
                 if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
@@ -539,8 +539,49 @@ public class WndEditNoeud extends javax.swing.JDialog {
         this.DialogResult = new String("OK");
         setVisible(false);
     }//GEN-LAST:event_button_OKActionPerformed
+    
+    
+    public Color getButtonCouleur() {
+		return buttonCouleur.getBackground();
+	}
 
-    private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
+
+	public void setButtonCouleur(Color bg ) {
+		this.buttonCouleur.setBackground(bg); 
+	}
+
+
+	public String getComboBox_compartment() {
+		return comboBox_compartment.getSelectedItem().toString();
+	}
+
+
+	public void setComboBox_compartment(String comboBox_compartment) {
+		this.comboBox_compartment.setSelectedItem(comboBox_compartment);
+	}
+
+
+	public boolean getjCheckBox_vidable() {
+		return jCheckBox_vidable.isSelected();
+	}
+
+
+	public void setjCheckBox_vidable(boolean b) {
+		this.jCheckBox_vidable.setSelected(b);
+	}
+
+
+	public String getTextBox1() {
+		return textBox1.getText();
+	}
+
+
+	public void setTextBox1(String textBox1) {
+		this.textBox1.setText(textBox1);
+	}
+
+
+	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         // TODO add your handling code here:
         this.DialogResult = new String("CANCEL");
         setVisible(false);
