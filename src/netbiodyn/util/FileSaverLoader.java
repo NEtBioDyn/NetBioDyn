@@ -611,7 +611,7 @@ public class FileSaverLoader extends SaverLoader {
                 }
                 if (lst_mots[1].equals("Etiquettes")) {
                     // Etiquettes
-                    comp.setEtiquette(lst_mots[2]);
+                    comp.setEtiquettes(lst_mots[2]);
 //                	System.out.println(comp.getEtiquette());                   
                     // Chargement de la description
 //                    String nom_fichier_description = path + "_Description_" + cli.getEtiquettes() + ".txt";
@@ -633,17 +633,17 @@ public class FileSaverLoader extends SaverLoader {
                 if (lst_mots[1].equals("radius")) {
                     comp.setRadius(Integer.parseInt(lst_mots[2]));
                 }
-                if (lst_mots[1].equals("menbrane")) {
-                    ArrayList<Entity> noeuds = saved.getListManipulesNoeuds();
+                //if (lst_mots[1].equals("menbrane")) {
+                  //  ArrayList<Entity> noeuds = saved.getListManipulesNoeuds();
 
-                    for (int i = 0; i < noeuds.size(); i++) {
-                    	if (noeuds.get(i).getEtiquettes().equals(lst_mots[2])){
-                    		comp.setEnt(noeuds.get(i));
-                    	}
-                    }
+                    //for (int i = 0; i < noeuds.size(); i++) {
+                    	//if (noeuds.get(i).getEtiquettes().equals(lst_mots[2])){
+                    		//comp.setEnt(noeuds.get(i));
+                    	//}
+                    //}
 //                	System.out.println("toto"+saved.getListManipulesNoeuds());
 //                    comp.setEnt(saved.getListManipulesNoeuds());
-                }
+                //}
 
             }
         }

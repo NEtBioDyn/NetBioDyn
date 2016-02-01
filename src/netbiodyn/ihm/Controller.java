@@ -506,9 +506,14 @@ public class Controller {
             if (i >= 0) {
                 String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(i);
                 compartments.add(name);
-                entities.add("Membrane_"+name);
+                for (Entity ent : model.getCopyListManipulesNoeuds()){
+                	if(ent.getCompartment().equals(name)){
+                		entities.add(ent.getEtiquettes());
+                	}
+                }
             }
         }
+        
         model.delCompartment(compartments);
         model.delProtoReaxel(entities);
     }
