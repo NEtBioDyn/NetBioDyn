@@ -19,65 +19,67 @@
  *
  * Created on 15 octobre 2007, 19:59
  */
-package netbiodyn; //On crée un package, cette ligne indiquant que le fichier actuel sera dans ce package 
+package netbiodyn; // Creation of a package, this line indicating that the actual file will be in this package
 
-
-//import bsh.Interpreter;
 import netbiodyn.ihm.Env_Parameters;
 import netbiodyn.ihm.WndEditElementDeReaction;
 import netbiodyn.util.UtilPoint3D;
-import java.awt.Point; // Création d'un point aux coordonnées (x,y) 
-import java.util.ArrayList; // Création d'un tableau
-import java.util.HashMap; // Création d'une HashMap
-import javax.swing.JTextArea; // Création d'un zone de texte 
-import javax.swing.JTextPane; // Création d'une fenêtre / zone ?
+import java.awt.Point; // Possible creation of points with coordinates (x,y) 
+import java.util.ArrayList; // Possible creation of tables
+import java.util.HashMap; // Possible creation of hashMaps
+import javax.swing.JTextArea; // Possible creation of text areas
+import javax.swing.JTextPane; // Possible creation of windows/areas ?
 import netbiodyn.util.RandomGen;
 
 /**
  *
  * @author ballet
  */
-public class Behavior extends Moteur { //
+public class Behavior extends Moteur { 
 
-    private Env_Parameters parameters;
-    private final InstanceReaxel entiteVide;
-    public JTextPane _description = new JTextPane(); // création d'une nouvelle fenêtre / zone
-    private double _k = 1;
+    private Env_Parameters parameters; //Creation of an Env_Parameters object
+    private final InstanceReaxel entiteVide; //Creation of an non-modifiable InstanceReaxel object
+    public JTextPane _description = new JTextPane(); // Creation of a new window/area
+    private double _k = 1; //
 
-    public ArrayList<String> _reactifs = new ArrayList<>(); // Création d'un tableau qui va contenir les réactifs
-    public ArrayList<String> _produits = new ArrayList<>(); // Création d'un tableau qui va contenir les produits
-    public ArrayList<String> _positions = new ArrayList<>(); // Création d'un tableau qui va contenir les positions
+    public ArrayList<String> _reactifs = new ArrayList<>(); // Creation of a table which will contain reagents
+    public ArrayList<String> _produits = new ArrayList<>(); // Creation of a table which will contain products 
+    public ArrayList<String> _positions = new ArrayList<>(); // Creation of a table which will contain direction of reactions (reversible,...) ?
 
-    public ArrayList<InstanceReaction> _reactionsPossibles = new ArrayList<InstanceReaction>(); //Création d'une liste des réactions possibles
-    public JTextArea _code = new JTextArea(); 
-    public boolean _code_parse = false;
-    public ArrayList<WndEditElementDeReaction> _ListElementsReactions = new ArrayList<WndEditElementDeReaction>(); //Création d'une liste contenant les éléments de la réaction
+    public ArrayList<InstanceReaction> _reactionsPossibles = new ArrayList<InstanceReaction>(); //Creation of a table which will contain the possible reactions 
+    public JTextArea _code = new JTextArea(); //Creation of a new text area
+    public boolean _code_parse = false; 
+    public ArrayList<WndEditElementDeReaction> _ListElementsReactions = new ArrayList<WndEditElementDeReaction>(); //Creation of a table which will contain reaction elements ?
 
     /**
      * Creates new form MoteurReaction
      */
+    
+    //Creation of a new Behavior object
     public Behavior() {
-        initComponents();
-        button_move.setVisible(false);
-        button_display_relations.setVisible(false);
-        button_timer.setVisible(false);
-        boxManipulated.setVisible(false);
-        boxNames.setVisible(false);
-        boxRelais.setVisible(false);
-        // Init des positions: 0=no, 1=yes, 2=impossible
+        initComponents(); //Initialization of some graphical components
+        button_move.setVisible(false); //set this JLabel invisible
+        button_display_relations.setVisible(false); //set this JButton invisible
+        button_timer.setVisible(false); //set this JButton invisible
+        boxManipulated.setVisible(false); //set this JTextField invisible
+        boxNames.setVisible(false); //set this JTextField invisible
+        boxRelais.setVisible(false); //set this JTextField invisible
+        // Position order : 2 East 2 North Top West 2 South Bottom.
+        // Position initialisation : 0=no, 1=yes, 2=impossible
         _positions.add("122222222"); // First line of reactive-product
         for (int i = 1; i < 9; i++) {
             _positions.add("212101210");
         }
 
-        // Instanciation d'une entite vide
+        // Instantiation of an empty InstanceReaxel, with no name
         entiteVide = new InstanceReaxel();
         entiteVide.setNom("0");
     }
 
-    @Override
+    //Clone of the Behavior object (with "this" in parameter)
     public Behavior clone() {
-        Behavior m = new Behavior();
+        Behavior m = new Behavior(); //Creation of a new Behavior object
+        //Get all the parameters of the old Behavior object to put them into the new one
         m.setEtiquettes(getEtiquettes());
         m._description.setText(_description.getText().replace('\n', '§'));
         m._reactifs = (ArrayList<String>) _reactifs.clone();
@@ -85,20 +87,22 @@ public class Behavior extends Moteur { //
         m._positions = (ArrayList<String>) _positions.clone();
         m._ListElementsReactions = (ArrayList<WndEditElementDeReaction>) _ListElementsReactions.clone();
         m.set_k(get_k());
-        return m;
+        return m; //Return the new Behavior object
     }
 
+    //
     public void protoReaxelNameChanged(String oldName, String newName) {
-        ArrayList<String> reactifs = (ArrayList<String>) _reactifs.clone();
-        for (int i = 0; i < reactifs.size(); i++) {
-            String _reactif = reactifs.get(i);
-            if (_reactif.equals(oldName)) {
-                _reactif = newName;
-                _reactifs.remove(i);
-                _reactifs.add(i, _reactif);
+        ArrayList<String> reactifs = (ArrayList<String>) _reactifs.clone(); //Clone of the table containing reagents
+        for (int i = 0; i < reactifs.size(); i++) { //Path of all entries of the table
+            String _reactif = reactifs.get(i); //Get the name of the reagent at this position
+            if (_reactif.equals(oldName)) { //Comparison between the name of the reagent and the wanted name
+                _reactif = newName; //If the two names are identical, replace the name of the reagent by the new one 
+                _reactifs.remove(i); //Remove this reagent into the table
+                _reactifs.add(i, _reactif); //Put the new reagent into the table at the same position as the removed one 
             }
         }
         
+        //Same action for the products than for the reagents
         ArrayList<String> prod = (ArrayList<String>) _produits.clone();
         for (int i = 0; i < prod.size(); i++) {
             String p = prod.get(i);
@@ -109,6 +113,7 @@ public class Behavior extends Moteur { //
             }
         }
         
+        //Changes into all reactions ?
         for (WndEditElementDeReaction elt : _ListElementsReactions) {
             elt.modifierModelTypesCombo(elt, oldName, newName);
         }
@@ -120,16 +125,17 @@ public class Behavior extends Moteur { //
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    
+    //Creation of some graphical components
     private void initComponents() {
+        setBackground(new java.awt.Color(204, 204, 255)); //Creation of a new Periwinkle fond 
+        setTitre("Titre"); //Put a title on this background ?
+    }
 
-        setBackground(new java.awt.Color(204, 204, 255));
-        setTitre("Titre");
-    }// </editor-fold>//GEN-END:initComponents
-
+    //
     public void computeReactions(Simulator s, Env_Parameters param, AllInstances instances, int time) {
-        this.setParameters(param);
-        _reactionsPossibles = new ArrayList<>();
+        this.setParameters(param); //Put new values to parameters of Env_Parameters object linked to the Behavior one
+        _reactionsPossibles = new ArrayList<>(); //Creation of a new table which will contain all possible reactions
         this.simuler_semi_situee(instances, time);
         s.decrementer_nb_processus_a_traiter();
     }
@@ -138,26 +144,26 @@ public class Behavior extends Moteur { //
         return _reactionsPossibles;
     }
 
-    @Override
+    //Know if an object already exists into the Behavior class
     public boolean equals(Object o) {
         if (o instanceof Behavior) {
-            Behavior r = (Behavior) o;
+            Behavior r = (Behavior) o; //If the object belongs to Behavior class, this object becomes a Behavior object
             return ((r.getEtiquettes().equals(this.getEtiquettes()))
                     && (r._reactifs.size() == this._reactifs.size())
-                    && (r._produits.size() == this._produits.size()));
+                    && (r._produits.size() == this._produits.size())); //return the tags, reagents and products of this new object
         }
-        return false;
+        return false; //return nothing if the object doesn't belong to Behavior class
     }
 
     private boolean zoneAutorisee(int numReactif, int x0, int y0, int z0, int dx, int dy, int dz) {
-        // Bordures
+        // Borders
         if (x0 + dx < 0 || x0 + dx > getParameters().getX() - 1 || y0 + dy < 0 || y0 + dy > getParameters().getY() - 1) {
             return false;
         }
         if (z0 + dz < 0 || z0 + dz > getParameters().getZ() - 1) {
             return false;
         }
-        // Non bordure
+        // No-borders
         if (dx == 0 && dy == 0) {
             if (_positions.get(numReactif).charAt(0) == '1') {
                 return true;
@@ -200,25 +206,22 @@ public class Behavior extends Moteur { //
         HashMap<String, Point> dico_rea = new HashMap<>();
 
         if (_reactifs.size() <= 0) {
-            return;
+            return; //End of the function if there is no reagent
         }
-        //pour tout les manipule (compartiment, controle_atome,...) 
-        // recherche du clinamon 'molecule C' pour obtenir sa pseudoforme pour la suite
-        //si controle atome
-        InstanceReaxel c_a;
-
+        //For all the manipulated elements (compartment,...), 
+        //Search of the "clinamon" 'molecule C' to obtain its pseudoforme thereafter
+        //If control atom
+        InstanceReaxel c_a; 
         int xb, yb, zb, x, y, z;
 
-        for (int j = instances.getSize() - 1; j >= 0; j--) {
-            c_a = instances.getInList(j);
-            //recherche d'une molecule A  dans la liste
-
+        for (int j = instances.getSize() - 1; j >= 0; j--) { //Path of AllInstances object
+            c_a = instances.getInList(j); //The InstanceReaxel is the one at the position j in AllInstances object
+            //Search of a molecule A into the list
             if (c_a.getNom().equals(_reactifs.get(0)) && c_a.isSelectionne() == false) {
                 x = c_a.getX();
                 y = c_a.getY();
                 z = c_a.getZ();
-
-                // Test si la reaction a lieu ou pas
+                // Test if a reaction occurs or not
                 double hasard = RandomGen.getInstance().nextDouble();
                 if (hasard < this._k) {
                     int x_min, x_max, y_min, y_max, z_min, z_max;
@@ -230,16 +233,16 @@ public class Behavior extends Moteur { //
                     z_min = Math.max(0, z - 1);
                     z_max = Math.min(getParameters().getZ() - 1, z + 1);
 
-                    // Recherche si autour il y a tous les reactifs necessaires
+                    // Search if there are all necessary reagents around
                     boolean tousLesReactifs = true;
                     ArrayList<InstanceReaxel> listReactifs = new ArrayList<>();
                     InstanceReaxel central = instances.getFast(x, y, z);
                     if (central == null) {
-                        // Gros probleme
+                        // This case is synonym of a big problem
                         System.err.println("GROS PROBLEME en " + x + "*" + y + "*" + z);
                         System.err.println("EGAL A " + instances.getInList(j).getX() + "*" + instances.getInList(j).getY() + "*" + instances.getInList(j).getZ() + " ? ");
                     }
-                    listReactifs.add(central); // Le central va forcement reagir
+                    listReactifs.add(central); // This InstanceReaxel (central) will necessarily react
                     for (int r = 1; r < _reactifs.size(); r++) {
                         boolean trouve = false;
                         boolean hors_cube = false;
@@ -249,18 +252,18 @@ public class Behavior extends Moteur { //
                                 for (int yy = y_min; yy <= y_max; yy++) {
                                     for (int zz = z_min; zz <= z_max; zz++) {
                                         int d = (x - xx) * (x - xx) + (y - yy) * (y - yy) + (z - zz) * (z - zz);
-                                        if (d <= 1 && zoneAutorisee(r, x, y, z, xx - x, yy - y, zz - z) == true) { // On enleve les diagonales et les zones interdites
+                                        if (d <= 1 && zoneAutorisee(r, x, y, z, xx - x, yy - y, zz - z) == true) { // Remove diagonals and forbidden areas 
                                             hors_cube = false;
                                             xb = xx;
                                             yb = yy;
                                             zb = zz;
-                                            //gere les 'bords' du tore
+                                            //Manage the "edges" of the "torus"
 
                                             if (hors_cube == false) {
                                                 InstanceReaxel rea = instances.getFast(xb, yb, zb);
                                                 if (rea != null) {
                                                     if (rea.isSelectionne() == false) {
-                                                        if (xb != x || yb != y || zb != z) // On a deja pris le central
+                                                        if (xb != x || yb != y || zb != z) // The "central" is already taken
                                                         {
                                                             if (rea.getNom().equals(_reactifs.get(r))) {
                                                                 if (listReactifs.contains(rea) == false) {
@@ -274,7 +277,6 @@ public class Behavior extends Moteur { //
                                                     boolean deja_present = false;
                                                     for (int re = 0; re < listReactifs.size(); re++) {
                                                         InstanceReaxel instance = listReactifs.get(re);
-//                                                        System.out.println(re + " - " + instance);
                                                         if (instance.getX() == xb && instance.getY() == yb && instance.getZ() == zb) {
                                                             deja_present = true;
                                                             re = listReactifs.size();
@@ -295,7 +297,7 @@ public class Behavior extends Moteur { //
                                     }
                                 }
                             }
-                            if (trouve == true) // On prend 1 seul reactif parmi tous les possibles
+                            if (trouve == true) // Only one reagent is taken among all possibilities
                             {
                                 int n = RandomGen.getInstance().nextInt(lst_reactifs_tmp.size());
                                 listReactifs.add(lst_reactifs_tmp.get(n));
@@ -311,42 +313,39 @@ public class Behavior extends Moteur { //
 
                     }
 
-                    // Recherche si autours il y a l'espace suffisant pour placer tous les produits
+                    // Search if there is sufficient space around to put all products
                     boolean espace_pour_produits = false;
                     ArrayList<UtilPoint3D> lst_pos = new ArrayList<>();
                     int nb_produits_effectif = 0;
 
                     if (tousLesReactifs == true) {
-                        // Calcul du nb de produits effectifs
-                        for (int pr = 0; pr < _produits.size(); pr++) {
+                        // Calculation of the number of effective products
+                    	for (int pr = 0; pr < _produits.size(); pr++) {
                             if (!_produits.get(pr).equals("-")) {
                                 nb_produits_effectif++;
                             }
                         }
-
-                        // int xx_min,xx_max, yy_min, yy_max, zz_min, zz_max;
-                        //xx_min = x-1; xx_max = x+1;
                         boolean hors_cube = false;
                         for (int xx = x_min; xx <= x_max; xx++) {
                             for (int yy = y_min; yy <= y_max; yy++) {
                                 for (int zz = z_min; zz <= z_max; zz++) {
                                     int ddd = (x - xx) * (x - xx) + (y - yy) * (y - yy) + (z - zz) * (z - zz);
-                                    if (ddd <= 1 || ddd >= 4) { // On enleve les diagonales (d=2 ou d=3)
+                                    if (ddd <= 1 || ddd >= 4) { // Remove diagonals (d=2 ou d=3)
                                         xb = xx;
                                         yb = yy;
                                         zb = zz;
-                                        //gere les 'bords' du tore
+                                        //Manage the "edges" of the "torus"
                                         hors_cube = false;
                                         if (hors_cube == false) {
-                                            if (xx == x && yy == y && zz == z) { // Le central reagit forcement
+                                            if (xx == x && yy == y && zz == z) { // The "central" is already taken
                                                 lst_pos.add(new UtilPoint3D(xb, yb, zb));
-                                            } else if (instances.getFast(xb, yb, zb) == null) { // creation
+                                            } else if (instances.getFast(xb, yb, zb) == null) { // Creation
                                                 lst_pos.add(new UtilPoint3D(xb, yb, zb));
-                                            } else if (listReactifs.contains(instances.getFast(xb, yb, zb))) // remplacement // Si c'est un reactif, sa position compte car il va disparaitre (reagir)
+                                            } else if (listReactifs.contains(instances.getFast(xb, yb, zb))) // Replacement ; if it's a reagent, its position is taken into account because it will disappear (react)
                                             {
                                                 lst_pos.add(new UtilPoint3D(xb, yb, zb));
                                             }
-                                            // Cas ou un lien impermeable empeche la reaction en diagonale
+                                            // Case where one impervious link prevent diagonal reactions
                                             //if(   (2+xx-x + yy-y) % 2 == 0){
                                             //}
                                         }
@@ -359,44 +358,41 @@ public class Behavior extends Moteur { //
                         }
                     }
 
-                    // Placement des produits en fonction de leur position dans les listes
+                    // Placement of products according to their position into the lists 
                     if (espace_pour_produits == true) {
                         InstanceReaction rp = new InstanceReaction();
                         _reactionsPossibles.add(rp);
 
-                        // Remplacements
+                        // Replacements
                         for (int r = 0; r < listReactifs.size(); r++) {
                             int posx = 0, posy = 0, posz = 0;
-                            // Suppression
-                            if (listReactifs.get(r) != null) { // C'est null si c'est "0"  - A modifier pour prendre en compte le vide. Il faudra aussi memoriser la position du vide et voir si le "0" compte comme emplacement pour les produits
+                            // Removals
+                            if (listReactifs.get(r) != null) { // It's null if it's "0"  - To modify to take into account the vacuum + memorize this vacuum position and see if this "0" count for a location of products
                                 posx = listReactifs.get(r).getX();
                                 posy = listReactifs.get(r).getY();
                                 posz = listReactifs.get(r).getZ();
-                                //cliEnv.EnleverReaxel(posx, posy);
                                 if (listReactifs.get(r).getNom() != null) { // non "0"
                                     rp._reactifs_noms.add(instances.getFast(posx, posy, posz).getNom());
                                     rp._reactifs_pos.add(new UtilPoint3D(posx, posy, posz));
                                 }
 
                             }
-                            // Ajout
+                            // Addition
                             if (r < _produits.size()) {
                                 if (!_produits.get(r).equals("-")) {
-                                    //cliEnv.AjouterReaxel(posx, posy, produits.get(r), cliEnv._matrice_reaxels, cliEnv._liste_reaxels);
                                     rp._produits_noms.add(_produits.get(r));
                                     rp._produits_pos.add(new UtilPoint3D(posx, posy, posz));
-                                    lst_pos.remove(new UtilPoint3D(posx, posy, posz)); // La place n'est plus disponible
+                                    lst_pos.remove(new UtilPoint3D(posx, posy, posz)); // The place is not available anymore
                                 }
                             }
                         }
-                        // Ajouts simples
+                        // Simple additions
                         for (int p = listReactifs.size(); p < _produits.size(); p++) {
                             if (!_produits.get(p).equals("-")) {
                                 int pos;
                                 UtilPoint3D pt;
-                                pos = RandomGen.getInstance().nextInt(lst_pos.size()); // Choix de la position de l'ajout
+                                pos = RandomGen.getInstance().nextInt(lst_pos.size()); // Choice of the addition position
                                 pt = lst_pos.get(pos);
-                                //cliEnv.AjouterReaxel(pt.x, pt.y, produits.get(p), cliEnv._matrice_reaxels, cliEnv._liste_reaxels);
                                 rp._produits_noms.add(_produits.get(p));
                                 rp._produits_pos.add(new UtilPoint3D(pt.x, pt.y, pt.z));
 
@@ -404,11 +400,9 @@ public class Behavior extends Moteur { //
                             }
                         }
 
-                        // Decrement de j en fct de la diff entre prod et reactifs
-                        //j -= listReactifs.Count - nb_produits_effectif + 1;
-                        // Decrement de j en fct de la position dans la liste
+                        //J decrement de j according to the list position
                         int deltaReactifs = listReactifs.size() - 1;
-                        // Compte de ceux qui sont * avant * c_a
+                        // Count of those which are * before * c_a
                         for (InstanceReaxel listReactif : listReactifs) {
                             int pos_in_lst = instances.indexOf(listReactif);
                             if (pos_in_lst >= 0 && pos_in_lst < j) {
@@ -420,10 +414,9 @@ public class Behavior extends Moteur { //
                                 deltaReactifs--;
                             }
                         }
-                        j -= deltaReactifs;// listReactifs.Count;// deltaReactifs + 1;
+                        j -= deltaReactifs;
 
-                        // Memorisation de la reaction
-                        //cliEnv._tab_reactions_produites.Add(cliEnv._time + " \t" + this.Etiquettes);
+                        // Memorization of the reaction
                         if (dico_rea.containsKey(this.getEtiquettes()) == false) {
                             dico_rea.put(this.getEtiquettes(), new Point(time, 1));
                         } else {
@@ -450,10 +443,10 @@ public class Behavior extends Moteur { //
     @Override
     public ArrayList<String> toSave() {
         ArrayList<String> toSave = super.toSave();
-        // description
+        // Description
         toSave.add("\tDescription:" + _description.getText().replace('\n', '§') + "\n");
 
-        // semi-situee et situee
+        // "Semi-located" and located
         for (String _reactif : _reactifs) {
             toSave.add("\treactif:" + _reactif + "\n");
         }
@@ -466,22 +459,20 @@ public class Behavior extends Moteur { //
             toSave.add("\tpos:" + _position + "\n");
         }
 
-        // complexe
+        // Complex
         for (int i = 0; i < _ListElementsReactions.size(); i++) {
             toSave.add(_ListElementsReactions.get(i).toSave());
         }
         return toSave;
     }
 
+    //Get all parameters of Env_Parameters object linked to the Behavior one
     public Env_Parameters getParameters() {
         return parameters;
     }
 
+    //Put new values to parameters of Env_Parameters object linked to the Behavior one
     public void setParameters(Env_Parameters parameters) {
         this.parameters = parameters;
     }
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
 }
