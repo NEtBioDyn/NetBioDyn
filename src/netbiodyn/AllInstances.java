@@ -167,119 +167,136 @@ public class AllInstances extends ArrayList<InstanceReaxel> implements Cloneable
         }
     }
 
+    //Select the InstanceReaxel with coordinates in parameters
     public void select(int x, int y, int z) {
         matrix[x][y][z].setSelectionne(true);
     }
 
+    //Unselect the InstanceReaxel with coordinates in parameters
     public void unselect(int x, int y, int z) {
         matrix[x][y][z].setSelectionne(false);
     }
 
+    //Remove an InstanceReaxel into the hashmap by its name
     public boolean removeReaxel(InstanceReaxel reaxel) {
+    	//Get the coordinates of this InstanceReaxel
         int x = reaxel.getX();
         int y = reaxel.getY();
         int z = reaxel.getZ();
         if (matrix[x][y][z] != null) {
-            this.remove(reaxel);
-            matrix[x][y][z] = null;
+            this.remove(reaxel); //Remove the InstanceReaxel if the matrix is not empty
+            matrix[x][y][z] = null; //Remove the correspondence between coordinates and the InstanceReaxel
             removeInBook(reaxel);
-            return true;
+            return true; //Return that the InstanceReaxel has been removed
         }
-        return false;
+        return false; //Return that the InstanceReaxel hasn't been removed
     }
 
+    //Remove an InstanceReaxel into the hashmap by its coordinates
     public boolean removeReaxel(int x, int y, int z) {
-        InstanceReaxel reaxel = matrix[x][y][z];
+        InstanceReaxel reaxel = matrix[x][y][z]; //Get the InstanceReaxel by its coordinates into the matrix
         if (reaxel != null) {
-            this.remove(reaxel);
-            matrix[x][y][z] = null;
+            this.remove(reaxel); //Remove the InstanceReaxel if the matrix is not empty
+            matrix[x][y][z] = null; //Remove the correspondence between coordinates and the InstanceReaxel
             removeInBook(reaxel);
-            return true;
+            return true; //Return that the InstanceReaxel has been removed
         }
-        return false;
+        return false; //Return that the InstanceReaxel hasn't been removed
     }
     
+    //Remove all InstanceReaxel using this name/tags
     public void removeEntityType(String etiquettes) {
-        removeByName(etiquettes);
-        if(entitiesBook.containsKey(etiquettes)){
-            entitiesBook.remove(etiquettes);
+        removeByName(etiquettes); // Remove all InstanceReaxel using this tag into the AllInstances object
+        if(entitiesBook.containsKey(etiquettes)){ 
+            entitiesBook.remove(etiquettes); // Remove all Entities having this tag
         }
     }
 
+    //Remove all InstanceReaxel using this name into the AllInstances object
     public void removeByName(String nom) {
-        ArrayList<InstanceReaxel> copy = getList();
-        for (InstanceReaxel reaxel : copy) {
-            if (reaxel.getNom().equals(nom)) {
-                removeReaxel(reaxel);
+        ArrayList<InstanceReaxel> copy = getList(); //Clone of the AllInstances object
+        for (InstanceReaxel reaxel : copy) { //Path of all InstanceReaxel into the copy of AllInstances object 
+            if (reaxel.getNom().equals(nom)) { 
+                removeReaxel(reaxel); //If the required name is the same as the InstanceReaxel, remove this InstanceReaxel
             }
         }
     }
 
+    //Remove the InstanceReaxel by its coordinates, but only if it's possible
     public void removeOnlyCleanable(int x, int y, int z) {
-        InstanceReaxel c = matrix[x][y][z];
-        if (c != null) {
+        InstanceReaxel c = matrix[x][y][z]; //Get the InstanceReaxel by its coordinates into the matrix
+        if (c != null) { 
             if ((this.contains(c)) && (c.isVidable())) {
-                removeReaxel(c);
+                removeReaxel(c); //if c has entries and can be vidable, and if the AllInstances object contains it, remove this InstanceReaxel
             }
         }
     }
 
+    
     public void setMatrixAndList(ArrayList<InstanceReaxel> l) {
         for (InstanceReaxel rea : l) {
-            addReaxel(rea.clone());
+            addReaxel(rea.clone()); //Add every InstanceReaxel putted into the AllInstance object put in parameter, into the hashmap
         }
-        this.updateBook();
+        this.updateBook(); //Update the hashmap
     }
 
+    //Get the matrix
     public InstanceReaxel[][][] getMatrix() {
-        InstanceReaxel[][][] copy = new InstanceReaxel[getX()][getY()][getZ()];
-        for (InstanceReaxel r : this) {
-            copy[r.getX()][r.getY()][r.getZ()] = r.clone();
+        InstanceReaxel[][][] copy = new InstanceReaxel[getX()][getY()][getZ()]; //Clone of the matrix
+        for (InstanceReaxel r : this) { //Path of all InstanceReaxel into the AllInstances object 
+            copy[r.getX()][r.getY()][r.getZ()] = r.clone(); //Link the coordinates of the InstanceReaxel into the cloned matrix and a clone of the InstanceReaxel
         }
-        return copy;
+        return copy; //return the copy of the matrix
     }
 
+    //Get the ArrayList
     public ArrayList<InstanceReaxel> getList() {
-        ArrayList<InstanceReaxel> copy = new ArrayList<>();
-        for (InstanceReaxel r : this) {
-            copy.add(r.clone());
+        ArrayList<InstanceReaxel> copy = new ArrayList<>(); //Clone of the ArrayList
+        for (InstanceReaxel r : this) { //Path of all InstanceReaxel into the AllInstances object 
+            copy.add(r.clone()); //Add a copy of the InstanceReaxel into the new ArrayList
         }
-        return copy;
+        return copy; //return the copy of the ArrayList
     }
 
-    @Override
+    //Get all the values into the AllInstances object (matrix, ArrayList and coordinates)
     public AllInstances clone() {
         return new AllInstances(getList(), getMatrix(), getX(), getY(), getZ());
     }
 
+    
     public void test(String name) {
-        for (InstanceReaxel r : this) {
-            if (matrix[r.getX()][r.getY()][r.getZ()] == null) {
-                System.err.println(name + " TEST FAILED !!!! " + r.getX() + "*" + r.getY() + "*" + r.getZ());
+        for (InstanceReaxel r : this) { //Path of all InstanceReaxel into the AllInstances object 
+            if (matrix[r.getX()][r.getY()][r.getZ()] == null) { 
+                System.err.println(name + " TEST FAILED !!!! " + r.getX() + "*" + r.getY() + "*" + r.getZ()); //if the InstanceReaxel hasn't its coordinates into the matrix, return an error
             }
         }
     }
-
+    
+    //Return the coordinate X of the AllInstances object
     public int getX() {
         return X;
     }
 
+    //Put a new value to the coordinate X of the AllInstances object
     public void setX(int X) {
         this.X = X;
     }
 
+    //Return the coordinate Y of the AllInstances object
     public int getY() {
         return Y;
     }
-
+    
+    //Put a new value to the coordinate Y of the AllInstances object
     public void setY(int Y) {
         this.Y = Y;
     }
-
+    //Return the coordinate Z of the AllInstances object
     public int getZ() {
         return Z;
     }
 
+    //Put a new value to the coordinate Z of the AllInstances object
     public void setZ(int Z) {
         this.Z = Z;
     }
