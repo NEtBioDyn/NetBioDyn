@@ -88,71 +88,81 @@ public class AllInstances extends ArrayList<InstanceReaxel> implements Cloneable
             if (nbr > 0) {
                 nbr -= 1; //Diminution of this number
             }
-            entitiesBook.put(type, nbr);
+            entitiesBook.put(type, nbr); //Put into the hashmap the InstanceReaxel at the new position ?
         }
     }
 
+    //Get the hashmap
     public HashMap<String, Integer> getBook() {
-        return (HashMap<String, Integer>) entitiesBook.clone();
+        return (HashMap<String, Integer>) entitiesBook.clone(); //return a clone of the hashmap
     }
 
+    //return the "position" of the InstanceReaxel contained into the hashmap
     public int getInstancesNbr(String name) {
         if (entitiesBook.get(name) == null) {
-            return 0;
+            return 0; //if the name of this InstanceReaxel is not into the hashmap, it returns 0
         } else {
-            return entitiesBook.get(name);
+            return entitiesBook.get(name); // if the name of this InstanceReaxel is into the hashmap, it return the position
         }
     }
     
+    //Get all the InstanceReaxel which have a same name as in parameter
     public ArrayList<InstanceReaxel> getByName(String name){
-         ArrayList<InstanceReaxel> entities = new ArrayList<>();
-        for (InstanceReaxel r : this) {
-            if (r.getNom().equals(name)) {
-                entities.add(r);
+         ArrayList<InstanceReaxel> entities = new ArrayList<>(); //Creation of a table which will contain InstanceReaxel with the same name as in parameter
+        for (InstanceReaxel r : this) { //Path of all InstanceReaxel into the AllInstance object 
+            if (r.getNom().equals(name)) { //Comparison between the name of this InstanceReaxel and the name given in parameter
+                entities.add(r); //If there is a equality, addition of this InstanceReaxel into the new hashmap
             }
         }
-            return entities;
+            return entities; //Return all the InstanceReaxel which have a same name as in parameter
     }
 
+    //Get the size of the AllInstance object ("this" as parameter)
     public int getSize() {
         return this.size();
     }
 
+    //Get the InstanceReaxel in a certain position given in parameter
     public InstanceReaxel getInList(int pos) {
-        if (pos < getSize()) {
-            return this.get(pos);
+        if (pos < getSize()) { 
+            return this.get(pos); //If the position exists, it returns the InstanceReaxel at this position
         } else {
-            return null;
+            return null; // If the position doesn't exist, it returns null
         }
     }
 
+    //Return the coordinates into the matrix ?
     public InstanceReaxel getFast(int x, int y, int z) {
         return matrix[x][y][z];
     }
 
+    //Add an InstanceReaxel into the hashmap
     public boolean addReaxel(InstanceReaxel reaxel) {
+    	//get the coordinates of the InstanceReaxel
         int x = reaxel.getX();
         int y = reaxel.getY();
         int z = reaxel.getZ();
         if (matrix[x][y][z] == null) {
-            this.add(reaxel);
-            matrix[x][y][z] = reaxel;
-            addInBook(reaxel.getNom());
-            return true;
+            this.add(reaxel); //if the matrix is empty, it adds the InstanceReaxel into the AllInstances
+            matrix[x][y][z] = reaxel; //the InstanceReaxel is added into the matrix by its coordinates
+            addInBook(reaxel.getNom()); //Add the InstanceReaxel into the hashmap 
+            return true; //Return true if the InstanceReaxel has been added
         }
-        return false;
+        return false; //Return false if the InstanceReaxel can't be added because of the presence of these coordinates into the matrix
     }
 
+    //Creation of a new InstanceReaxel instead of an old one
     public void editReaxels(Entity entity, String old_name) {
-        ArrayList<InstanceReaxel> copy = getList();
-        for (InstanceReaxel reaxel : copy) {
-            if (reaxel.getNom().equals(old_name)) {
-                removeReaxel(reaxel);
-                InstanceReaxel newReaxel = InstanceReaxel.CreerReaxel(entity);
+        ArrayList<InstanceReaxel> copy = getList(); //Clone of the AllInstances object
+        for (InstanceReaxel reaxel : copy) { //Path of all InstanceReaxel into the copy of AllInstances object 
+            if (reaxel.getNom().equals(old_name)) { //Comparison between the name of the InstanceReaxel and the name in parameter
+                removeReaxel(reaxel); //Suppression of this InstanceReaxel
+                InstanceReaxel newReaxel = InstanceReaxel.CreerReaxel(entity);//Creation of a new InstanceReaxel based on the Entity given
+                //Put the coordinates into the new InstanceReaxel
                 newReaxel.setX(reaxel.getX());
                 newReaxel.setY(reaxel.getY());
                 newReaxel.setZ(reaxel.getZ());
-                addReaxel(newReaxel);
+                addReaxel(newReaxel); //Add the new InstanceReaxel
             }
         }
     }
