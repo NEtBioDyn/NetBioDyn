@@ -8,6 +8,7 @@ package netbiodyn.ihm; //On crée un package, cette ligne indiquant que le fichi
 
 import com.jogamp.opengl.awt.GLJPanel; //Permet l'affichage d'OpenGL ? 
 import com.jogamp.opengl.util.FPSAnimator; //Obtenir une animation en images/seconde sans tout le temps le recalculer (diminution de l'utilisation du CPU)
+
 import java.awt.Container; //Elément d'Abstract Window Toolkit (AWT) contenant d'autres composants du même toolkit (équivalent du container de Swing ?)
 import java.awt.Dimension; //Contient la largeur et la hauteur d'un objet (AWT uniquement ?)
 import java.awt.event.ActionEvent; //Permet la création d'une action à partir d'une action sur un objet AWT (clic,...)
@@ -41,6 +42,7 @@ import netbiodyn.util.UtilFileFilter;
 import netbiodyn.util.UtilPoint3D;
 import jadeAgentServer.util.Parameter; //JADE (Java Agent DEvelopment Framework) permet l'implémentation de systèmes multi-agents
 import java.io.IOException; //Permet de créer/utiliser des exceptions I/O (ou système)
+import java.lang.reflect.Array;
 import java.util.logging.Level; //Permet d'obtenir un historique d'événements, en particulier les différents niveaux (si tout se passe bien dans l'exécution ou non)
 import java.util.logging.Logger; //Permet d'afficher des messages de log pour un élément d'une application (ou une application elle-même)
 import netbiodyn.RunnableSimulator; //Permet de lancer l'application
@@ -211,13 +213,6 @@ public class Controller {
             }
         }
     }
-
-    //
-    //
-    // Problème. ON supprime dans instances alors qu'on tourne dessus!!! 
-    //
-    //
-    
     
     
     public void enleverMauvaisEntite(String name, UtilPoint3D center, int radius){
@@ -274,7 +269,176 @@ public class Controller {
     public void addReaction(){
     	WndReactionGlobal wC = new WndReactionGlobal(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wC.setVisible(true);
+        if (wC.getDialogResult().equals("OK") && !wC.getTextBoxName().equals("")) {
+        	String equation = wC.getTextBoxReaction();
+        	String compartment = wC.getComboBox_compartment();
+        	String enzymeName = "Enzyme_"+wC.getTextBoxName();
+        	
+        	System.out.println(equation);
+        	String []substrats = new String[3];
+        	String []produits = new String[3];
+        	
+        	if (equation.contains("=")){
+        		substrats = equation.split("=")[0].split("\\+");
+            	produits = equation.split("=")[1].split("\\+");
+        	}else{
+            	substrats = equation.split("->")[0].split("\\+");
+            	produits = equation.split("->")[1].split("\\+");
+        	}
+            
+            for (String substrat : substrats ){
+            	addEntityReaction(substrat, compartment, true);
+            	addBehaviorMoveReaction(substrat);
+            }
+            
+            addEntityReaction(enzymeName, compartment, true);
+        	addBehaviorMoveReaction(enzymeName);
+        	
+            for (String produit : produits ){
+            	addEntityReaction(produit, compartment, true);
+            	addBehaviorMoveReaction(produit);
+            }
+            
+        	int sizeReactif = substrats.length;
+        	int sizeProduit = produits.length;
+        	
+        	if (sizeProduit == 1){
+        		produits[1] = enzymeName;
+        		produits[2] = "-";
+        	}else if(sizeProduit == 2){
+        		produits[2] = enzymeName;
+        	}
+        	
+        	if (sizeReactif == 1){
+        		addBehaviorReaction(enzymeName, substrats[0], produits[0], produits[1], produits[2]);
+        	}
+        	else if(sizeReactif == 2){
+        		String []intermediaires = new String[2];
+        		intermediaires[0] = enzymeName+"_"+substrats[0].substring(0, 1);
+        		addBehaviorMoveReaction(intermediaires[0]);
+        		intermediaires[1] = enzymeName+"_"+substrats[1].substring(0, 1);
+        		addBehaviorMoveReaction(intermediaires[1]);
+        		addEntityReaction(intermediaires[0], compartment, false);
+        		addEntityReaction(intermediaires[1], compartment, false);
+        		addBehaviorReaction(enzymeName, substrats[0], intermediaires[0],"0","-");
+        		addBehaviorReaction(enzymeName, substrats[1], intermediaires[1],"0","-");
+        		addBehaviorReaction(intermediaires[0], substrats[0], produits[0], produits[1], produits[2]);
+        		addBehaviorReaction(intermediaires[1], substrats[0], produits[0], produits[1], produits[2]);
+        		addBehaviorDegradationReaction(intermediaires[0], "0", enzymeName, substrats[0], "-" );
+        		addBehaviorDegradationReaction(intermediaires[1], "0", enzymeName, substrats[1], "-" );
+        	}
+        	else{
+        		String []intermediaires = new String[6];
+        		intermediaires[0] = enzymeName+"_"+substrats[0].substring(0, 1);
+        		intermediaires[1] = enzymeName+"_"+substrats[1].substring(0, 1);
+        		intermediaires[2] = enzymeName+"_"+substrats[2].substring(0, 1);
+        		intermediaires[3] = enzymeName+"_"+substrats[0].substring(0, 1)+"_"+substrats[1].substring(0, 1);
+        		intermediaires[4] = enzymeName+"_"+substrats[0].substring(0, 1)+"_"+substrats[2].substring(0, 1);
+        		intermediaires[5] = enzymeName+"_"+substrats[1].substring(0, 1)+"_"+substrats[2].substring(0, 1);
+        		
+        		addEntityReaction(intermediaires[0], compartment, false);
+        		addEntityReaction(intermediaires[1], compartment, false);
+        		addEntityReaction(intermediaires[2], compartment, false);
+        		addEntityReaction(intermediaires[3], compartment, false);
+        		addEntityReaction(intermediaires[4], compartment, false);
+        		addEntityReaction(intermediaires[5], compartment, false);
+        		
+        		addBehaviorReaction(enzymeName, substrats[0], intermediaires[0],"0","-");
+        		addBehaviorDegradationReaction(intermediaires[0], "0", enzymeName, substrats[0], "-" );
+        		addBehaviorReaction(enzymeName, substrats[1], intermediaires[1],"0","-");
+        		addBehaviorDegradationReaction(intermediaires[1], "0", enzymeName, substrats[1], "-" );
+        		addBehaviorReaction(enzymeName, substrats[2], intermediaires[2],"0","-");
+        		addBehaviorDegradationReaction(intermediaires[2], "0", enzymeName, substrats[2], "-" );
+        		addBehaviorReaction(intermediaires[0], substrats[1], intermediaires[3],"0","-");
+        		addBehaviorDegradationReaction(intermediaires[3], "0", enzymeName, substrats[0], substrats[1] );
+        		addBehaviorReaction(intermediaires[0], substrats[2], intermediaires[4],"0","-");
+        		addBehaviorDegradationReaction(intermediaires[4], "0", enzymeName, substrats[0], substrats[2] );
+        		addBehaviorReaction(intermediaires[1], substrats[0], intermediaires[3],"0","-");
+        		addBehaviorDegradationReaction(intermediaires[5], "0", enzymeName, substrats[1], substrats[2] );
+        		addBehaviorReaction(intermediaires[1], substrats[2], intermediaires[5],"0","-");
+        		addBehaviorReaction(intermediaires[2], substrats[0], intermediaires[4],"0","-");
+        		addBehaviorReaction(intermediaires[2], substrats[1], intermediaires[5],"0","-");
+        		addBehaviorReaction(intermediaires[3], substrats[2], produits[0], produits[1], produits[2]);
+        		addBehaviorReaction(intermediaires[4], substrats[1], produits[0], produits[1], produits[2]);
+        		addBehaviorReaction(intermediaires[5], substrats[0], produits[0], produits[1], produits[2]);
+        		
+        	}
+            
+            
+        }	
     }
+    
+    public void addEntityReaction(String entName, String comp, boolean visible){
+        WndEditNoeud wN = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wN.setVisible(false);
+        wN.WndCliValue_Load(null);
+        
+        wN.setjCheckBox_vidable(true);
+        wN.setTextBox1(entName);
+        wN.setComboBox_compartment(comp);
+        wN._cli._visibleDansPanel = visible;
+        
+        wN.button_OKActionPerformed(null);
+        model.addProtoReaxel(wN._cli);
+    }
+    
+    public void addBehaviorMoveReaction(String entName){
+        WndEditReaction wR = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wR.WndCliEditReaction3_Load(null);
+        wR.setVisible(false);
+        
+        wR.setTextBox_etiquette("Move_"+entName);
+        wR.setDataGridView_reactifs(entName, 0);
+        wR.setDataGridView_produits(entName, 1);
+        wR.setDataGridView_produits("0", 0);
+        wR.setDataGridView_reactifs("0", 1);
+        wR.setDataGridView_produits("-", 2);
+        wR.setDataGridView_reactifs("*", 2);
+        
+        wR.button_OKMouseClicked(null);
+        model.addMoteurReaction(wR._r3);
+    }
+    
+    public void addBehaviorReaction(String substrat1, String substrat2, String produit1, String produit2, String produit3){
+    	WndEditReaction wR = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wR.WndCliEditReaction3_Load(null);
+        wR.setVisible(false);
+        
+        wR.setTextBox_etiquette("reaction_"+substrat1+"+"+substrat2);
+        wR.setDataGridView_reactifs(substrat1, 0);
+        wR.setDataGridView_produits(produit1, 1);
+        wR.setDataGridView_produits(produit2, 0);
+        wR.setDataGridView_reactifs(substrat2, 1);
+        wR.setDataGridView_produits(produit3, 2);
+        wR.setDataGridView_reactifs("*", 2);
+        
+        wR.button_OKMouseClicked(null);
+        model.addMoteurReaction(wR._r3);
+    }
+    
+    	
+    public void addBehaviorDegradationReaction(String substrat1, String substrat2, String produit1, String produit2, String produit3){
+    	WndEditReaction wR = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wR.WndCliEditReaction3_Load(null);
+        wR.setVisible(false);
+        
+        wR.setTextBox_etiquette("Degradation_"+substrat1);
+        wR.setDataGridView_reactifs(substrat1, 0);
+        wR.setDataGridView_produits(produit1, 1);
+        wR.setDataGridView_produits(produit2, 0);
+        wR.setDataGridView_reactifs(substrat2, 1);
+        wR.setDataGridView_produits(produit3, 2);
+        wR.setDataGridView_reactifs("*", 2);
+        wR.setTextBox_k("0.1");
+        
+        wR.button_OKMouseClicked(null);
+        model.addMoteurReaction(wR._r3);
+  
+    	
+    }
+
+
+    
     
     public void addCompartment() {
         if (simulator.isRunning()) {
@@ -324,6 +488,7 @@ public class Controller {
         wN.setTextBox1("Membrane_"+comp.getEtiquettes());
         wN.setButtonCouleur(comp.Couleur);
         wN.setComboBox_compartment(comp.getEtiquettes());
+        wN.setVisible(false);
         wN.button_OKActionPerformed(null);
         model.addProtoReaxel(wN._cli);
     }

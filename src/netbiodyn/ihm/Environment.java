@@ -40,6 +40,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import javax.swing.JList;
@@ -47,8 +48,8 @@ import netbiodyn.AllInstances;
 import netbiodyn.util.Serialized;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
-import netbiodyn.Entity;
 import netbiodyn.Compartment;
+import netbiodyn.Entity;
 import netbiodyn.ProtoSimplexel;
 import netbiodyn.util.Lang;
 import netbiodyn.util.RandomGen;

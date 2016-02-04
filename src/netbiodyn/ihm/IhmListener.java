@@ -8,11 +8,12 @@ package netbiodyn.ihm;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
+
 import netbiodyn.AllInstances;
 import netbiodyn.util.Serialized;
 import netbiodyn.Behavior;
-import netbiodyn.Entity;
 import netbiodyn.Compartment;
+import netbiodyn.Entity;
 
 /**
  *

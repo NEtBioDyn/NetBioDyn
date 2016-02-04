@@ -32,6 +32,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 import netbiodyn.Behavior;
 import netbiodyn.Compartment;
 import netbiodyn.Entity;
@@ -531,7 +532,7 @@ public class WndEditReaction extends javax.swing.JDialog {
         button_valider.setText("Ok"); // NOI18N
         button_valider.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                button_validerMouseClicked(evt);
+                button_OKMouseClicked(evt);
             }
         });
         getContentPane().add(button_valider);
@@ -638,7 +639,7 @@ public class WndEditReaction extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button_validerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_validerMouseClicked
+    public void button_OKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_validerMouseClicked
         // TODO add your handling code here:
         // Verification que le premier reactif n'est ni "0" ni "*"
         if (textBox_etiquette.getText().equals("")) {
@@ -782,8 +783,8 @@ public class WndEditReaction extends javax.swing.JDialog {
             }
         }
         
-        System.out.println(_r3._reactifs);
-        System.out.println(_r3._produits);
+        //System.out.println(_r3._reactifs);
+        //System.out.println(_r3._produits);
 
         // Valeur d k
         try {
@@ -1057,8 +1058,47 @@ public class WndEditReaction extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_textBox_etiquetteActionPerformed
 
+    
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    public String getDataGridView_produits(int ligne) {
+		return (String) dataGridView_produits.getValueAt(ligne, 0);
+	}
+
+	public void setDataGridView_produits(String name, int ligne) {
+		this.dataGridView_produits.setValueAt(name, ligne, 0); 
+	}
+
+	public String getDataGridView_reactifs(int ligne) {
+		return (String) dataGridView_reactifs.getValueAt(ligne, 0);
+	}
+
+	public void setDataGridView_reactifs(String name, int ligne) {
+		this.dataGridView_reactifs.setValueAt(name, ligne, 0); 
+	}
+
+	public String getTextBox_etiquette() {
+		return textBox_etiquette.getText();
+	}
+
+	public void setTextBox_etiquette(String textBox_etiquette) {
+		this.textBox_etiquette.setText(textBox_etiquette);
+	}
+
+	public String getTextBox_k() {
+		return textBox_k.getText();
+	}
+
+	public void setTextBox_k(String textBox_k) {
+		this.textBox_k.setText(textBox_k);
+	}
+
+	public void setDialogResult(String dialogResult) {
+		DialogResult = dialogResult;
+	}
+
+
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_annuler;
     private javax.swing.JButton button_valider;
     private javax.swing.JTable dataGridView_produits;

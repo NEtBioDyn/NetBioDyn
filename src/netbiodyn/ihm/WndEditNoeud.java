@@ -32,6 +32,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import netbiodyn.Behavior;
 import netbiodyn.Compartment;
 import netbiodyn.Entity;

@@ -8,6 +8,7 @@ package netbiodyn.util;
 import netbiodyn.ihm.Env_Parameters;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import netbiodyn.AllInstances;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;

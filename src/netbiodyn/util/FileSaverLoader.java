@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import netbiodyn.ihm.Env_Parameters;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;

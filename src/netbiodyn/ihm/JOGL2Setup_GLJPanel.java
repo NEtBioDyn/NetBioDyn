@@ -30,6 +30,7 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.*;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -48,8 +49,8 @@ import netbiodyn.AllInstances;
 import netbiodyn.util.Serialized;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
-import netbiodyn.Entity;
 import netbiodyn.Compartment;
+import netbiodyn.Entity;
 
 /**
  * JOGL 2.0 Program Template (GLJPanel) This is a "Component" which can be added

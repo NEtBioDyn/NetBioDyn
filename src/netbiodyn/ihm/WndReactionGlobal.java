@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 import netbiodyn.Behavior;
 import netbiodyn.Compartment;
 import netbiodyn.Entity;
@@ -239,7 +240,27 @@ public class WndReactionGlobal extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
     
     private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+    	if (textBoxName.getText().equals("")) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Merci de nommer la reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "Please name the reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}
+    	if (textBoxReaction.getText().equals("")) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Merci d'ecrire une réaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}
+
+    	String equation = textBoxReaction.getText();
     	
+    	DialogResult = "OK";
+    	setVisible(false);
     }
     
     private void button_OKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_OKMouseClicked
@@ -263,7 +284,49 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         //if()
     }//GEN-LAST:event_formKeyPressed
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    
+    
+    public String getTextBoxName() {
+		return textBoxName.getText();
+	}
+
+	public void setTextBoxName(String textBoxName) {
+		this.textBoxName.setText(textBoxName);
+	}
+
+	public String getTextBoxReaction() {
+		return textBoxReaction.getText();
+	}
+
+	public void setTextBoxReaction(String textBoxReaction) {
+		this.textBoxReaction.setText(textBoxReaction);
+	}
+
+	public String getTextBoxCoefP1() {
+		return textBoxCoefP1.getText();
+	}
+
+	public void setTextBoxCoefP1(String textBoxCoefP1) {
+		this.textBoxCoefP1.setText(textBoxCoefP1);
+	}
+
+	public String getComboBox_compartment() {
+		return (String) comboBox_compartment.getSelectedItem();
+	}
+
+	public void setComboBox_compartment(String comboBox_compartment) {
+		this.comboBox_compartment.setSelectedItem(comboBox_compartment);
+	}
+
+	public String getDialogResult() {
+		return DialogResult;
+	}
+
+	public void setDialogResult(String dialogResult) {
+		DialogResult = dialogResult;
+	}
+
+	// Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelNom;
     private javax.swing.JLabel jLabelReaction;
     private javax.swing.JLabel jLabelCompartment;
