@@ -567,6 +567,9 @@ public class FileSaverLoader extends SaverLoader {
                 if (lst_mots[1].equals("vidable")) {
                     cli.Vidable = Boolean.parseBoolean(lst_mots[2]);
                 }
+                if (lst_mots[1].equals("compartment")) {
+                    cli.setCompartment(lst_mots[2]);
+                }
                 if (lst_mots[1].equals("Image")) {
                     cli._str_image_deco = lst_mots[2];
                     // Chargement de l'image                        

@@ -15,23 +15,22 @@
  *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package netbiodyn;
+package netbiodyn;// Creation of a package, this line indicating that the actual file will be in this package
 
 import netbiodyn.util.UtilPoint3D;
-import java.util.ArrayList;
+import java.util.ArrayList; //Possible creation of tables
 
 /**
  *
  * @author user
  */
 public class InstanceReaction {
-    //public Environnement _env;    
     public int _type = 0;
-    
+
     public class cdtAct {
         public int ordre = 0;
     }
-    // Classe de mémorisation des cdts
+    // Class of memorization of cdts
     public class cdtReaxelEn extends cdtAct {
         public String  type_reaxel, nom_reaxel;
         public int dx,dy,dz;
@@ -50,7 +49,7 @@ public class InstanceReaction {
         public String type_reaxel1, nom_reaxel1, type_connexel, nom_connexel, type_reaxel2, nom_reaxel2;
     }
     
-    // Classe de mémorisation des acts
+    // Class of memorization of acts
     public class actSupprimerReaxel extends cdtAct  {
         public String type_reaxel, nom_reaxel;
     }
@@ -73,7 +72,8 @@ public class InstanceReaction {
         public String type_reaxel1, nom_reaxel1, type_reaxel2, nom_reaxel2;
     }
     public class actRemplacerConnexel extends cdtAct  {
-        public String type_connexel1, nom_connexel1, type_connexel2, nom_connexel2;
+        public String type_connexel1, 
+        nom_connexel1, type_connexel2, nom_connexel2;
     }
     public class actConnecterConnexel extends cdtAct  {
         String type_connexel, nom_connexel, type_reaxel1, nom_reaxel1, type_reaxel2, nom_reaxel2;
@@ -83,11 +83,11 @@ public class InstanceReaction {
         double fx, fy, fz;
     }
     
-    // Relation entre les noms et les entités ds l'env
+    // Relation between names and entities into the environment
     public ArrayList<String>             _reaxels_noms                = new ArrayList<String>();
     public ArrayList<InstanceReaxel>     _reaxels_ident               = new ArrayList<InstanceReaxel>();
     
-    // Stockage des cdts & act
+    // Storage of cdts and acts
     public ArrayList<cdtAct>                _lstToutesCdtAct        = new ArrayList<InstanceReaction.cdtAct>();
     /*
     public ArrayList<cdtReaxelEn>           _lstCdtReaxelEn         = new ArrayList<cdtReaxelEn>();
@@ -238,12 +238,12 @@ public class InstanceReaction {
         o.ordre = _lstToutesCdtAct.size(); _lstToutesCdtAct.add(o);
     }
     
-    // Utilitaires => A placer dans l'env
+    // Utilities => To place in the environment 
     /*public boolean utilBarycentre(String type_reaxel) {
         return true;
     }*/
 
-    // Listes
+    // Lists
     public void effacerCdtsActs() {
         //effacerCdts();
         //effacerActs();
@@ -293,7 +293,7 @@ public class InstanceReaction {
     }
 
 
-    // Pour la compatibilité avec les réactions situées et semi-situées
+    // For the compatibility with the "semi-located" and located reagents
     public ArrayList<String> _reactifs_noms = new ArrayList<String>();
     public ArrayList<UtilPoint3D> _reactifs_pos = new ArrayList<UtilPoint3D>();
 
