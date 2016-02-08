@@ -9,10 +9,10 @@ import netbiodyn.ihm.Env_Parameters;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import NetMDyn.Compartment;
 import netbiodyn.AllInstances;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
-import netbiodyn.Compartment;
 import netbiodyn.Entity;
 
 /**

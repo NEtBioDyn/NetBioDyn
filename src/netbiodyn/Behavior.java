@@ -40,7 +40,7 @@ public class Behavior extends Moteur {
     private Env_Parameters parameters; //Creation of an Env_Parameters object
     private final InstanceReaxel entiteVide; //Creation of an non-modifiable InstanceReaxel object
     public JTextPane _description = new JTextPane(); // Creation of a new window/area
-    private double _k = 1; //
+    protected double _k = 1; //
 
     public ArrayList<String> _reactifs = new ArrayList<>(); // Creation of a table which will contain reagents
     public ArrayList<String> _produits = new ArrayList<>(); // Creation of a table which will contain products 
@@ -155,7 +155,7 @@ public class Behavior extends Moteur {
         return false; //return nothing if the object doesn't belong to Behavior class
     }
 
-    private boolean zoneAutorisee(int numReactif, int x0, int y0, int z0, int dx, int dy, int dz) {
+    protected boolean zoneAutorisee(int numReactif, int x0, int y0, int z0, int dx, int dy, int dz) {
         // Borders
         if (x0 + dx < 0 || x0 + dx > getParameters().getX() - 1 || y0 + dy < 0 || y0 + dy > getParameters().getY() - 1) {
             return false;

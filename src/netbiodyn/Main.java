@@ -5,7 +5,7 @@
 
 package netbiodyn; // Creation of a package, this line indicating that the actual file will be in this package
 
-import netbiodyn.ihm.Controller; 
+import netbiodyn.ihm.Controller;
 
 /**
  *

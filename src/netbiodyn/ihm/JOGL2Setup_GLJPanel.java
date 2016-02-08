@@ -31,6 +31,8 @@ import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
+import NetMDyn.Compartment;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -49,7 +51,6 @@ import netbiodyn.AllInstances;
 import netbiodyn.util.Serialized;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
-import netbiodyn.Compartment;
 import netbiodyn.Entity;
 
 /**
@@ -601,9 +602,9 @@ public class JOGL2Setup_GLJPanel extends GLJPanel implements IhmListener, GLEven
     public void ready() {
     }
 
-	@Override
-	public void CompartmentUpdate(ArrayList<Compartment> compartment) {
+	//@Override
+	//public void CompartmentUpdate(ArrayList<Compartment> compartment) {
 		// TODO Auto-generated method stub
 		
-	}
+	//}
 }

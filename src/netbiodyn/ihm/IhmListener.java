@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
 
+import NetMDyn.Compartment;
 import netbiodyn.AllInstances;
 import netbiodyn.util.Serialized;
 import netbiodyn.Behavior;
-import netbiodyn.Compartment;
 import netbiodyn.Entity;
 
 /**
@@ -25,7 +25,7 @@ public interface IhmListener extends EventListener{
     public void newEnvParameters(Env_Parameters parameters);
     public void protoEntityUpdate(ArrayList<Entity> entities, HashMap<String, Integer> entitesBook);
     public void moteurReactionUpdate(ArrayList<Behavior> behaviours);
-    public void CompartmentUpdate(ArrayList<Compartment> compartment);
+   // public void CompartmentUpdate(ArrayList<Compartment> compartment);
     public void matrixUpdate(AllInstances instances, HashMap<String, Integer> initialState, int i);
     public void ready();
     

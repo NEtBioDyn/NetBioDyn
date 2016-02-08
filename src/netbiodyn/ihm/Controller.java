@@ -3,34 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package netbiodyn.ihm;
 
-package netbiodyn.ihm; //On crée un package, cette ligne indiquant que le fichier actuel sera dans ce package 
-
-import com.jogamp.opengl.awt.GLJPanel; //Permet l'affichage d'OpenGL ? 
-import com.jogamp.opengl.util.FPSAnimator; //Obtenir une animation en images/seconde sans tout le temps le recalculer (diminution de l'utilisation du CPU)
-
-import java.awt.Container; //Elément d'Abstract Window Toolkit (AWT) contenant d'autres composants du même toolkit (équivalent du container de Swing ?)
-import java.awt.Dimension; //Contient la largeur et la hauteur d'un objet (AWT uniquement ?)
-import java.awt.event.ActionEvent; //Permet la création d'une action à partir d'une action sur un objet AWT (clic,...)
-import java.awt.event.KeyEvent; // Permet la création d'une action à partir d'une touche du clavier (appuyée, tapée ou relâchée)
-import java.awt.event.WindowAdapter; //Classe abstraite pour recevoir les événements d'une fenêtre
-import java.awt.event.WindowEvent; // Permet de signaler les changements de statut d'une fenêtre (ouverte, fermée, réduite,...)
-import java.io.File; // Permet d'utiliser des fichiers dans la classe
-import java.util.ArrayList; //Permet de créer des ArrayListes dans la classe
-import java.util.HashMap;// Permet de créer des HashMaps dans la classe
-import java.util.List; // Permet de créer des Listes dans la classe
-import javax.swing.AbstractAction; //Interface pour les objets de type Action (définition de base des get et set par exemple)
-import javax.swing.ActionMap; //En association avec InputMap ci-dessous, donne une action particulière quand celle-ci est appelée (via une touche du clavier ?)
+import com.jogamp.opengl.awt.GLJPanel;
+import com.jogamp.opengl.util.FPSAnimator;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.InputMap;
-import javax.swing.JComponent; //Permet de créer tous les composants de Swing (affichage graphique)
-import javax.swing.JFrame; //Permet d'afficher une fenêtre via Swing
-import javax.swing.JOptionPane; //Permet d'afficher des fenêtre de dialogue
-import javax.swing.KeyStroke; //Permet de faire une action selon la touche appuyée
-import netbiodyn.AllInstances; //Pour tous les netbiodyn.* : import d'autres classes du logiciel
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import netbiodyn.AllInstances;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Model;
 import netbiodyn.Behavior;
-import netbiodyn.Compartment;
 import netbiodyn.Entity;
 import netbiodyn.Simulator;
 import netbiodyn.util.FileSaverLoader;
@@ -40,12 +37,11 @@ import netbiodyn.util.UtilAnimatedGifEncoder;
 import netbiodyn.util.UtilDivers;
 import netbiodyn.util.UtilFileFilter;
 import netbiodyn.util.UtilPoint3D;
-import jadeAgentServer.util.Parameter; //JADE (Java Agent DEvelopment Framework) permet l'implémentation de systèmes multi-agents
-import java.io.IOException; //Permet de créer/utiliser des exceptions I/O (ou système)
-import java.lang.reflect.Array;
-import java.util.logging.Level; //Permet d'obtenir un historique d'événements, en particulier les différents niveaux (si tout se passe bien dans l'exécution ou non)
-import java.util.logging.Logger; //Permet d'afficher des messages de log pour un élément d'une application (ou une application elle-même)
-import netbiodyn.RunnableSimulator; //Permet de lancer l'application
+import jadeAgentServer.util.Parameter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import netbiodyn.RunnableSimulator;
 
 /**
  * Make the link between the views and the model according to the MVC pattern. -
@@ -58,18 +54,18 @@ import netbiodyn.RunnableSimulator; //Permet de lancer l'application
  */
 public class Controller {
 
-    private final static int FRAME_WIDTH = 1220; //définit la largeur de la fenêtre de l'application
-    private final static int FRAME_HEIGHT = 820; //définit la hauteur de la fenêtre de l'application
-    private final int init_x = 100, init_y = 100, init_z = 1; //vue en 2D (chercher pour init_x et init_y, pas de différences si changement aux premiers tests)
+    protected final static int FRAME_WIDTH = 900;
+    protected final static int FRAME_HEIGHT = 600;
+    protected final int init_x = 100, init_y = 100, init_z = 1;
 
-    private final Environment env; //initialisation dans l'objet de la partie Environnement de la fenêtre
-    private JFrame frame3D; //initialisation dans l'objet de la fenêtre "3D view" (après clic sur le bouton "3D <=>")
-    private final Model model; //initialisation dans l'objet 
-    private final Simulator simulator;
-    private final JFrame frame;
+    protected final Environment env;
+    protected JFrame frame3D;
+    protected final Model model;
+    protected final Simulator simulator;
+    protected final JFrame frame;
     // An array of Command used to allow the "undo" operation
-    private final ArrayList<Command> lastCommand; 
-    private final int maxMemory = 20;
+    protected final ArrayList<Command> lastCommand;
+    protected final int maxMemory = 20;
 
     /**
      * Creates instances of the view classes and the model classes Connects them
@@ -123,7 +119,7 @@ public class Controller {
     /**
      * Initializing and testing the 3D view (an instance of the JOGL class)
      */
-    private void init3D() {
+    protected void init3D() {
         frame3D = new JFrame("3D View");
         Container topAncestor = env.getTopLevelAncestor();
         frame3D.setBounds(topAncestor.getBounds().x + topAncestor.getBounds().width, topAncestor.getBounds().y, 640, topAncestor.getBounds().height);
@@ -149,7 +145,7 @@ public class Controller {
         }
     }
 
-    private void disable3D(String message) {
+    protected void disable3D(String message) {
         env.disabled3D();
         File file = new File("./log_netbiodyn.txt");
         try {
@@ -178,14 +174,12 @@ public class Controller {
      *
      * @see Entity and WndEditNoeud
      */
-    
-    
     public void addEntity() {
         if (simulator.isRunning()) {
             this.pauseSimulation();
         }
 
-        WndEditNoeud wc = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        WndEditNoeud wc = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions());
         wc.WndCliValue_Load(null);
         wc.setVisible(true);
         if (wc.getDialogResult().equals("OK") && !wc._cli._etiquettes.equals("")) {
@@ -203,7 +197,7 @@ public class Controller {
             this.pauseSimulation();
         }
 
-        WndEditReaction w = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions() ,model.getListManipulesCompartment());
+        WndEditReaction w = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions());
         w.WndCliEditReaction3_Load(null);
         w.setVisible(true);
         String r = w.getDialogResult();
@@ -213,358 +207,7 @@ public class Controller {
             }
         }
     }
-    
-    
-    public void enleverMauvaisEntite(String name, UtilPoint3D center, int radius){
-    	ArrayList<UtilPoint3D> listAEnlever= new ArrayList<UtilPoint3D>();
-		AllInstances allInstances = model.getInstances();
-		for (InstanceReaxel reaxel : allInstances){
-			if (!(reaxel.get_compartment().equals(name))){
-				int x = reaxel.getX();
-				int y = reaxel.getY();
-				int z = reaxel.getZ();
-				int distance = (int) Math.sqrt(Math.pow(x-center.x, 2) + Math.pow(y-center.y, 2));
-				if (radius > distance){
-					listAEnlever.add(new UtilPoint3D(x,y,z));
-				}
-			}
-		}
-		for(UtilPoint3D point : listAEnlever){
-			removeEntityInstance(point.x, point.y,point.z);
-		}
-    }
-    
-    public void enleverAncienneEntite(String name, UtilPoint3D new_center, int new_radius){
-    	ArrayList<UtilPoint3D> listAEnlever= new ArrayList<UtilPoint3D>();
-		AllInstances allInstances = model.getInstances();
-		for (InstanceReaxel reaxel : allInstances){
-			if ((reaxel.get_compartment().equals(name))){
-				int x = reaxel.getX();
-				int y = reaxel.getY();
-				int z = reaxel.getZ();
-				int new_distance = (int) Math.sqrt(Math.pow(x-new_center.x, 2) + Math.pow(y-new_center.y, 2));
-				if (new_radius < new_distance){
-					listAEnlever.add(new UtilPoint3D(x,y,z));
-				}
-			}
-		}
-		for(UtilPoint3D point : listAEnlever){
-			removeEntityInstance(point.x, point.y,point.z);
-		}
-    }
-    
-    public void enleverEntiteCompartment(String name){
-    	ArrayList<UtilPoint3D> listAEnlever= new ArrayList<UtilPoint3D>();
-		AllInstances allInstances = model.getInstances();
-		for (InstanceReaxel reaxel : allInstances){
-			if ((reaxel.get_compartment().equals(name))){
-				listAEnlever.add(new UtilPoint3D(reaxel.getX(),reaxel.getY(),reaxel.getZ()));
-			}
-		}
-		for(UtilPoint3D point : listAEnlever){
-			removeEntityInstance(point.x, point.y,point.z);
-		}
-    }
-    
-    public void addReaction(){
-    	WndReactionGlobal wC = new WndReactionGlobal(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wC.setVisible(true);
-        if (wC.getDialogResult().equals("OK") && !wC.getTextBoxName().equals("")) {
-        	String equation = wC.getTextBoxReaction();
-        	String compartment = wC.getComboBox_compartment();
-        	String enzymeName = "Enzyme_"+wC.getTextBoxName();
-        	
-        	System.out.println(equation);
-        	String []substrats = new String[3];
-        	String []produits = new String[3];
-        	
-        	if (equation.contains("=")){
-        		substrats = equation.split("=")[0].split("\\+");
-            	produits = equation.split("=")[1].split("\\+");
-        	}else{
-            	substrats = equation.split("->")[0].split("\\+");
-            	produits = equation.split("->")[1].split("\\+");
-        	}
-            
-            for (String substrat : substrats ){
-            	addEntityReaction(substrat, compartment, true);
-            	addBehaviorMoveReaction(substrat);
-            }
-            
-            addEntityReaction(enzymeName, compartment, true);
-        	addBehaviorMoveReaction(enzymeName);
-        	
-            for (String produit : produits ){
-            	addEntityReaction(produit, compartment, true);
-            	addBehaviorMoveReaction(produit);
-            }
-            
-        	int sizeReactif = substrats.length;
-        	int sizeProduit = produits.length;
-        	
-        	if (sizeProduit == 1){
-        		produits[1] = enzymeName;
-        		produits[2] = "-";
-        	}else if(sizeProduit == 2){
-        		produits[2] = enzymeName;
-        	}
-        	
-        	if (sizeReactif == 1){
-        		addBehaviorReaction(enzymeName, substrats[0], produits[0], produits[1], produits[2]);
-        	}
-        	else if(sizeReactif == 2){
-        		String []intermediaires = new String[2];
-        		intermediaires[0] = enzymeName+"_"+substrats[0].substring(0, 1);
-        		addBehaviorMoveReaction(intermediaires[0]);
-        		intermediaires[1] = enzymeName+"_"+substrats[1].substring(0, 1);
-        		addBehaviorMoveReaction(intermediaires[1]);
-        		addEntityReaction(intermediaires[0], compartment, false);
-        		addEntityReaction(intermediaires[1], compartment, false);
-        		addBehaviorReaction(enzymeName, substrats[0], intermediaires[0],"0","-");
-        		addBehaviorReaction(enzymeName, substrats[1], intermediaires[1],"0","-");
-        		addBehaviorReaction(intermediaires[0], substrats[0], produits[0], produits[1], produits[2]);
-        		addBehaviorReaction(intermediaires[1], substrats[0], produits[0], produits[1], produits[2]);
-        		addBehaviorDegradationReaction(intermediaires[0], "0", enzymeName, substrats[0], "-" );
-        		addBehaviorDegradationReaction(intermediaires[1], "0", enzymeName, substrats[1], "-" );
-        	}
-        	else{
-        		String []intermediaires = new String[6];
-        		intermediaires[0] = enzymeName+"_"+substrats[0].substring(0, 1);
-        		intermediaires[1] = enzymeName+"_"+substrats[1].substring(0, 1);
-        		intermediaires[2] = enzymeName+"_"+substrats[2].substring(0, 1);
-        		intermediaires[3] = enzymeName+"_"+substrats[0].substring(0, 1)+"_"+substrats[1].substring(0, 1);
-        		intermediaires[4] = enzymeName+"_"+substrats[0].substring(0, 1)+"_"+substrats[2].substring(0, 1);
-        		intermediaires[5] = enzymeName+"_"+substrats[1].substring(0, 1)+"_"+substrats[2].substring(0, 1);
-        		
-        		addEntityReaction(intermediaires[0], compartment, false);
-        		addEntityReaction(intermediaires[1], compartment, false);
-        		addEntityReaction(intermediaires[2], compartment, false);
-        		addEntityReaction(intermediaires[3], compartment, false);
-        		addEntityReaction(intermediaires[4], compartment, false);
-        		addEntityReaction(intermediaires[5], compartment, false);
-        		
-        		addBehaviorReaction(enzymeName, substrats[0], intermediaires[0],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[0], "0", enzymeName, substrats[0], "-" );
-        		addBehaviorReaction(enzymeName, substrats[1], intermediaires[1],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[1], "0", enzymeName, substrats[1], "-" );
-        		addBehaviorReaction(enzymeName, substrats[2], intermediaires[2],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[2], "0", enzymeName, substrats[2], "-" );
-        		addBehaviorReaction(intermediaires[0], substrats[1], intermediaires[3],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[3], "0", enzymeName, substrats[0], substrats[1] );
-        		addBehaviorReaction(intermediaires[0], substrats[2], intermediaires[4],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[4], "0", enzymeName, substrats[0], substrats[2] );
-        		addBehaviorReaction(intermediaires[1], substrats[0], intermediaires[3],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[5], "0", enzymeName, substrats[1], substrats[2] );
-        		addBehaviorReaction(intermediaires[1], substrats[2], intermediaires[5],"0","-");
-        		addBehaviorReaction(intermediaires[2], substrats[0], intermediaires[4],"0","-");
-        		addBehaviorReaction(intermediaires[2], substrats[1], intermediaires[5],"0","-");
-        		addBehaviorReaction(intermediaires[3], substrats[2], produits[0], produits[1], produits[2]);
-        		addBehaviorReaction(intermediaires[4], substrats[1], produits[0], produits[1], produits[2]);
-        		addBehaviorReaction(intermediaires[5], substrats[0], produits[0], produits[1], produits[2]);
-        		
-        	}
-            
-            
-        }	
-    }
-    
-    public void addEntityReaction(String entName, String comp, boolean visible){
-        WndEditNoeud wN = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wN.setVisible(false);
-        wN.WndCliValue_Load(null);
-        
-        wN.setjCheckBox_vidable(true);
-        wN.setTextBox1(entName);
-        wN.setComboBox_compartment(comp);
-        wN._cli._visibleDansPanel = visible;
-        
-        wN.button_OKActionPerformed(null);
-        model.addProtoReaxel(wN._cli);
-    }
-    
-    public void addBehaviorMoveReaction(String entName){
-        WndEditReaction wR = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wR.WndCliEditReaction3_Load(null);
-        wR.setVisible(false);
-        
-        wR.setTextBox_etiquette("Move_"+entName);
-        wR.setDataGridView_reactifs(entName, 0);
-        wR.setDataGridView_produits(entName, 1);
-        wR.setDataGridView_produits("0", 0);
-        wR.setDataGridView_reactifs("0", 1);
-        wR.setDataGridView_produits("-", 2);
-        wR.setDataGridView_reactifs("*", 2);
-        
-        wR.button_OKMouseClicked(null);
-        model.addMoteurReaction(wR._r3);
-    }
-    
-    public void addBehaviorReaction(String substrat1, String substrat2, String produit1, String produit2, String produit3){
-    	WndEditReaction wR = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wR.WndCliEditReaction3_Load(null);
-        wR.setVisible(false);
-        
-        wR.setTextBox_etiquette("reaction_"+substrat1+"+"+substrat2);
-        wR.setDataGridView_reactifs(substrat1, 0);
-        wR.setDataGridView_produits(produit1, 1);
-        wR.setDataGridView_produits(produit2, 0);
-        wR.setDataGridView_reactifs(substrat2, 1);
-        wR.setDataGridView_produits(produit3, 2);
-        wR.setDataGridView_reactifs("*", 2);
-        
-        wR.button_OKMouseClicked(null);
-        model.addMoteurReaction(wR._r3);
-    }
-    
-    	
-    public void addBehaviorDegradationReaction(String substrat1, String substrat2, String produit1, String produit2, String produit3){
-    	WndEditReaction wR = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wR.WndCliEditReaction3_Load(null);
-        wR.setVisible(false);
-        
-        wR.setTextBox_etiquette("Degradation_"+substrat1);
-        wR.setDataGridView_reactifs(substrat1, 0);
-        wR.setDataGridView_produits(produit1, 1);
-        wR.setDataGridView_produits(produit2, 0);
-        wR.setDataGridView_reactifs(substrat2, 1);
-        wR.setDataGridView_produits(produit3, 2);
-        wR.setDataGridView_reactifs("*", 2);
-        wR.setTextBox_k("0.1");
-        
-        wR.button_OKMouseClicked(null);
-        model.addMoteurReaction(wR._r3);
-  
-    	
-    }
 
-
-    
-    
-    public void addCompartment() {
-        if (simulator.isRunning()) {
-            this.pauseSimulation();
-        }
-   
-        WndEditCompartment wC = new WndEditCompartment(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wC.WndCliValue_Load(null);
-        wC.setVisible(true);
-        if (wC.getDialogResult().equals("OK") && !wC._cli.getEtiquettes().equals("")) {
-        	addCompartmentMembrane(wC._cli);
-        	if (wC._cli.getCenter().x != 0 && wC._cli.getCenter().x != 0 && wC._cli.getRadius() != 0){
-            	UtilPoint3D center = wC._cli.getCenter();
-            	int radius = wC._cli.getRadius();
-            	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
-            	if(model.verifCollision(wC._cli.getEtiquettes(),lst_pts )){
-            		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
-            			enleverMauvaisEntite(wC._cli.getEtiquettes(), center, radius);
-            			delMembrane(lst_pts);
-            			addEntityInstances2(wC._cli, lst_pts);
-            		}else{
-            			wC.setTextBoxCenterX("0");
-                        wC.setTextBoxCenterY("0");
-                        wC.setTextBoxRadius("0");
-                        wC.button_OKActionPerformed(null);
-                		JOptionPane jop = new JOptionPane();
-                		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-            		}
-            	}else{
-            		wC.setTextBoxCenterX("0");
-                    wC.setTextBoxCenterY("0");
-                    wC.setTextBoxRadius("0");
-                    wC.button_OKActionPerformed(null);
-            		JOptionPane jop = new JOptionPane();
-            		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-            	}
-           	}   
-        	model.addCompartment(wC._cli);
-        }
-    }
-    
-    public void addCompartmentMembrane(Compartment comp){
-        WndEditNoeud wN = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wN.WndCliValue_Load(null);
-        wN.setVisible(false);
-        wN.setjCheckBox_vidable(comp.Vidable);
-        wN.setTextBox1("Membrane_"+comp.getEtiquettes());
-        wN.setButtonCouleur(comp.Couleur);
-        wN.setComboBox_compartment(comp.getEtiquettes());
-        wN.setVisible(false);
-        wN.button_OKActionPerformed(null);
-        model.addProtoReaxel(wN._cli);
-    }
-    
-    public void editCompartmentGraphique(int index, UtilPoint3D center, int radius){
-    	String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
-        Compartment cpt = model.getCompartment(name);
-        int old_centerX = cpt.getCenter().x;
-        int old_centerY = cpt.getCenter().y;
-        int old_centerZ = cpt.getCenter().z;
-        int old_radius = cpt.getRadius();
-        WndEditCompartment wC = new WndEditCompartment(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wC.WndCliValue_Load(cpt);
-        wC.setVisible(false);
-        ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
-        ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x,center.y, center.z, radius, env.getTailleZ());
-    	if (model.verifCollision(wC._cli.getEtiquettes(), lst_pts)){
-    		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
-    			wC.setTextBoxCenterX(Integer.toString(center.x));
-    			wC.setTextBoxCenterY(Integer.toString(center.y));
-    			wC.setTextBoxRadius(Integer.toString(radius));
-    			wC.button_OKActionPerformed(null);
-    			
-    			enleverAncienneEntite(wC._cli.getEtiquettes(), center, radius);
-    			delMembrane(old_lst_pts);
-    			enleverMauvaisEntite(wC._cli.getEtiquettes(), center, radius);
-    			delMembrane(lst_pts);
-    			addEntityInstances2(wC._cli, lst_pts);
-    		}else{
-    			wC.setTextBoxCenterX(Integer.toString(old_centerX));
-                wC.setTextBoxCenterY(Integer.toString(old_centerY));
-                wC.setTextBoxRadius(Integer.toString(old_radius));
-                wC.button_OKActionPerformed(null);
-        		JOptionPane jop = new JOptionPane();
-        		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en dehors de l'envirronement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
-    		}
-    	}else{
-    		wC.setTextBoxCenterX(Integer.toString(old_centerX));
-            wC.setTextBoxCenterY(Integer.toString(old_centerY));
-            wC.setTextBoxRadius(Integer.toString(old_radius));
-            wC.button_OKActionPerformed(null);
-    		JOptionPane jop = new JOptionPane();
-    		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-    	}
-    	model.editCompartment(wC._cli, name);
-        editCompartmentMembrane(wC._cli, name);
-    }
-/*    
-    public void addMembrane(int index, UtilPoint3D center,int radius, ArrayList<UtilPoint3D> lst_pts){
-        String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
-        Compartment comp = model.getCompartment(name);
-        comp.entity_property();
-        comp.setCenter(center);
-        comp.setRadius(radius);
-        model.addProtoReaxel(comp.getEnt());
-        addEntityInstances2(comp, lst_pts);
-    }
-  */  
-    public boolean verificationPourMembrane(int index){
-        String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
-        Compartment comp = model.getCompartment(name);
-        UtilPoint3D center = comp.getCenter();
-        if(center.x == 0 && center.y == 0){
-        	return true;
-        }
-        else{
-        	return false;
-        }
-    }
-    
-    public void delMembrane(ArrayList<UtilPoint3D> lst_pts){
-    	for (UtilPoint3D point: lst_pts){
-    		removeEntityInstance(point.x, point.y,point.z);
-    	}
-    }
-    
     /**
      * Change the probability of the Behaviour name by value. Called by
      * Environment
@@ -601,7 +244,7 @@ public class Controller {
         if (i >= 0) {
             String name = env.getDataGridView_comportements().getSelectedValue().toString();
             Behavior cpt = model.getBehaviour((String) env.getDataGridView_comportements().getModel().getElementAt(i));
-            WndEditReaction wc = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+            WndEditReaction wc = new WndEditReaction(model.getListManipulesNoeuds(), model.getListManipulesReactions());
             wc.WndCliEditReaction3_Load(cpt);
             wc.setVisible(true);
             String r = wc.getDialogResult();
@@ -639,9 +282,6 @@ public class Controller {
      * @param tab an array of indexes - the entities selected by the user in the
      * the main ihm
      */
-    
-     
-    
     public void delEntity(int[] tab) {
         if (simulator.isRunning()) {
             this.pauseSimulation();
@@ -658,29 +298,6 @@ public class Controller {
         if (!simulator.isStopped()) {
             simulator.ProtoReaxelDeleted(entities);
         }
-    }
-    
-    public void delCompartment(int[] tab) {
-        if (simulator.isRunning()) {
-            this.pauseSimulation();
-        }
-        ArrayList<String> compartments = new ArrayList<>();
-        ArrayList<String> entities = new ArrayList<>();
-        for (int k = tab.length - 1; k >= 0; k--) {
-            int i = tab[k];
-            if (i >= 0) {
-                String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(i);
-                compartments.add(name);
-                for (Entity ent : model.getCopyListManipulesNoeuds()){
-                	if(ent.getCompartment().equals(name)){
-                		entities.add(ent.getEtiquettes());
-                	}
-                }
-            }
-        }
-        
-        model.delCompartment(compartments);
-        model.delProtoReaxel(entities);
     }
 
     /**
@@ -745,7 +362,7 @@ public class Controller {
      * @param z
      * @return a number of entities' instances
      */
-    private ArrayList<UtilPoint3D> instancesInSelection(int top_leftX, int top_leftY, int bottom_rightX, int bottom_rightY, int z) {
+    protected ArrayList<UtilPoint3D> instancesInSelection(int top_leftX, int top_leftY, int bottom_rightX, int bottom_rightY, int z) {
         ArrayList<UtilPoint3D> points = new ArrayList<>();
         AllInstances instances;
         if (simulator.isRunning()) {
@@ -778,7 +395,7 @@ public class Controller {
      * @param existing
      * @return an array of nbr 3D points
      */
-    private ArrayList<UtilPoint3D> populate(int top_leftX, int top_leftY, int bottom_rightX, int bottom_rightY, int z, int nbr, ArrayList<UtilPoint3D> existing) {
+    protected ArrayList<UtilPoint3D> populate(int top_leftX, int top_leftY, int bottom_rightX, int bottom_rightY, int z, int nbr, ArrayList<UtilPoint3D> existing) {
         ArrayList<UtilPoint3D> points = new ArrayList<>();
         int maxX = Math.max(top_leftX, bottom_rightX);
         int minX = Math.min(top_leftX, bottom_rightX);
@@ -807,65 +424,12 @@ public class Controller {
     public void addEntityInstances(ArrayList<UtilPoint3D> points) {
         int num_col = env.getDataGridView_entites().getSelectedIndex();
         if (num_col >= 0) {
-        	ArrayList<UtilPoint3D> pointsVerifier = new ArrayList<UtilPoint3D>();
             String etiquette = UtilDivers.str_originale(env.getDataGridView_entites().getModel().getElementAt(num_col).toString());
-            Entity entity = model.getProtoReaxel(etiquette);
-            String nameComp = entity.getCompartment();
-            if (nameComp.equals("Cytosol")){
-            	for(UtilPoint3D point : points){
-            		boolean rep = true;
-            		for (Compartment comp : model.getCopyListManipulesCompartment()){
-            			int distance = (int) Math.sqrt(Math.pow(point.x-comp.getCenter().x, 2) + Math.pow(point.y-comp.getCenter().y, 2));
-        				if (comp.getRadius() > distance){
-        					rep = false;
-        					break;
-        				}	
-            		}
-            		if (rep){
-            			pointsVerifier.add(point);
-            		}
-            	}
-            }else{
-            	for(UtilPoint3D point : points){
-            		boolean rep = true;
-            		for (Compartment comp : model.getCopyListManipulesCompartment()){
-        				int distance = (int) Math.sqrt(Math.pow(point.x-comp.getCenter().x, 2) + Math.pow(point.y-comp.getCenter().y, 2));
-            			if(comp.getEtiquettes().equals(nameComp)){
-            				if (comp.getRadius() > distance){
-            					rep = true;
-            				}else{
-            					rep = false;
-            					break;
-            				}
-            			}else{
-            				if (comp.getRadius() < distance){
-            					rep = true;
-            				}else{
-            					rep = false;
-            					break;
-            				}
-            			}
-            		}
-            		if (rep == false){
-        				continue;
-        			}else{
-        				pointsVerifier.add(point);
-        			}
-            	}
-            }
-			AddCommand command = new AddCommand(model, simulator, pointsVerifier, etiquette);
-			command.setOpposite(new RemoveCommand(model, simulator, pointsVerifier));
-			this.memorizeCommand(command);
-			command.execute();
+            AddCommand command = new AddCommand(model, simulator, points, etiquette);
+            command.setOpposite(new RemoveCommand(model, simulator, points));
+            this.memorizeCommand(command);
+            command.execute();
         }
-    }
-    
-    public void addEntityInstances2(Compartment comp, ArrayList<UtilPoint3D> points) {
-       String etiquette = "Membrane_"+comp.getEtiquettes();
-       AddCommand command = new AddCommand(model, simulator, points, etiquette);
-       command.setOpposite(new RemoveCommand(model, simulator, points));
-       this.memorizeCommand(command);
-       command.execute();
     }
 
     /**
@@ -882,12 +446,13 @@ public class Controller {
             String name = UtilDivers.str_originale(env.getDataGridView_entites().getSelectedValue().toString());
             Entity p = model.getProtoReaxel(name);
 
-            WndEditNoeud wc = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+            WndEditNoeud wc = new WndEditNoeud(model.getListManipulesNoeuds(),
+                    model.getListManipulesReactions());
             wc.WndCliValue_Load(p);
             wc.setVisible(true);
             if (wc.getDialogResult().equals("OK") && !p._etiquettes.equals("")) {
                 int time = simulator.getTime();
-                model.editProtoReaxel(wc._cli, name, time);
+                model.editProtoReaxel(p, name, time);
                 if (!simulator.isStopped()) {
                     simulator.ProtoReaxelEdited(p, name);
                 }
@@ -895,80 +460,6 @@ public class Controller {
         }
     }
 
-
-    public void editCompartment() {
-        if (simulator.isRunning()) {
-            this.pauseSimulation();
-        }
-
-        int i = env.getDataGridView_Compartment().getSelectedIndex();
-        if (i >= 0) {
-            String name = env.getDataGridView_Compartment().getSelectedValue().toString();
-            Compartment cpt = model.getCompartment((String) env.getDataGridView_Compartment().getModel().getElementAt(i));
-            int old_centerX = cpt.getCenter().x;
-            int old_centerY = cpt.getCenter().y;
-            int old_centerZ = cpt.getCenter().z;
-            int old_radius = cpt.getRadius();
-            WndEditCompartment wc = new WndEditCompartment(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
-            wc.WndCliValue_Load(cpt);
-            wc.setVisible(true);
-            String r = wc.getDialogResult();
-            if (r != null && r.equals("OK")) {
-                UtilPoint3D center = wc._cli.getCenter();
-                int radius = wc._cli.getRadius();
-                if (old_centerX != center.x || old_centerY != center.y || old_radius != radius ){
-                	ArrayList<UtilPoint3D> old_lst_pts = UtilPoint3D.BresenhamRond3D(old_centerX, old_centerY, old_centerZ, old_radius, getEnv().getTailleZ());
-                	ArrayList<UtilPoint3D> lst_pts = UtilPoint3D.BresenhamRond3D(center.x, center.y, center.z, radius, getEnv().getTailleZ());
-                	if(model.verifCollision(wc._cli.getEtiquettes(), lst_pts)){
-                		if(center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= env.getTailleX() && center.y + radius <= env.getTailleY()){
-                			enleverAncienneEntite(wc._cli.getEtiquettes(), center, radius);
-                			delMembrane(old_lst_pts);
-                			enleverMauvaisEntite(wc._cli.getEtiquettes(), center, radius);
-                			delMembrane(lst_pts);
-                			addEntityInstances2(wc._cli, lst_pts);
-                		}else{
-                			wc.setTextBoxCenterX(Integer.toString(old_centerX));
-                            wc.setTextBoxCenterY(Integer.toString(old_centerY));
-                            wc.setTextBoxRadius(Integer.toString(old_radius));
-                            wc.button_OKActionPerformed(null);
-                    		JOptionPane jop = new JOptionPane();
-                    		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                		}
-                	}else{
-                		wc.setTextBoxCenterX(Integer.toString(old_centerX));
-                        wc.setTextBoxCenterY(Integer.toString(old_centerY));
-                        wc.setTextBoxRadius(Integer.toString(old_radius));
-                        wc.button_OKActionPerformed(null);
-                		JOptionPane jop = new JOptionPane();
-                		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                	}
-                }
-                
-                model.editCompartment(wc._cli, name);
-                editCompartmentMembrane(wc._cli, name);
-            }
-        }
-        
-    }
-  
-    public void editCompartmentMembrane(Compartment comp, String name){
-    	Entity p = model.getProtoReaxel("Membrane_"+name);
-    	
-        WndEditNoeud wN = new WndEditNoeud(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wN.WndCliValue_Load(p);
-        wN.setVisible(false);
-        wN.setjCheckBox_vidable(comp.Vidable);
-        wN.setTextBox1("Membrane_"+comp.getEtiquettes());
-        wN.setButtonCouleur(comp.Couleur);
-        wN.setComboBox_compartment(comp.getEtiquettes());
-        wN.button_OKActionPerformed(null);
-        model.editProtoReaxel(wN._cli, "Membrane_"+name, 0);
-        if (!simulator.isStopped()) {
-            simulator.ProtoReaxelEdited(p, name);
-        }
-        
-    }
-    
     /**
      * Removes an Entity's instance defined by the coordinates x, y and z.
      * Called by Environment
@@ -1194,7 +685,7 @@ public class Controller {
     /**
      * Pause the simulation in both the Simulator and the Environment.
      */
-    private void pauseSimulation() {
+    protected void pauseSimulation() {
         env.pauseSimulation();
         simulator.setPause(true);
     }
@@ -1363,7 +854,7 @@ public class Controller {
         env.setCubes_selectionnes(new ArrayList<InstanceReaxel>());
     }
 
-    private void addKeyListener(JFrame f) {
+    protected void addKeyListener(JFrame f) {
         final Controller controller = this;
         final String space = "Space";
         InputMap map = f.getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -1413,7 +904,7 @@ public class Controller {
         }
     }
 
-    private void memorizeCommand(Command command) {
+    protected void memorizeCommand(Command command) {
         lastCommand.add(command);
         if (lastCommand.size() > maxMemory) {
             lastCommand.remove(0);

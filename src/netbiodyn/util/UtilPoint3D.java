@@ -126,30 +126,6 @@ public class UtilPoint3D {
         return lst_pts;
     }
     
-    
-    public static ArrayList<UtilPoint3D> BresenhamRond3D(int x1, int y1, int z1, int r, int zMax) {
-        ArrayList<UtilPoint3D> lst_pts = new ArrayList<>();
-        int xmin = x1 -r -1;
-        int xmax = x1 + r + 1;
-        int ymin = y1 -r -1;
-        int ymax = y1 + r +1;
-        
-        int i,j;
-        for(i = xmin; i<xmax; i++){
-        	for(j = ymin; j<ymax; j++){
-        		int dx = x1-i;
-        		int dy = y1-j;
-        		int rTmp = (int) Math.sqrt(Math.pow(dx, 2)+Math.pow(dy,2));
-        		if(rTmp == r){
-        			for(int z = 0; z < zMax; z++){
-        				lst_pts.add(new UtilPoint3D(i, j, z));
-        			}
-           		}
-        	}
-        }
-        return lst_pts;   
-    }
-
     public static UtilPoint3D centreDeGravite(ArrayList<InstanceReaxel> lst) {
         UtilPoint3D pt = new UtilPoint3D(0, 0, 0);
         int nb = lst.size();

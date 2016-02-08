@@ -40,7 +40,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import javax.swing.JList;
@@ -48,7 +47,6 @@ import netbiodyn.AllInstances;
 import netbiodyn.util.Serialized;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
-import netbiodyn.Compartment;
 import netbiodyn.Entity;
 import netbiodyn.ProtoSimplexel;
 import netbiodyn.util.Lang;
@@ -61,71 +59,69 @@ import netbiodyn.util.UtilDivers;
  */
 public class Environment extends javax.swing.JPanel implements IhmListener, AdjustingListener {
 
-    private final Controller controller;
-    private Env_Parameters parameters;
+    protected final Controller controller;
+    protected Env_Parameters parameters;
     public String _site_publication = "http://virtulab.univ-brest.fr/?page_id=172";
 
     // Animation
-    private UtilAnimatedGifEncoder _animation_gif = null;
+    protected UtilAnimatedGifEncoder _animation_gif = null;
 
-    private int _case_x0 = 0;
-    private int _case_y0 = 0;
-    private boolean movingCubes = false;
-    private boolean freezed = false;
+    protected int _case_x0 = 0;
+    protected int _case_y0 = 0;
+    protected boolean movingCubes = false;
+    protected boolean freezed = false;
 
-    private ArrayList<Entity> _ListManipulesNoeuds = new ArrayList<>();
-    private ArrayList<Behavior> _ListManipulesReactions = new ArrayList<>();
-    private ArrayList<Compartment> _ListManipulesCompartment = new ArrayList<>();
-    private AllInstances instances;
+    protected ArrayList<Entity> _ListManipulesNoeuds = new ArrayList<>();
+    protected ArrayList<Behavior> _ListManipulesReactions = new ArrayList<>();
+    protected AllInstances instances;
 
-    private boolean _animation_courbes = false;
-    private HashMap<String, Integer> dico_courbes;
-    private String PARAM_fichier = null;
-    private String _objet_presse = "";
+    protected boolean _animation_courbes = false;
+    protected HashMap<String, Integer> dico_courbes;
+    protected String PARAM_fichier = null;
+    protected String _objet_presse = "";
 
     // ATTRIBUTS
-    private int _time = 0;
+    protected int _time = 0;
 
     // Observed area
-    private float _observed_width; // Entre 0 et getTailleX()
-    private float _observed_height; // Entre 0 et getTailleY()
-    private float _observed_left = 0;     // Entre 0 et getTailleX()
-    private float _observed_top = 0;      // Entre 0 et getTailleY()
-    private int _x0_mouse_down = 0;
-    private int _y0_mouse_down = 0;
-    private boolean _mouse_left_down = false;
-    private boolean _mouse_right_down = false;
-    private boolean _mouse_zoom_down = false;
-    private ArrayList<InstanceReaxel> _cubes_selectionnes = null;
-//    private ArrayList<elementCourbe> _courbes = new ArrayList<>();
-    private final SimulationCurves curves;
+    protected float _observed_width; // Entre 0 et getTailleX()
+    protected float _observed_height; // Entre 0 et getTailleY()
+    protected float _observed_left = 0;     // Entre 0 et getTailleX()
+    protected float _observed_top = 0;      // Entre 0 et getTailleY()
+    protected int _x0_mouse_down = 0;
+    protected int _y0_mouse_down = 0;
+    protected boolean _mouse_left_down = false;
+    protected boolean _mouse_right_down = false;
+    protected boolean _mouse_zoom_down = false;
+    protected ArrayList<InstanceReaxel> _cubes_selectionnes = null;
+//    protected ArrayList<elementCourbe> _courbes = new ArrayList<>();
+    protected final SimulationCurves curves;
 
-    private BufferedImage _image_deco = null;
+    protected BufferedImage _image_deco = null;
 
     // Sauvegarde / Chargement
-    private String _nom_sauvegarde = "simulation.nbd";
+    protected String _nom_sauvegarde = "simulation.nbd";
 
-    private boolean _dataGridView_entitesIsChanging = false;
+    protected boolean _dataGridView_entitesIsChanging = false;
 
-    private int init_width = -1;
-    private int init_height = -1;
+    protected int init_width = -1;
+    protected int init_height = -1;
 
-    private Rectangle init_bounds_sim = new Rectangle();
-    private Rectangle init_bounds_env = new Rectangle();
-    private Rectangle init_bounds_comp = new Rectangle();
-    private Rectangle init_bounds_ent = new Rectangle();
-    private Rectangle init_bounds_beh = new Rectangle();
-    private Rectangle init_bounds_curv = new Rectangle();
-    private Rectangle init_bounds_misc = new Rectangle();
+    protected Rectangle init_bounds_sim = new Rectangle();
+    protected Rectangle init_bounds_env = new Rectangle();
+    protected Rectangle init_bounds_ent = new Rectangle();
+    protected Rectangle init_bounds_beh = new Rectangle();
+    protected Rectangle init_bounds_curv = new Rectangle();
+    protected Rectangle init_bounds_misc = new Rectangle();
 
-    private BufferedImage bmp_memory = null;
-    private Graphics g_mem = null;
+    protected BufferedImage bmp_memory = null;
+    protected Graphics g_mem = null;
 
     // Images de décoration des boutons
-    private ImageIcon icon_paint_move, icon_paint_stylo, icon_paint_spray, icon_paint_ligne, icon_paint_rond, icon_paint_random, icon_paint_gomme;
-    private ImageIcon icon_bouton_play, icon_bouton_pause, icon_bouton_step, icon_bouton_stop;
-    private ImageIcon icon_bouton_new, icon_bouton_open, icon_bouton_save;
-    private ImageIcon icon_interogation;
+    protected ImageIcon icon_paint_move, icon_paint_stylo, icon_paint_spray, icon_paint_ligne, icon_paint_random, icon_paint_gomme;
+    protected ImageIcon icon_bouton_play, icon_bouton_pause, icon_bouton_step, icon_bouton_stop;
+    protected ImageIcon icon_bouton_new, icon_bouton_open, icon_bouton_save;
+    protected ImageIcon icon_interogation;
 
     public Environment(Controller controller, Env_Parameters parameters) {
         super();
@@ -181,11 +177,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     public void moteurReactionUpdate(ArrayList<Behavior> behaviours) {
         this._ListManipulesReactions = behaviours;
         fillDataGridBehaviours();
-    }
-    
-    public void CompartmentUpdate(ArrayList<Compartment> compartment) {
-        this._ListManipulesCompartment = compartment;
-        fillDataGridCompartment();
     }
 
     @Override
@@ -282,14 +273,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                 icon_paint_ligne = new ImageIcon(img);
                 this.checkBox_paint_ligne.setIcon(icon_paint_ligne);
             }
-            // Bouton Rond
-            {
-                url = getClass().getClassLoader().getResource("Images/paint_rond.png");
-                BufferedImage img;
-                img = ImageIO.read(url);
-                icon_paint_rond = new ImageIcon(img);
-                this.checkBox_paint_rond.setIcon(icon_paint_rond);
-            }
             // Bouton Random
             {
                 url = getClass().getClassLoader().getResource("Images/paint_random.png");
@@ -382,7 +365,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
      * regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    protected void initComponents() {
 
         bouton_save = new javax.swing.JButton();
         bouton_new = new javax.swing.JButton();
@@ -391,17 +374,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         jLabel_version = new javax.swing.JLabel();
         jLabel_NetBioDyn = new javax.swing.JLabel();
         bouton_lang = new javax.swing.JButton();
-        
-        // Compartment
-        jPanelCompartment = new javax.swing.JPanel();
-        jLabelCompartment = new javax.swing.JLabel();
-        jButtonAddCompartment = new javax.swing.JButton();
-        jButtonEditCompartment = new javax.swing.JButton();
-        jButtonDelCompartment = new javax.swing.JButton();
-        jScrollPane_Compartment = new javax.swing.JScrollPane();
-        dataGridView_Compartment = new javax.swing.JList();
-        
-        // Entities
         jPanelEntities = new javax.swing.JPanel();
         jLabelEntites = new javax.swing.JLabel();
         jButtonAddEntity = new javax.swing.JButton();
@@ -413,11 +385,8 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         checkBox_paint_stylo = new javax.swing.JButton();
         checkBox_paint_spray = new javax.swing.JButton();
         checkBox_paint_ligne = new javax.swing.JButton();
-        checkBox_paint_rond = new javax.swing.JButton();
         checkBox_paint_random = new javax.swing.JButton();
         checkBox_paint_gomme = new javax.swing.JButton();
-        
-        // Behaviors
         jPanelBehaviors = new javax.swing.JPanel();
         jLabelComportements = new javax.swing.JLabel();
         jButtonAddBehav = new javax.swing.JButton();
@@ -427,8 +396,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         dataGridView_comportements = new javax.swing.JList();
         jSliderProba = new javax.swing.JSlider();
         jLabelProba = new javax.swing.JLabel();
-        
-        // Envirronnement
         jPanelEnv = new javax.swing.JPanel();
         jLabelEnvironnement = new javax.swing.JLabel();
         bouton_environnement = new javax.swing.JButton();
@@ -437,8 +404,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         trackBar_zoom = new javax.swing.JSlider();
         jLabelZ = new javax.swing.JLabel();
         jSliderZ = new javax.swing.JSlider();
-        
-        // Courbes
         jPanelCurves = new javax.swing.JPanel();
         jLabelCourbes = new javax.swing.JLabel();
         pictureBox_courbes = new javax.swing.JLabel();
@@ -446,9 +411,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         jLabel_t0 = new javax.swing.JLabel();
         label_courbe_x_max = new javax.swing.JLabel();
         abscissaBox = new javax.swing.JComboBox();
-        jButtonReaction = new javax.swing.JButton();
-        
-        // Divers
         jPanelMisc = new javax.swing.JPanel();
         jLabelDivers = new javax.swing.JLabel();
         Ajustement = new javax.swing.JButton();
@@ -457,11 +419,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         checkBox_avi = new javax.swing.JCheckBox();
         checkBox_Flou = new javax.swing.JCheckBox();
         jButton3D = new javax.swing.JButton();
-      
-        
-       
-        
-        // Boite d'envirronnement
         jPanelSimulator = new javax.swing.JPanel();
         pictureBox_Env = new javax.swing.JLabel();
         jLabelSimulateur = new javax.swing.JLabel();
@@ -551,107 +508,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         });
         add(bouton_lang);
         bouton_lang.setBounds(240, 10, 70, 20);
-        
-        // Compartment
-        jPanelCompartment.setBackground(new java.awt.Color(153, 153, 255));
-        jPanelCompartment.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanelCompartment.setMinimumSize(new java.awt.Dimension(160, 230));
-        jPanelCompartment.setPreferredSize(new java.awt.Dimension(160, 230));
-        
-        jLabelCompartment.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jLabelCompartment.setForeground(new java.awt.Color(102, 0, 153));
-        jLabelCompartment.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelCompartment.setText("Compartment");
 
-        jButtonAddCompartment.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        jButtonAddCompartment.setText("+");
-        jButtonAddCompartment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAddCompartmentActionPerformed(evt);
-            }
-        });
-
-        jButtonEditCompartment.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        jButtonEditCompartment.setText("Edit");
-        jButtonEditCompartment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEditCompartmentActionPerformed(evt);
-            }
-        });
-
-        jButtonDelCompartment.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        jButtonDelCompartment.setText("-");
-        jButtonDelCompartment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDelCompartmentActionPerformed(evt);
-            }
-        });
-
-        dataGridView_Compartment.setFont(new java.awt.Font("DejaVu Sans", 0, 11)); // NOI18N
-        dataGridView_Compartment.setToolTipText("Created Compartment");
-        dataGridView_Compartment.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dataGridView_CompartmentMouseClicked(evt);
-            }
-        });
-
-        jScrollPane_Compartment.setViewportView(dataGridView_Compartment);
-        
-        checkBox_paint_rond.setToolTipText("Circle");
-        checkBox_paint_rond.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        checkBox_paint_rond.setPreferredSize(new java.awt.Dimension(30, 30));
-        checkBox_paint_rond.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                checkBox_paint_rondMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                checkBox_paint_rondMousePressed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanelCompartmentLayout = new javax.swing.GroupLayout(jPanelCompartment);
-        jPanelCompartment.setLayout(jPanelCompartmentLayout);
-        jPanelCompartmentLayout.setHorizontalGroup(
-            jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelCompartmentLayout.createSequentialGroup()
-                .addComponent(jButtonAddCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonEditCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonDelCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanelCompartmentLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelCompartmentLayout.createSequentialGroup()
-                        .addComponent(checkBox_paint_rond, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane_Compartment, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
-        jPanelCompartmentLayout.setVerticalGroup(
-            jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCompartmentLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelCompartment)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButtonAddCompartment, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButtonDelCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonEditCompartment, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane_Compartment, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                .addGap(12, 12, 12)
-                .addGroup(jPanelCompartmentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(checkBox_paint_rond, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-		
-        add(jPanelCompartment);
-        jPanelCompartment.setBounds(10, 30, 165, 230);
-        
-        
-        // Entities
         jPanelEntities.setBackground(new java.awt.Color(153, 153, 255));
         jPanelEntities.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanelEntities.setMinimumSize(new java.awt.Dimension(160, 230));
@@ -687,7 +544,11 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         });
 
         dataGridView_entites.setFont(new java.awt.Font("DejaVu Sans", 0, 11)); // NOI18N
-
+        dataGridView_entites.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
         dataGridView_entites.setToolTipText("Created Entities");
         dataGridView_entites.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -785,15 +646,15 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         jPanelEntitiesLayout.setHorizontalGroup(
             jPanelEntitiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEntitiesLayout.createSequentialGroup()
-                .addComponent(jButtonAddEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonAddEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonEditEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonEditEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonDelEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButtonDelEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
             .addGroup(jPanelEntitiesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelEntitiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelEntites, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelEntites, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelEntitiesLayout.createSequentialGroup()
                         .addComponent(checkBox_paint_move, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
@@ -821,7 +682,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                         .addComponent(jButtonDelEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addComponent(jButtonEditEntity, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane_Entities, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                .addComponent(jScrollPane_Entities, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                 .addGap(12, 12, 12)
                 .addGroup(jPanelEntitiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(checkBox_paint_move, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -834,7 +695,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelEntities);
-        jPanelEntities.setBounds(10, 260, 165, 230);
+        jPanelEntities.setBounds(0, 30, 160, 230);
 
         jPanelBehaviors.setBackground(new java.awt.Color(153, 153, 255));
         jPanelBehaviors.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -923,7 +784,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                 .addGroup(jPanelBehaviorsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPaneBehaviors, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelBehaviorsLayout.createSequentialGroup()
-                        .addComponent(jButtonAddBehav, javax.swing.GroupLayout.PREFERRED_SIZE, 45,  javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonAddBehav, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonEditBehav, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -950,7 +811,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelBehaviors);
-        jPanelBehaviors.setBounds(10, 490, 165, 220);
+        jPanelBehaviors.setBounds(0, 260, 160, 220);
 
         jPanelEnv.setBackground(new java.awt.Color(153, 153, 255));
         jPanelEnv.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1064,7 +925,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelEnv);
-        jPanelEnv.setBounds(10, 710, 890, 70);
+        jPanelEnv.setBounds(0, 480, 590, 70);
 
         jPanelCurves.setBackground(new java.awt.Color(153, 153, 255));
         jPanelCurves.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1101,15 +962,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                 abscissaBoxActionPerformed(evt);
             }
         });
-        
-        jButtonReaction.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
-        jButtonReaction.setText("Reaction");
-        jButtonReaction.setToolTipText("Creation de reaction");
-        jButtonReaction.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-            	jButtonReaction_tMouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanelCurvesLayout = new javax.swing.GroupLayout(jPanelCurves);
         jPanelCurves.setLayout(jPanelCurvesLayout);
@@ -1120,8 +972,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                 .addComponent(jLabel_t0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(48, 48, 48)
                 .addComponent(abscissaBox, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonReaction, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(label_courbe_x_max, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1149,15 +999,14 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                 .addGroup(jPanelCurvesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_t0)
                     .addComponent(label_courbe_x_max)
-                    .addComponent(abscissaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                	.addComponent(jButtonReaction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(abscissaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         abscissaBox.getAccessibleContext().setAccessibleName("");
 
         add(jPanelCurves);
-        jPanelCurves.setBounds(900, 30, 300, 620);
+        jPanelCurves.setBounds(590, 30, 280, 390);
 
         jPanelMisc.setBackground(new java.awt.Color(153, 153, 255));
         jPanelMisc.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1271,7 +1120,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         );
 
         add(jPanelMisc);
-        jPanelMisc.setBounds(900, 650, 300, 130);
+        jPanelMisc.setBounds(590, 420, 280, 130);
 
         jPanelSimulator.setBackground(new java.awt.Color(153, 153, 255));
         jPanelSimulator.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -1279,8 +1128,8 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
 
         pictureBox_Env.setBackground(new java.awt.Color(255, 255, 255));
         pictureBox_Env.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        pictureBox_Env.setMaximumSize(new java.awt.Dimension(400, 400));
-        pictureBox_Env.setMinimumSize(new java.awt.Dimension(400, 400));
+        pictureBox_Env.setMaximumSize(new java.awt.Dimension(410, 410));
+        pictureBox_Env.setMinimumSize(new java.awt.Dimension(410, 410));
         pictureBox_Env.setOpaque(true);
         pictureBox_Env.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
             public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
@@ -1368,7 +1217,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         jPanelSimulator.setLayout(jPanelSimulatorLayout);
         jPanelSimulatorLayout.setHorizontalGroup(
             jPanelSimulatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pictureBox_Env, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE , Short.MAX_VALUE)
+            .addComponent(pictureBox_Env, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanelSimulatorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelSimulateur, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1406,14 +1255,14 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSliderSpeed, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pictureBox_Env, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
+                .addComponent(pictureBox_Env, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE))
         );
 
         add(jPanelSimulator);
-        jPanelSimulator.setBounds(175, 30, 725, 680);
+        jPanelSimulator.setBounds(160, 30, 430, 455);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button_play1MouseClicked(java.awt.event.MouseEvent evt) {
+    protected void button_play1MouseClicked(java.awt.event.MouseEvent evt) {
         if (_time == 0) {
             memoriserCourbes();
             dessinerCourbes();
@@ -1421,92 +1270,84 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         controller.play_one();
     }
 
-    private void button_playMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_playMouseClicked
+    protected void button_playMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_playMouseClicked
         controller.play();
     }//GEN-LAST:event_button_playMouseClicked
 
-    private void checkBox_paint_moveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_moveMouseClicked
+    protected void checkBox_paint_moveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_moveMouseClicked
         releverToutesCheckBoxPaint(checkBox_paint_move);
 	}//GEN-LAST:event_checkBox_paint_moveMouseClicked
 
-    private void checkBox_paint_styloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_styloMouseClicked
+    protected void checkBox_paint_styloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_styloMouseClicked
         releverToutesCheckBoxPaint(checkBox_paint_stylo);
     }//GEN-LAST:event_checkBox_paint_styloMouseClicked
 
-    private void checkBox_paint_sprayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_sprayMouseClicked
+    protected void checkBox_paint_sprayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_sprayMouseClicked
         releverToutesCheckBoxPaint(checkBox_paint_spray);
     }//GEN-LAST:event_checkBox_paint_sprayMouseClicked
 
-    private void checkBox_paint_gommeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_gommeMouseClicked
+    protected void checkBox_paint_gommeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_gommeMouseClicked
         releverToutesCheckBoxPaint(checkBox_paint_gomme);
     }//GEN-LAST:event_checkBox_paint_gommeMouseClicked
 
 
-    private void button_initMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_initMouseClicked
+    protected void button_initMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_initMouseClicked
         controller.stop();
     }//GEN-LAST:event_button_initMouseClicked
 
-    private void trackBar_zoomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trackBar_zoomMousePressed
+    protected void trackBar_zoomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trackBar_zoomMousePressed
         _mouse_zoom_down = true;
         timer_refresh.start();
     }//GEN-LAST:event_trackBar_zoomMousePressed
 
-    private void trackBar_zoomMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trackBar_zoomMouseReleased
+    protected void trackBar_zoomMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trackBar_zoomMouseReleased
         _mouse_zoom_down = false;
         timer_refresh.stop();
     }//GEN-LAST:event_trackBar_zoomMouseReleased
 
-    private void trackBar_zoomMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trackBar_zoomMouseDragged
+    protected void trackBar_zoomMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trackBar_zoomMouseDragged
         zoomAgain();
     }//GEN-LAST:event_trackBar_zoomMouseDragged
 
-    private void trackBar_zoomMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trackBar_zoomMouseMoved
+    protected void trackBar_zoomMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trackBar_zoomMouseMoved
         if (_mouse_zoom_down == true) {
             zoomAgain();
         }
     }//GEN-LAST:event_trackBar_zoomMouseMoved
 
-    private void bouton_viderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_viderMouseClicked
+    protected void bouton_viderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_viderMouseClicked
         controller.clearEnvironment();
     }//GEN-LAST:event_bouton_viderMouseClicked
 
-    private void bouton_newMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_newMouseClicked
+    protected void bouton_newMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_newMouseClicked
         controller.newModel();
     }//GEN-LAST:event_bouton_newMouseClicked
 
-    private void bouton_environnementMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_environnementMouseClicked
+    protected void bouton_environnementMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_environnementMouseClicked
         controller.updateEnvParameters();
 	}//GEN-LAST:event_bouton_environnementMouseClicked
 
-    private void bouton_saveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_saveMouseClicked
+    protected void bouton_saveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_saveMouseClicked
         controller.saveModel(_nom_sauvegarde);
     }//GEN-LAST:event_bouton_saveMouseClicked
 
-    private void bouton_openMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_openMouseClicked
+    protected void bouton_openMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_openMouseClicked
         controller.loadModel(_nom_sauvegarde);
     }//GEN-LAST:event_bouton_openMouseClicked
 
-    private void bouton_export_modelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_export_modelMouseClicked
+    protected void bouton_export_modelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_export_modelMouseClicked
         controller.export();
     }//GEN-LAST:event_bouton_export_modelMouseClicked
 
-    private void bouton_aboutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_aboutMouseClicked
+    protected void bouton_aboutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_aboutMouseClicked
         controller.about();
     }//GEN-LAST:event_bouton_aboutMouseClicked
-    
-    private void jButtonReaction_tMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_aboutMouseClicked
-        controller.addReaction();
-    }//GEN-LAST:event_bouton_aboutMouseClicked
 
-    private void checkBox_paint_ligneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_ligneMouseClicked
+    protected void checkBox_paint_ligneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_ligneMouseClicked
         releverToutesCheckBoxPaint(checkBox_paint_ligne);
 	}//GEN-LAST:event_checkBox_paint_ligneMouseClicked
-    
-    private void checkBox_paint_rondMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_ligneMouseClicked
-        releverToutesCheckBoxPaint(checkBox_paint_rond);
-	}//GEN-LAST:event_checkBox_paint_ligneMouseClicked
 
-    private void deplacer_vue(java.awt.event.MouseEvent evt) {
+    protected void deplacer_vue(java.awt.event.MouseEvent evt) {
         if (_mouse_left_down == true) {
             if (checkBox_paint_move.getBackground().equals(Color.GREEN)) { //.getX() == jLabel_sel.getX()) {
                 float dx_fenetre = (_x0_mouse_down - evt.getX());// / pictureBox1.Width;
@@ -1547,9 +1388,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
             if (getDataGridView_entites().getSelectedIndex() < 0) {
                 dataGridView_entites.setSelectedIndex(0);
             }
-            if (getDataGridView_Compartment().getSelectedIndex() < 0) {
-                dataGridView_Compartment.setSelectedIndex(0);
-            }
 
             if (checkBox_paint_stylo.getBackground().equals(Color.GREEN)) {
                 Paint_Stylo(evt.getX(), evt.getY());
@@ -1559,9 +1397,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
             }
             if (checkBox_paint_ligne.getBackground().equals(Color.GREEN)) {
                 Paint_Ligne(evt.getX(), evt.getY());
-            }
-            if (checkBox_paint_rond.getBackground().equals(Color.GREEN)) {
-                Paint_Rond(evt.getX(), evt.getY());
             }
             if (checkBox_paint_random.getBackground().equals(Color.GREEN)) {
                 Paint_Aleat(evt.getX(), evt.getY());
@@ -1573,7 +1408,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     }
 
 
-    private void pictureBox_EnvMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_EnvMouseDragged
+    protected void pictureBox_EnvMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_EnvMouseDragged
         if (getCubes_selectionnes() != null) {
             if (!getCubes_selectionnes().isEmpty()) {
                 setMovingCubes(true);
@@ -1585,7 +1420,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }//GEN-LAST:event_pictureBox_EnvMouseDragged
 
-    private void pictureBox_EnvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_EnvMouseReleased
+    protected void pictureBox_EnvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_EnvMouseReleased
         //// De-memorisation du cube lego pris
         _mouse_left_down = false;
         _mouse_right_down = false;
@@ -1605,42 +1440,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                     controller.addEntityInstances(lst_pts);
                 }
             }
-        } 
-        else if (checkBox_paint_rond.getBackground().equals(Color.GREEN)) { //.getX() == jLabel_sel.getX()) {
-            if (dataGridView_Compartment.getSelectedIndex() >= 0) {
-                int mouseX = evt.getX();
-                int mouseY = evt.getY();
-                int new_x = (int) windowToUniverse(_observed_left, _observed_left + _observed_width, pictureBox_Env.getWidth(), mouseX);
-                int new_y = (int) windowToUniverse(_observed_top, _observed_top + _observed_height, pictureBox_Env.getHeight(), mouseY);
-                int new_z = jSliderZ.getValue();
-
-        		UtilPoint3D center = new UtilPoint3D(_case_x0, _case_y0, new_z);
-            	int radius = (int) Math.sqrt(Math.pow(new_x-_case_x0, 2) + Math.pow( new_y-_case_y0,2));
-                if ((new_x >= 0 && new_y >= 0 && new_x < getTailleX() && new_y < getTailleY()) && (center.x - radius >= 0 && center.y - radius >= 0 && center.x + radius <= getTailleX() && center.y + radius <= getTailleY())) {
-                	if (controller.verificationPourMembrane(dataGridView_Compartment.getSelectedIndex())){
-                		controller.editCompartmentGraphique(dataGridView_Compartment.getSelectedIndex(), center, radius);
-                	}
-                	else{
-                        if (Lang.getInstance().getLang().equals("FR")) {
-                            JOptionPane jop = new JOptionPane();			
-                            int option = jop.showConfirmDialog(null, "Voulez-vous redessiner le compartiment ?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                            if (option == 0){
-                            	controller.editCompartmentGraphique(dataGridView_Compartment.getSelectedIndex(), center, radius);
-                            }
-                        } else {
-                            JOptionPane jop = new JOptionPane();			
-                            int option = jop.showConfirmDialog(null, "Voulez-vous redessiner le compartiment ?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                            if (option == 0){
-                            	controller.editCompartmentGraphique(dataGridView_Compartment.getSelectedIndex(), center, radius);
-                            }
-                        }
-                	}
-                checkBox_paint_rond.setBackground(Color.RED);
-                return;
-                }
-            }
-        } 
-        else if (checkBox_paint_random.getBackground().equals(Color.GREEN)) {
+        } else if (checkBox_paint_random.getBackground().equals(Color.GREEN)) {
             if (dataGridView_entites.getSelectedIndex() >= 0) {
                 int mouseX = evt.getX();
                 int mouseY = evt.getY();
@@ -1672,7 +1472,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }//GEN-LAST:event_pictureBox_EnvMouseReleased
 
-    private void pictureBox_EnvMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_EnvMousePressed
+    protected void pictureBox_EnvMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_EnvMousePressed
         if (evt.getButton() == MouseEvent.BUTTON1 && _mouse_left_down == false) {
             _x0_mouse_down = evt.getX();
             _y0_mouse_down = evt.getY();
@@ -1707,7 +1507,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     }
 
 
-    private void pictureBox_EnvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_EnvMouseClicked
+    protected void pictureBox_EnvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_EnvMouseClicked
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
             if (getDataGridView_entites().getSelectedIndex() < 0) {
                 dataGridView_entites.setSelectedIndex(0);
@@ -1731,7 +1531,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }//GEN-LAST:event_pictureBox_EnvMouseClicked
 
-    private void checkBox_aviMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_aviMouseClicked
+    protected void checkBox_aviMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_aviMouseClicked
         if (checkBox_avi.isSelected()) {
             controller.record_animation();
         } else {
@@ -1748,67 +1548,52 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     }//GEN-LAST:event_checkBox_aviMouseClicked
 
 
-    private void bouton_export_courbesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_export_courbesMouseClicked
+    protected void bouton_export_courbesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_export_courbesMouseClicked
         controller.exportCurves(_nom_sauvegarde, curves);
     }//GEN-LAST:event_bouton_export_courbesMouseClicked
 
-    private void checkBox_paint_moveMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_moveMousePressed
+    protected void checkBox_paint_moveMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_moveMousePressed
         releverToutesCheckBoxPaint(checkBox_paint_move);
     }//GEN-LAST:event_checkBox_paint_moveMousePressed
 
-    private void checkBox_paint_styloMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_styloMousePressed
+    protected void checkBox_paint_styloMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_styloMousePressed
         releverToutesCheckBoxPaint(checkBox_paint_stylo);
     }//GEN-LAST:event_checkBox_paint_styloMousePressed
 
-    private void checkBox_paint_sprayMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_sprayMousePressed
+    protected void checkBox_paint_sprayMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_sprayMousePressed
         releverToutesCheckBoxPaint(checkBox_paint_spray);
     }//GEN-LAST:event_checkBox_paint_sprayMousePressed
 
-    private void checkBox_paint_ligneMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_ligneMousePressed
+    protected void checkBox_paint_ligneMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_ligneMousePressed
         releverToutesCheckBoxPaint(checkBox_paint_ligne);
     }//GEN-LAST:event_checkBox_paint_ligneMousePressed
-    
-    private void checkBox_paint_rondMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_ligneMousePressed
-        releverToutesCheckBoxPaint(checkBox_paint_rond);
-    }//GEN-LAST:event_checkBox_paint_ligneMousePressed
 
-    private void checkBox_paint_gommeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_gommeMousePressed
+    protected void checkBox_paint_gommeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_gommeMousePressed
         releverToutesCheckBoxPaint(checkBox_paint_gomme);
     }//GEN-LAST:event_checkBox_paint_gommeMousePressed
- 
-    private void jButtonAddCompartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddEntityActionPerformed
-        controller.addCompartment();
-    }//GEN-LAST:event_jButtonAddEntityActionPerformed
 
-    private void jButtonDelCompartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelEntityActionPerformed
-        controller.delCompartment(dataGridView_Compartment.getSelectedIndices());
-    }//GEN-LAST:event_jButtonDelEntityActionPerformed
-
-    private void jButtonEditCompartmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditEntityActionPerformed
-        controller.editCompartment();
-    }//GEN-LAST:event_jButtonEditEntityActionPerformed
-    
-    private void dataGridView_entitesPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dataGridView_entitesPropertyChange
+    protected void dataGridView_entitesPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dataGridView_entitesPropertyChange
         dessinerCourbes();
     }//GEN-LAST:event_dataGridView_entitesPropertyChange
 
-    private void dataGridView_entitesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dataGridView_entitesValueChanged
+    protected void dataGridView_entitesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dataGridView_entitesValueChanged
         dessinerCourbes();
     }//GEN-LAST:event_dataGridView_entitesValueChanged
 
-    private void jButtonAddEntityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddEntityActionPerformed
+    protected void jButtonAddEntityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddEntityActionPerformed
         controller.addEntity();
     }//GEN-LAST:event_jButtonAddEntityActionPerformed
 
-    private void jButtonDelEntityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelEntityActionPerformed
+
+    protected void jButtonDelEntityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelEntityActionPerformed
         controller.delEntity(dataGridView_entites.getSelectedIndices());
     }//GEN-LAST:event_jButtonDelEntityActionPerformed
 
-    private void jButtonEditEntityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditEntityActionPerformed
+    protected void jButtonEditEntityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditEntityActionPerformed
         controller.editEntity();
     }//GEN-LAST:event_jButtonEditEntityActionPerformed
 
-    private void dataGridView_comportementsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dataGridView_comportementsValueChanged
+    protected void dataGridView_comportementsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dataGridView_comportementsValueChanged
         int i = dataGridView_comportements.getSelectedIndex();
         if (i < 0) {
             return;
@@ -1819,54 +1604,47 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         setProba(moteur.get_k());
     }//GEN-LAST:event_dataGridView_comportementsValueChanged
 
-    private void jButtonAddBehavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddBehavActionPerformed
+    protected void jButtonAddBehavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddBehavActionPerformed
         controller.addBehaviour();
     }//GEN-LAST:event_jButtonAddBehavActionPerformed
 
-    private void jButtonEditBehavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditBehavActionPerformed
+    protected void jButtonEditBehavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditBehavActionPerformed
         controller.editBehaviour();
     }//GEN-LAST:event_jButtonEditBehavActionPerformed
 
 
-    private void jButtonDelBehavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelBehavActionPerformed
+    protected void jButtonDelBehavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDelBehavActionPerformed
         int[] tab = dataGridView_comportements.getSelectedIndices();
         controller.delBehaviour(tab);
     }//GEN-LAST:event_jButtonDelBehavActionPerformed
 
-    private void jSliderZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderZStateChanged
+    protected void jSliderZStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderZStateChanged
         setZLabel();
         drawAll(0, 0, 0, 0, 0);
     }//GEN-LAST:event_jSliderZStateChanged
 
-    private void jSliderProbaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderProbaStateChanged
+    protected void jSliderProbaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderProbaStateChanged
         int i = dataGridView_comportements.getSelectedIndex();
         if (i >= 0) {
             jLabelProba.setText("p=" + (jSliderProba.getValue() / 10) / 100.0);
         }
     }//GEN-LAST:event_jSliderProbaStateChanged
-    
-    private void dataGridView_CompartmentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_entitesMouseClicked
-        if (evt.getClickCount() == 2 && !evt.isConsumed() && !freezed) {
-            evt.consume();
-            controller.editCompartment();
-       }
-    }//GEN-LAST:event_dataGridView_entitesMouseClicked
 
-    private void dataGridView_entitesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_entitesMouseClicked
+    protected void dataGridView_entitesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_entitesMouseClicked
         if (evt.getClickCount() == 2 && !evt.isConsumed() && !freezed) {
             evt.consume();
             controller.editEntity();
         }
     }//GEN-LAST:event_dataGridView_entitesMouseClicked
 
-    private void dataGridView_comportementsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_comportementsMouseClicked
+    protected void dataGridView_comportementsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_comportementsMouseClicked
         if (evt.getClickCount() == 2 && !evt.isConsumed() && !freezed) {
             evt.consume();
             controller.editBehaviour();
         }
     }//GEN-LAST:event_dataGridView_comportementsMouseClicked
 
-    private void initAbscissaBox() {
+    protected void initAbscissaBox() {
         abscissaBox.removeAllItems();
         if (Lang.getInstance().getLang().equals("FR")) {
             abscissaBox.addItem("Temps");
@@ -1878,7 +1656,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }
 
-    private void initLanguage() {
+    protected void initLanguage() {
         if (Lang.getInstance().getLang().equals("EN")) {
             if (freezed) {
                 Ajustement.setText("Adjusting in progress ...");
@@ -1922,20 +1700,20 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }
 
-    private void bouton_langMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_langMouseClicked
+    protected void bouton_langMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_langMouseClicked
         Lang.getInstance().changeLang();
         initLanguage();
     }//GEN-LAST:event_bouton_langMouseClicked
 
-    private void LaunchSelfAdjust(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaunchSelfAdjust
+    protected void LaunchSelfAdjust(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaunchSelfAdjust
         controller.launchSelfAdjustment();
     }//GEN-LAST:event_LaunchSelfAdjust
 
-    private void pictureBox_courbesMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_courbesMouseMoved
+    protected void pictureBox_courbesMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_courbesMouseMoved
         drawCoordinates();
     }//GEN-LAST:event_pictureBox_courbesMouseMoved
 
-    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+    protected void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         // First display on screen
         if (init_width == -1) {
             // Main panel init size
@@ -1944,7 +1722,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
             // Simulator panel init size
             init_bounds_sim = (Rectangle) jPanelSimulator.getBounds().clone();
             init_bounds_env = (Rectangle) jPanelEnv.getBounds().clone();
-            init_bounds_comp = (Rectangle) jPanelCompartment.getBounds().clone();
             init_bounds_ent = (Rectangle) jPanelEntities.getBounds().clone();
             init_bounds_beh = (Rectangle) jPanelBehaviors.getBounds().clone();
             init_bounds_curv = (Rectangle) jPanelCurves.getBounds().clone();
@@ -1970,9 +1747,8 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         // Move the Panels
         jPanelSimulator.setBounds(init_bounds_sim.x, init_bounds_sim.y, init_bounds_sim.width + dfx, init_bounds_sim.height + dfy);
         jPanelEnv.setBounds(init_bounds_env.x, init_bounds_env.y + dfy, init_bounds_env.width + dfx, init_bounds_env.height);
-        jPanelCompartment.setBounds(init_bounds_comp.x, init_bounds_comp.y, init_bounds_comp.width, init_bounds_comp.height + dfy/3);
-        jPanelEntities.setBounds(init_bounds_ent.x, init_bounds_ent.y + dfy / 3, init_bounds_ent.width , init_bounds_ent.height + dfy / 3);
-        jPanelBehaviors.setBounds(init_bounds_beh.x, init_bounds_beh.y + 2*dfy/3 , init_bounds_beh.width, init_bounds_beh.height + dfy / 3);
+        jPanelEntities.setBounds(init_bounds_ent.x, init_bounds_ent.y, init_bounds_ent.width, init_bounds_ent.height + dfy / 2);
+        jPanelBehaviors.setBounds(init_bounds_beh.x, init_bounds_beh.y + dfy / 2, init_bounds_beh.width, init_bounds_beh.height + dfy / 2);
         jPanelCurves.setBounds(init_bounds_curv.x + dfx, init_bounds_curv.y, init_bounds_curv.width, init_bounds_curv.height + dfy / 2);
         jPanelMisc.setBounds(init_bounds_misc.x + dfx, init_bounds_misc.y + dfy / 2, init_bounds_misc.width, init_bounds_misc.height + dfy / 2);
 
@@ -1985,19 +1761,19 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     }//GEN-LAST:event_formComponentResized
 
 
-    private void jButton3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3DActionPerformed
+    protected void jButton3DActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3DActionPerformed
         controller.hideShow3DView();
     }//GEN-LAST:event_jButton3DActionPerformed
 
-    private void checkBox_paint_randomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_randomMouseClicked
+    protected void checkBox_paint_randomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_randomMouseClicked
         releverToutesCheckBoxPaint(checkBox_paint_random);
     }//GEN-LAST:event_checkBox_paint_randomMouseClicked
 
-    private void checkBox_paint_randomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_randomMousePressed
+    protected void checkBox_paint_randomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_randomMousePressed
         releverToutesCheckBoxPaint(checkBox_paint_random);
     }//GEN-LAST:event_checkBox_paint_randomMousePressed
 
-    private void jSliderProbaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderProbaMouseReleased
+    protected void jSliderProbaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderProbaMouseReleased
         int i = dataGridView_comportements.getSelectedIndex();
         if (i >= 0) {
             String nom_moteur = dataGridView_comportements.getSelectedValue().toString();
@@ -2006,11 +1782,11 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }//GEN-LAST:event_jSliderProbaMouseReleased
 
-    private void jSliderSpeedMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderSpeedMouseReleased
+    protected void jSliderSpeedMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderSpeedMouseReleased
         controller.changeSpeed(jSliderSpeed.getValue());
     }//GEN-LAST:event_jSliderSpeedMouseReleased
 
-    private void pictureBox_EnvMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_pictureBox_EnvMouseWheelMoved
+    protected void pictureBox_EnvMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_pictureBox_EnvMouseWheelMoved
         int zoom = evt.getWheelRotation();
         int value = trackBar_zoom.getValue();
         if (zoom < 0) {
@@ -2032,7 +1808,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         _mouse_zoom_down = false;
     }//GEN-LAST:event_pictureBox_EnvMouseWheelMoved
 
-    private void abscissaBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abscissaBoxActionPerformed
+    protected void abscissaBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abscissaBoxActionPerformed
         String absc = (String) abscissaBox.getSelectedItem();
         if (absc != null) {
             if ((absc.equalsIgnoreCase("Time")) || (absc.equalsIgnoreCase("Temps"))) {
@@ -2084,7 +1860,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }
 
-    private void drawCoordinates() {
+    protected void drawCoordinates() {
         if (pictureBox_courbes.getMousePosition() == null) {
             return;
         } else {
@@ -2135,7 +1911,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }
 
-    private void releverToutesCheckBoxPaint(JButton sauf) {
+    protected void releverToutesCheckBoxPaint(JButton sauf) {
         if (sauf != checkBox_paint_move) {
             checkBox_paint_move.setBackground(Color.RED);
         }
@@ -2147,9 +1923,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
         if (sauf != checkBox_paint_ligne) {
             checkBox_paint_ligne.setBackground(Color.RED);
-        }
-        if (sauf != checkBox_paint_rond) {
-            checkBox_paint_rond.setBackground(Color.RED);
         }
         if (sauf != checkBox_paint_random) {
             checkBox_paint_random.setBackground(Color.RED);
@@ -2163,7 +1936,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }
 
-    private void Paint_Stylo(int mouseX, int mouseY) {
+    protected void Paint_Stylo(int mouseX, int mouseY) {
         int new_x = (int) windowToUniverse(_observed_left, _observed_left + _observed_width, pictureBox_Env.getWidth(), mouseX);
         int new_y = (int) windowToUniverse(_observed_top, _observed_top + _observed_height, pictureBox_Env.getHeight(), mouseY);
         int new_z = jSliderZ.getValue();
@@ -2174,7 +1947,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }
 
-    private void Paint_Spray(int mouseX, int mouseY) {
+    protected void Paint_Spray(int mouseX, int mouseY) {
         ArrayList<UtilPoint3D> points = new ArrayList<>();
         for (int nb = 0; nb < 10; nb++) {
             int new_x = (int) windowToUniverse(_observed_left, _observed_left + _observed_width, pictureBox_Env.getWidth(), mouseX) + RandomGen.getInstance().nextInt(21) - 10;
@@ -2188,7 +1961,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         controller.addEntityInstances(points);
     }
 
-    private void Paint_Ligne(int mouseX, int mouseY) {
+    protected void Paint_Ligne(int mouseX, int mouseY) {
         int new_x = (int) windowToUniverse(_observed_left, _observed_left + _observed_width, pictureBox_Env.getWidth(), mouseX);
         int new_y = (int) windowToUniverse(_observed_top, _observed_top + _observed_height, pictureBox_Env.getHeight(), mouseY);
         if (new_x >= 0 && new_y >= 0 && new_x < getTailleX() && new_y < getTailleY()) {
@@ -2197,18 +1970,8 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
             drawAll(x0, y0, mouseX, mouseY, 1);
         }
     }
-    
-    private void Paint_Rond(int mouseX, int mouseY) {
-        int new_x = (int) windowToUniverse(_observed_left, _observed_left + _observed_width, pictureBox_Env.getWidth(), mouseX);
-        int new_y = (int) windowToUniverse(_observed_top, _observed_top + _observed_height, pictureBox_Env.getHeight(), mouseY);
-        if (new_x >= 0 && new_y >= 0 && new_x < getTailleX() && new_y < getTailleY()) {
-            int x0 = (int) universeToWindow(_observed_left, _observed_width + _observed_left, _case_x0 + 0.5f, pictureBox_Env.getWidth());
-            int y0 = (int) universeToWindow(_observed_top, _observed_height + _observed_top, _case_y0 + 0.5f, pictureBox_Env.getHeight());
-            drawAll(x0, y0, mouseX, mouseY, 3);
-        }
-    }
 
-    private void Paint_Aleat(int mouseX, int mouseY) {
+    protected void Paint_Aleat(int mouseX, int mouseY) {
         int new_x = (int) windowToUniverse(_observed_left, _observed_left + _observed_width, pictureBox_Env.getWidth(), mouseX);
         int new_y = (int) windowToUniverse(_observed_top, _observed_top + _observed_height, pictureBox_Env.getHeight(), mouseY);
         if (new_x >= 0 && new_y >= 0 && new_x < getTailleX() && new_y < getTailleY()) {
@@ -2218,7 +1981,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }
 
-    private void Paint_Gomme(int mouseX, int mouseY) {
+    protected void Paint_Gomme(int mouseX, int mouseY) {
         int new_x = (int) windowToUniverse(_observed_left, _observed_left + _observed_width, pictureBox_Env.getWidth(), mouseX);
         int new_y = (int) windowToUniverse(_observed_top, _observed_top + _observed_height, pictureBox_Env.getHeight(), mouseY);
         int new_z = jSliderZ.getValue();
@@ -2230,7 +1993,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     public String str_aujout_nbr(String nom, Integer nombre) {
         return (nom).concat(", ").concat(nombre.toString());
     }
-    
 
     public void placerComportementsVisiblesDansPanel() {
         ArrayList<Behavior> lstCmpt = getListManipulesReactions();
@@ -2327,18 +2089,8 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
         dataGridView_comportements.setModel(model);
     }
-    
-    public void fillDataGridCompartment() {
-        // Compartiments a placer dans la dataGrid
-        DefaultListModel model = new DefaultListModel();
-        for (Compartment moteur : this._ListManipulesCompartment) {
-            String nom_moteur = moteur.getEtiquettes();
-            model.addElement(nom_moteur);
-        }
-        dataGridView_Compartment.setModel(model);
-    }
 
-    private ArrayList<String> getSelectedEntities() {
+    protected ArrayList<String> getSelectedEntities() {
         ArrayList<String> lst_entites = new ArrayList<>();
         if (dataGridView_entites.getModel().getSize() != 0) {
             int[] collec = dataGridView_entites.getSelectedIndices();
@@ -2392,7 +2144,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         drawCoordinates();
     }
 
-    private void initBufferedImageSimulator() {
+    protected void initBufferedImageSimulator() {
         bmp_memory = new BufferedImage(pictureBox_Env.getWidth(), pictureBox_Env.getHeight(), BufferedImage.TYPE_INT_ARGB);
         g_mem = bmp_memory.getGraphics();
         g_mem.setColor(Color.WHITE);
@@ -2571,12 +2323,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
             g_mem.drawLine(x0, y0, x0, y1);
             g_mem.drawLine(x1, y1, x0, y1);
         }
-        
-        if (forme == 3) {
-            g_mem.setColor(Color.BLACK);
-            int r = (int) Math.sqrt(Math.pow(x1-x0, 2)+Math.pow(y1-y0,2));
-            g_mem.drawOval((int) (x0-r), (int) (y0-r), (int) (2*r), (int) (2*r));
-        }
 
         // Fuzzy
         if (this.checkBox_Flou.isSelected() == true) {
@@ -2620,7 +2366,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     });
 
-    private void timer_refresh_Tick() {
+    protected void timer_refresh_Tick() {
         if (_mouse_left_down == true) {
             if (checkBox_paint_ligne.getBackground().equals(Color.GREEN) || checkBox_paint_random.getBackground().equals(Color.GREEN)) {
                 if (pictureBox_Env.getMousePosition() != null) {
@@ -2629,9 +2375,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
                     }
                     if (checkBox_paint_ligne.getBackground().equals(Color.GREEN)) {
                         Paint_Ligne(pictureBox_Env.getMousePosition().x, pictureBox_Env.getMousePosition().y);
-                    }
-                    if (checkBox_paint_rond.getBackground().equals(Color.GREEN)) {
-                        Paint_Rond(pictureBox_Env.getMousePosition().x, pictureBox_Env.getMousePosition().y);
                     }
                     if (checkBox_paint_random.getBackground().equals(Color.GREEN)) {
                         Paint_Aleat(pictureBox_Env.getMousePosition().x, pictureBox_Env.getMousePosition().y);
@@ -2675,7 +2418,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         return null;
     }
 
-    private void maj_pas_de_temps() {
+    protected void maj_pas_de_temps() {
         if (_time == 0) {
             curves.clear();
         }
@@ -2684,7 +2427,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         drawAll(0, 0, 0, 0, 0);
     }
 
-    private void checkForChangesInCurves(ArrayList<Entity> old, ArrayList<Entity> update) {
+    protected void checkForChangesInCurves(ArrayList<Entity> old, ArrayList<Entity> update) {
         if (old.size() > update.size()) {
             // chercher celui qui a été supprimé pour supprimer les points
 
@@ -2713,7 +2456,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }
 
-    private void memoriserCourbes() {
+    protected void memoriserCourbes() {
         ArrayList<String> lst_noms = new ArrayList<>();
         ArrayList<Color> lst_couls = new ArrayList<>();
         ArrayList<Integer> lst_pts = new ArrayList<>();
@@ -2735,7 +2478,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     }
 
     // MAJ de la liste des entites et de leur compte
-    private void majEntites() {
+    protected void majEntites() {
         String nom;
 
         for (int i = 0; i < dataGridView_entites.getModel().getSize(); i++) {
@@ -2751,7 +2494,7 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
         }
     }
 
-    private void timer_pause_play2_Tick() {
+    protected void timer_pause_play2_Tick() {
 
         if (button_play.getIcon() == null) {
             this.button_play.setIcon(icon_bouton_pause);
@@ -2829,17 +2572,9 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     public ArrayList<Behavior> getListManipulesReactions() {
         return _ListManipulesReactions;
     }
-    
-    public ArrayList<Compartment> getListManipulesCompartment() {
-        return _ListManipulesCompartment;
-    }
 
-    public void setListManipulesReactions(ArrayList<Behavior> _ListManipulesCompartment) {
-        this._ListManipulesReactions = _ListManipulesCompartment;
-    }
-    
-    public void setListManipulesCompartment(ArrayList<Compartment> _ListManipulesReactions) {
-        this._ListManipulesCompartment = _ListManipulesCompartment;
+    public void setListManipulesReactions(ArrayList<Behavior> _ListManipulesReactions) {
+        this._ListManipulesReactions = _ListManipulesReactions;
     }
 
     public HashMap<String, Integer> getDico_courbes() {
@@ -2868,10 +2603,6 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
 
     public JList getDataGridView_entites() {
         return dataGridView_entites;
-    }
-    
-    public JList getDataGridView_Compartment() {
-        return dataGridView_Compartment;
     }
 
     public JList getDataGridView_comportements() {
@@ -2919,93 +2650,81 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Ajustement;
-    private javax.swing.JComboBox abscissaBox;
-    private javax.swing.JButton bouton_about;
-    private javax.swing.JButton bouton_environnement;
-    private javax.swing.JButton bouton_export_courbes;
-    private javax.swing.JButton bouton_export_model;
-    private javax.swing.JButton bouton_lang;
-    private javax.swing.JButton bouton_new;
-    private javax.swing.JButton bouton_open;
-    private javax.swing.JButton bouton_save;
-    private javax.swing.JButton bouton_vider;
-    private javax.swing.JButton button_init;
-    private javax.swing.JButton button_play;
-    private javax.swing.JButton button_play1;
-    private javax.swing.JButton jButtonReaction;
-    private javax.swing.JCheckBox checkBox_Flou;
-    private javax.swing.JCheckBox checkBox_avi;
-    private javax.swing.JButton checkBox_paint_gomme;
-    private javax.swing.JButton checkBox_paint_ligne;
-    private javax.swing.JButton checkBox_paint_rond;
-    private javax.swing.JButton checkBox_paint_move;
-    private javax.swing.JButton checkBox_paint_random;
-    private javax.swing.JButton checkBox_paint_spray;
-    private javax.swing.JButton checkBox_paint_stylo;
-    private javax.swing.JList dataGridView_comportements;
-    private javax.swing.JList dataGridView_entites;
-    private javax.swing.JList dataGridView_Compartment;
-    private javax.swing.JButton jButton3D;
-    private javax.swing.JButton jButtonAddBehav;
-    private javax.swing.JButton jButtonAddEntity;
-    private javax.swing.JButton jButtonAddCompartment;
-    private javax.swing.JButton jButtonDelBehav;
-    private javax.swing.JButton jButtonDelEntity;
-    private javax.swing.JButton jButtonDelCompartment;
-    private javax.swing.JButton jButtonEditBehav;
-    private javax.swing.JButton jButtonEditEntity;
-    private javax.swing.JButton jButtonEditCompartment;
-    private javax.swing.JLabel jLabelComportements;
-    private javax.swing.JLabel jLabelCourbes;
-    private javax.swing.JLabel jLabelDivers;
-    private javax.swing.JLabel jLabelEntites;
-    private javax.swing.JLabel jLabelCompartment;
-    private javax.swing.JLabel jLabelEnvironnement;
-    private javax.swing.JLabel jLabelProba;
-    private javax.swing.JLabel jLabelSimulateur;
-    private javax.swing.JLabel jLabelSpeed;
-    private javax.swing.JLabel jLabelTps;
-    private javax.swing.JLabel jLabelZ;
-    private javax.swing.JLabel jLabelZoom;
-    private javax.swing.JLabel jLabel_NetBioDyn;
-    private javax.swing.JLabel jLabel_t0;
-    private javax.swing.JLabel jLabel_version;
-    private javax.swing.JPanel jPanelBehaviors;
-    private javax.swing.JPanel jPanelCurves;
-    private javax.swing.JPanel jPanelEntities;
-    private javax.swing.JPanel jPanelCompartment;
-    private javax.swing.JPanel jPanelEnv;
-    private javax.swing.JPanel jPanelMisc;
-    private javax.swing.JPanel jPanelSimulator;
-    private javax.swing.JScrollPane jScrollPaneBehaviors;
-    private javax.swing.JScrollPane jScrollPane_Entities;
-    private javax.swing.JScrollPane jScrollPane_Compartment;
-    private javax.swing.JSlider jSliderProba;
-    private javax.swing.JSlider jSliderSpeed;
+    protected javax.swing.JButton Ajustement;
+    protected javax.swing.JComboBox abscissaBox;
+    protected javax.swing.JButton bouton_about;
+    protected javax.swing.JButton bouton_environnement;
+    protected javax.swing.JButton bouton_export_courbes;
+    protected javax.swing.JButton bouton_export_model;
+    protected javax.swing.JButton bouton_lang;
+    protected javax.swing.JButton bouton_new;
+    protected javax.swing.JButton bouton_open;
+    protected javax.swing.JButton bouton_save;
+    protected javax.swing.JButton bouton_vider;
+    protected javax.swing.JButton button_init;
+    protected javax.swing.JButton button_play;
+    protected javax.swing.JButton button_play1;
+    protected javax.swing.JCheckBox checkBox_Flou;
+    protected javax.swing.JCheckBox checkBox_avi;
+    protected javax.swing.JButton checkBox_paint_gomme;
+    protected javax.swing.JButton checkBox_paint_ligne;
+    protected javax.swing.JButton checkBox_paint_move;
+    protected javax.swing.JButton checkBox_paint_random;
+    protected javax.swing.JButton checkBox_paint_spray;
+    protected javax.swing.JButton checkBox_paint_stylo;
+    protected javax.swing.JList dataGridView_comportements;
+    protected javax.swing.JList dataGridView_entites;
+    protected javax.swing.JButton jButton3D;
+    protected javax.swing.JButton jButtonAddBehav;
+    protected javax.swing.JButton jButtonAddEntity;
+    protected javax.swing.JButton jButtonDelBehav;
+    protected javax.swing.JButton jButtonDelEntity;
+    protected javax.swing.JButton jButtonEditBehav;
+    protected javax.swing.JButton jButtonEditEntity;
+    protected javax.swing.JLabel jLabelComportements;
+    protected javax.swing.JLabel jLabelCourbes;
+    protected javax.swing.JLabel jLabelDivers;
+    protected javax.swing.JLabel jLabelEntites;
+    protected javax.swing.JLabel jLabelEnvironnement;
+    protected javax.swing.JLabel jLabelProba;
+    protected javax.swing.JLabel jLabelSimulateur;
+    protected javax.swing.JLabel jLabelSpeed;
+    protected javax.swing.JLabel jLabelTps;
+    protected javax.swing.JLabel jLabelZ;
+    protected javax.swing.JLabel jLabelZoom;
+    protected javax.swing.JLabel jLabel_NetBioDyn;
+    protected javax.swing.JLabel jLabel_t0;
+    protected javax.swing.JLabel jLabel_version;
+    protected javax.swing.JPanel jPanelBehaviors;
+    protected javax.swing.JPanel jPanelCurves;
+    protected javax.swing.JPanel jPanelEntities;
+    protected javax.swing.JPanel jPanelEnv;
+    protected javax.swing.JPanel jPanelMisc;
+    protected javax.swing.JPanel jPanelSimulator;
+    protected javax.swing.JScrollPane jScrollPaneBehaviors;
+    protected javax.swing.JScrollPane jScrollPane_Entities;
+    protected javax.swing.JSlider jSliderProba;
+    protected javax.swing.JSlider jSliderSpeed;
     public javax.swing.JSlider jSliderZ;
     public javax.swing.JLabel labelTime;
-    private javax.swing.JLabel label_courbe_x_max;
-    private javax.swing.JLabel label_courbe_y_max;
+    protected javax.swing.JLabel label_courbe_x_max;
+    protected javax.swing.JLabel label_courbe_y_max;
     public javax.swing.JLabel pictureBox_Env;
-    private javax.swing.JLabel pictureBox_courbes;
-    private javax.swing.JSlider trackBar_zoom;
+    protected javax.swing.JLabel pictureBox_courbes;
+    protected javax.swing.JSlider trackBar_zoom;
     // End of variables declaration//GEN-END:variables
     // Courbes
 
     public void freeze(boolean bool) {
         freezed = bool;
-        jButtonAddCompartment.setEnabled(!bool);
-        jButtonDelCompartment.setEnabled(!bool);
+        jButtonAddEntity.setEnabled(!bool);
         jButtonAddBehav.setEnabled(!bool);
         jButtonDelBehav.setEnabled(!bool);
-        jButtonAddEntity.setEnabled(!bool);
         jButtonDelEntity.setEnabled(!bool);
         jButtonEditBehav.setEnabled(!bool);
         jButtonEditEntity.setEnabled(!bool);
         checkBox_paint_gomme.setEnabled(!bool);
         checkBox_paint_ligne.setEnabled(!bool);
-        checkBox_paint_rond.setEnabled(!bool);
         checkBox_paint_move.setEnabled(!bool);
         checkBox_paint_random.setEnabled(!bool);
         checkBox_paint_spray.setEnabled(!bool);
@@ -3031,6 +2750,5 @@ public class Environment extends javax.swing.JPanel implements IhmListener, Adju
             }
         }
     }
-
 
 }

@@ -3,23 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package netbiodyn;//On crée un package, cette ligne indiquant que le fichier actuel sera dans ce package 
-
+package netbiodyn;
 
 import netbiodyn.util.Serialized;
 import netbiodyn.ihm.Env_Parameters;
 import netbiodyn.util.SaverLoader;
 import netbiodyn.util.FileSaverLoader;
 import netbiodyn.ihm.Environment;
-import java.util.ArrayList; //Création de listes
-import java.util.HashMap; //Création de hashmap
-import javax.swing.event.EventListenerList; //Création possible de listeners d'événements
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.event.EventListenerList;
 
 import netbiodyn.ihm.IhmListener;
 import netbiodyn.util.Lang;
 import netbiodyn.util.RandomGen;
 import netbiodyn.util.UtilPoint3D;
-import jadeAgentServer.util.Parameter; //Mise en place de serveur multi-agents ?
+import jadeAgentServer.util.Parameter;
 
 /**
  *
@@ -27,32 +26,29 @@ import jadeAgentServer.util.Parameter; //Mise en place de serveur multi-agents ?
  */
 public class Model {
 
-    private final EventListenerList listeners; //Liste des listeners
-    private Env_Parameters parameters; //Paramètres de l'environnement
+    protected final EventListenerList listeners;
+    protected Env_Parameters parameters;
 
-    private ArrayList<Compartment> compartment; // Compartements
-    private ArrayList<Entity> entities; // Types d'entités
-    private ArrayList<Behavior> behaviors; // Comportements
-    private AllInstances instances; //Instances
+    protected ArrayList<Entity> entities; // Entity types
+    protected ArrayList<Behavior> behaviors; // Behaviour
+    protected AllInstances instances;
 
-    private SaverLoader sl; //Création de la partie import/export
+    protected SaverLoader sl;
 
     public Model(Env_Parameters parameters) {
-        listeners = new EventListenerList(); //Mise en place des futurs listeners
-        this.parameters = parameters; //Mise en place des paramètres du modèle
+        listeners = new EventListenerList();
+        this.parameters = parameters;
 
-        compartment = new ArrayList<>(); //Mise en place des futurs compartiments
-        entities = new ArrayList<>(); //Mise en place des futures entités
-        behaviors = new ArrayList<>(); //Mise en place des futurs comportements
+        entities = new ArrayList<>();
+        behaviors = new ArrayList<>();
         instances = new AllInstances(parameters.getX(), parameters.getY(), parameters.getZ());
     }
 
-    private Model(Env_Parameters parameters, AllInstances instances, ArrayList<Entity> entities, ArrayList<Behavior> behaviors, ArrayList<Compartment> compartment) {
+    protected Model(Env_Parameters parameters, AllInstances instances, ArrayList<Entity> entities, ArrayList<Behavior> behaviors) {
         this.parameters = parameters;
         this.instances = instances;
         this.entities = entities;
         this.behaviors = behaviors;
-        this.compartment = compartment;
         listeners = new EventListenerList();
     }
 
@@ -63,12 +59,10 @@ public class Model {
     public void newModel() {
         entities = new ArrayList<>();
         behaviors = new ArrayList<>();
-        compartment = new ArrayList<>();
         instances = new AllInstances(parameters.getX(), parameters.getY(), parameters.getZ());
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
             listen.protoEntityUpdate(getCopyListManipulesNoeuds(), getInitialState());
             listen.moteurReactionUpdate(getCopyListManipulesReactions());
-            listen.CompartmentUpdate(getCopyListManipulesCompartment());
             listen.matrixUpdate(getInstances(), getInitialState(), 0);
         }
     }
@@ -83,10 +77,6 @@ public class Model {
     }
 
     public void clearEnvironment() {
-    	for(Compartment comp : compartment){
-    		comp.setRadius(0);
-    		comp.setCenter(new UtilPoint3D());
-    	}
         instances = new AllInstances(parameters.getX(), parameters.getY(), parameters.getZ());
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
             listen.matrixUpdate(getInstances(), getInitialState(), 0);
@@ -94,12 +84,6 @@ public class Model {
     }
 
     public void clear_OnlyCleanable() {
-    	for(Compartment comp : compartment){
-    		if(comp.Vidable){
-    			comp.setRadius(0);
-    			comp.setCenter(new UtilPoint3D());
-    		}
-    	}
         for (int i = 0; i < parameters.getX(); i++) {
             for (int j = 0; j < parameters.getY(); j++) {
                 for (int k = 0; k < parameters.getZ(); k++) {
@@ -162,7 +146,7 @@ public class Model {
         }
     }
 
-    private UtilPoint3D placeLibre(ArrayList<InstanceReaxel> lst, int xg1, int yg1, int zg1) {
+    protected UtilPoint3D placeLibre(ArrayList<InstanceReaxel> lst, int xg1, int yg1, int zg1) {
         if (lst == null) {
             return null;
         }
@@ -203,16 +187,6 @@ public class Model {
         }
         return null;
     }
-    
-    public Compartment getCompartment(String name) {
-        for (int i = compartment.size() - 1; i >= 0; i--) {
-            Compartment comp = compartment.get(i);
-            if (comp.getEtiquettes().equals(name)) {
-                return comp.clone();
-            }
-        }
-        return null;
-    }
 
     public ArrayList<String> getEntitiesNames() {
         ArrayList<String> names = new ArrayList<>();
@@ -230,7 +204,6 @@ public class Model {
 
     }
 
-    
     public void addEntityInstances(ArrayList<UtilPoint3D> points, String etiquette) {
         boolean toUpdate = false;
         for (UtilPoint3D point : points) {
@@ -255,69 +228,7 @@ public class Model {
             listen.matrixUpdate(getInstances(), getInitialState(), 0);
         }
     }
-    
-    
-    public void addCompartment(Compartment comp) {
-        compartment.add(comp);
-        for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
-            listen.CompartmentUpdate(getCopyListManipulesCompartment());
-        }
-    }
-    
-    public void delCompartment(ArrayList<String> compartments) {
-        for (String name : compartments) {
-            Compartment comp = this.getCompartment(name);
-            this.removeCompart(comp);
-        }
-        for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
-            listen.CompartmentUpdate(getCopyListManipulesCompartment());
-        }
-    }
-    
-    public void removeCompart(Compartment comp){
-         for (int i = 0; i < compartment.size(); i++) {
-             if (compartment.get(i).getEtiquettes().equals(comp.getEtiquettes())) { 
-             		compartment.remove(i);
-             }
-    	}
-    }
-    
-    public void editCompartment(Compartment m, String old_name) {
-        int index1 = 0;
-        for (int i = 0; i < compartment.size(); i++) {
-            if (compartment.get(i).getEtiquettes().equals(old_name)) {
-            	compartment.remove(i);
-                index1 = i;
-                i = compartment.size();
-            }
-       }
-        compartment.add(index1, m);
-        for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
-            listen.CompartmentUpdate(getCopyListManipulesCompartment());
-        }
-    }
-    
-    
-    
-    public boolean verifCollision(String name, ArrayList<UtilPoint3D> points){
-    	boolean rep = false;
-    	for (Compartment comp: compartment){
-    		if (comp.getEtiquettes().equals(name)){
-    			continue;
-    		}
-    		 ArrayList<UtilPoint3D> lst_pts_tmp = UtilPoint3D.BresenhamRond3D(comp.getCenter().x,comp.getCenter().y, comp.getCenter().z, comp.getRadius(), getParameters().getZ());
-    		 for (UtilPoint3D point : points){
-    			 for (UtilPoint3D point_tmp : lst_pts_tmp){
-    				 rep = point.equals(point_tmp);
-    				 if (rep == true){
-    					 return false;
-    				 }
-    			 }
-    		 }
-    	}
-    	return true;
-    }
-    
+
     public void addProtoReaxel(Entity entity) {
         entities.add(entity);
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
@@ -328,7 +239,7 @@ public class Model {
     public void editProtoReaxel(Entity entity, String old_name, int time) {
         int index = 0;
         for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i).getEtiquettes().equals(old_name)) {
+            if (entities.get(i)._etiquettes.equals(old_name)) {
                 entities.remove(i);
                 index = i;
                 i = entities.size();
@@ -364,13 +275,13 @@ public class Model {
         }
     }
 
-    private void editInBehaviors(String entity, String old_name) {
+    protected void editInBehaviors(String entity, String old_name) {
         for (Behavior moteur : behaviors) {
             moteur.protoReaxelNameChanged(old_name, entity);
         }
     }
 
-    private boolean AjouterReaxel(int i, int j, int k, String etiquette) {
+    protected boolean AjouterReaxel(int i, int j, int k, String etiquette) {
         boolean changed = false;
         for (int n = 0; n < entities.size(); n++) {
             if (entities.get(n).TrouveEtiquette(etiquette) >= 0) {
@@ -491,19 +402,8 @@ public class Model {
             instances = new AllInstances(saved.getInstances());
             entities = saved.getListManipulesNoeuds();
             behaviors = saved.getListManipulesReactions();
-            compartment= saved.getListManipulesCompartment();
- 
-//            for (int i = 0; i < compartment.size(); i++) {
-//        		System.out.println("lool"+compartment.get(i).getEtiquette());
-//        		System.out.println(compartment.get(i).getCenter());
-//        		System.out.println(compartment.get(i).getRadius());
-//        		System.out.println(compartment.get(i).getEnt().getEtiquettes());
-//        	}
-            
-            
             for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
                 listen.newEnvLoaded(saved, getInitialState());
-                listen.CompartmentUpdate(getCopyListManipulesCompartment());
             }
         }
     }
@@ -515,7 +415,6 @@ public class Model {
         Serialized toSave = new Serialized(parameters);
         toSave.setListManipulesNoeuds(entities);
         toSave.setListManipulesReactions(behaviors);
-        toSave.setListManipulesCompartment(compartment);
         toSave.setInstances(getInstances());
         toSave.setParameters(parameters);
         sl.save(toSave);
@@ -535,17 +434,13 @@ public class Model {
 
         return init;
     }
-    
+
     public ArrayList<Entity> getListManipulesNoeuds() {
         return entities;
     }
 
     public ArrayList<Behavior> getListManipulesReactions() {
         return behaviors;
-    }
-    
-    public ArrayList<Compartment> getListManipulesCompartment() {
-        return compartment;
     }
 
     public ArrayList<Entity> getCopyListManipulesNoeuds() {
@@ -562,14 +457,6 @@ public class Model {
             moteurs.add(r.clone());
         }
         return moteurs;
-    }
-    
-    public ArrayList<Compartment> getCopyListManipulesCompartment() {
-        ArrayList<Compartment> comps = new ArrayList<>();
-        for (Compartment r : compartment) {
-            comps.add(r.clone());
-        }
-        return comps;
     }
 
     public Env_Parameters getParameters() {
@@ -603,8 +490,7 @@ public class Model {
 
     @Override
     public Model clone() {
-        return new Model(getParameters(), getInstances().clone(),getListManipulesNoeuds(), getListManipulesReactions(), getListManipulesCompartment());
+        return new Model(getParameters(), getInstances().clone(),getListManipulesNoeuds(), getListManipulesReactions());
     }
 
 }
-

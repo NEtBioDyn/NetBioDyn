@@ -36,16 +36,15 @@ import java.awt.Image; //Provides classes for creating and modifying images.
 
 public class InstanceReaxel extends InstanceSimplexel implements Cloneable{
 
-    private int _x, _y, _z; //Coordinates of the InstanceReaxel
-    private Color _couleur = Color.BLUE; //Default color of the InstanceReaxel
-    private boolean _vidable = true; //Possibility to empty the InstanceReaxel
-    private double _taille = 1; // Size of the InstanceReaxel
-    private String _compartment = "Cytosol"; //Location of the InstanceReaxel into the "cell" (name of the compartment)
-    private int _forme = 0; //Shape of the InstanceReaxel, depending of the number (0 : circle, 1 : square, 2 : triangle, 3 : diamond, 4 : star, 5 : pea, 6 : noise)
-    private double _demie_vie = 0; //Time of half-time of the InstanceReaxel (0:infinite)
-    private boolean _selectionne = false; //Know if the InstanceReaxel is selected or not
-    private String _nom; //name of the InstanceReaxel
-    private Image _image = null; //Know if the InstanceReaxel is represented by an Image, and if yes, which one
+    protected int _x, _y, _z; //Coordinates of the InstanceReaxel
+    protected Color _couleur = Color.BLUE; //Default color of the InstanceReaxel
+    protected boolean _vidable = true; //Possibility to empty the InstanceReaxel
+    protected double _taille = 1; // Size of the InstanceReaxel
+    protected int _forme = 0; //Shape of the InstanceReaxel, depending of the number (0 : circle, 1 : square, 2 : triangle, 3 : diamond, 4 : star, 5 : pea, 6 : noise)
+    protected double _demie_vie = 0; //Time of half-time of the InstanceReaxel (0:infinite)
+    protected boolean _selectionne = false; //Know if the InstanceReaxel is selected or not
+    protected String _nom; //name of the InstanceReaxel
+    protected Image _image = null; //Know if the InstanceReaxel is represented by an Image, and if yes, which one
     
     //Creation of an objecf of type InstanceReaxel, with no parameters
     public InstanceReaxel(){
@@ -61,7 +60,6 @@ public class InstanceReaxel extends InstanceSimplexel implements Cloneable{
         //Retrieval of object parameters
         clone._couleur = _couleur;
         clone._taille = _taille;
-        clone._compartment = _compartment;
         clone._demie_vie = _demie_vie;
         clone._forme = _forme;
         clone._nom = _nom;
@@ -79,7 +77,6 @@ public class InstanceReaxel extends InstanceSimplexel implements Cloneable{
         // Retrieval of all object parameters from those of the Entity one
         r._couleur = cli.Couleur;
         r._taille = cli._taille;
-        r._compartment = cli._compartment;
         r._forme = cli._forme;
         r._demie_vie = cli.DemieVie;
         r._nom = cli.getEtiquettes();
@@ -147,16 +144,6 @@ public class InstanceReaxel extends InstanceSimplexel implements Cloneable{
     public void setVidable(boolean _vidable) {
         this._vidable = _vidable;
     }
-
-    //Return the location (compartment) of the InstanceReaxel
-    public String get_compartment() {
-		return _compartment;
-	}
-
-    //Put a new value to the location (compartment) of the InstanceReaxel
-	public void set_compartment(String _compartment) {
-		this._compartment = _compartment;
-	}
 
     //Return the size of the InstanceReaxel
     public double getTaille() {
