@@ -6,6 +6,7 @@ import netbiodyn.InstanceReaction;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.ihm.Env_Parameters;
 import netbiodyn.ihm.WndEditElementDeReaction;
+import netbiodyn.util.Lang;
 import netbiodyn.util.RandomGen;
 import netbiodyn.util.UtilPoint3D;
 
@@ -71,9 +72,15 @@ public class Behavior_NetMDyn extends Behavior {
                     ArrayList<InstanceReaxel> listReactifs = new ArrayList<>();
                     InstanceReaxel central = instances.getFast(x, y, z);
                     if (central == null) {
-                        // This case is synonym of a big problem
-                        System.err.println("GROS PROBLEME en " + x + "*" + y + "*" + z);
-                        System.err.println("EGAL A " + instances.getInList(j).getX() + "*" + instances.getInList(j).getY() + "*" + instances.getInList(j).getZ() + " ? ");
+                        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+                        	// This case is synonym of a big problem
+                        	System.err.println("GROS PROBLEME en " + x + "*" + y + "*" + z);
+                        	System.err.println("EGAL A " + instances.getInList(j).getX() + "*" + instances.getInList(j).getY() + "*" + instances.getInList(j).getZ() + " ? ");
+                        }
+                        else{
+                        	System.err.println("BIG PROBLEM IN " + x + "*" + y + "*" + z);
+                        	System.err.println("EQUAL TO " + instances.getInList(j).getX() + "*" + instances.getInList(j).getY() + "*" + instances.getInList(j).getZ() + " ? ");
+                        }
                     }
                     listReactifs.add(central); // This InstanceReaxel (central) will necessarily react
                     for (int r = 1; r < _reactifs.size(); r++) {
