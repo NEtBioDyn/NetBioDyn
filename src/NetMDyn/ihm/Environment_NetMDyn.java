@@ -1996,20 +1996,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
         jScrollPaneBehaviors.setViewportView(dataGridView_comportements);
 
-<<<<<<< HEAD
-       
-=======
-        jLabelProba.setBackground(new java.awt.Color(153, 153, 255));
-        jLabelProba.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
-        jLabelProba.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelProba.setText("p=");
-        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-        	jLabelProba.setToolTipText("Probabilités des comportements sélectionnés");
-        }
-        else{
-        	jLabelProba.setToolTipText("Probabilities of selected behaviour");
-        }
->>>>>>> e6276a7db7260f8847f3b1a93382d417a478d6e7
         javax.swing.GroupLayout jPanelBehaviorsLayout = new javax.swing.GroupLayout(jPanelBehaviors);
         jPanelBehaviors.setLayout(jPanelBehaviorsLayout);
         jPanelBehaviorsLayout.setHorizontalGroup(

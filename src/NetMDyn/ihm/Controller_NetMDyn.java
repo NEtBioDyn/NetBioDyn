@@ -228,16 +228,14 @@ public class Controller_NetMDyn{
 	            }
 	        }
 	    }
-	    
-<<<<<<< HEAD
-=======
+
 	    //Edition of the probabilities of a Behavior
 	    public void changeProba(String name, double value) {
 	        model.editBehaviourProba(name, value);
 	    }
 	    
 	    //Edition of parameters of the Controller
->>>>>>> e6276a7db7260f8847f3b1a93382d417a478d6e7
+
 	    public void changeParameters(HashMap<String, ArrayList<Parameter>> param) {
 	        model.changeParameters(param, env.getPictureBoxDimensions());
 	    }
