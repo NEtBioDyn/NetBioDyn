@@ -10,32 +10,32 @@ import NetMDyn.Simulator_NetMDyn;
 import NetMDyn.util.UtilPoint3D_NetMDyn;
 import jadeAgentServer.util.Parameter;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter; //Classe abstraite pour recevoir les événements d'une fenêtre
-import java.awt.event.WindowEvent; // Permet de signaler les changements de statut d'une fenêtre (ouverte, fermée, réduite,...)
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList; //Permet de créer des ArrayListes dans la classe
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Container; // Component that can contain other Abstract Window Toolkit components. 
+import java.awt.Dimension; // Width and height of a component (in integer precision) in a single object
+import java.awt.event.ActionEvent; // A semantic event which indicates that a component-defined action occurred
+import java.awt.event.KeyEvent; // An event which indicates that a keystroke occurred in a component. 
+import java.awt.event.WindowAdapter; // Abstract class to receive window events 
+import java.awt.event.WindowEvent; // Possible to signal status changes of a window (opened, close, reduced,...)
+import java.io.File; // An abstract representation of file and directory pathnames. 
+import java.io.IOException; // Signals that an I/O exception of some sort has occurred
+import java.util.ArrayList; // Possible creation of tables
+import java.util.HashMap; // Possible creation of hashmaps
+import java.util.List; // Possible creation of lists
+import java.util.logging.Level; // Set of standard logging levels that can be used to control logging output
+import java.util.logging.Logger; //Log messages for a specific system or application component.
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JFrame; //Permet d'afficher une fenêtre via Swing
-import javax.swing.JOptionPane; //Permet d'afficher des fenêtre de dialogue
-import javax.swing.KeyStroke;
+import javax.swing.AbstractAction; // Standard behaviors like the get and set methods for Action object properties (icon, text, and enabled) are defined here.
+import javax.swing.ActionMap; // Mappings from Objects (called keys or Action names) to Actions.
+import javax.swing.InputMap; // Binding between an input event (currently only KeyStrokes are used) and an Object
+import javax.swing.JComponent; // The base class for all Swing components except top-level containers.
+import javax.swing.JFrame; // Possible creation of windows
+import javax.swing.JOptionPane; //Possible creation of dialog windows
+import javax.swing.KeyStroke; // Key action on the keyboard, or equivalent input device
 
-import com.jogamp.opengl.awt.GLJPanel;
-import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.awt.GLJPanel; // Provides OpenGL rendering support.
+import com.jogamp.opengl.util.FPSAnimator; // Attempt to achieve a target frames-per-second rate to avoid using all CPU time
 
-import netbiodyn.AllInstances; //Pour tous les netbiodyn.* : import d'autres classes du logiciel
+import netbiodyn.AllInstances;
 import netbiodyn.Behavior;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Model;
@@ -74,6 +74,7 @@ public class Controller_NetMDyn{
     protected final ArrayList<Command> lastCommand; 
     protected final int maxMemory = 20;
     
+    //Initialization of the Controller
 	public Controller_NetMDyn(){
 		 	this.lastCommand = new ArrayList<>();
 	        frame = new JFrame();
@@ -85,9 +86,9 @@ public class Controller_NetMDyn{
 	        simulator.addListener(env);
 
 	        frame.add(env);
-	        frame.setName("NetBioDyn");
+	        frame.setName("NetMDyn");
 	        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-	        frame.setTitle("NetBioDyn - UEB - UBO - Lab STICC - IHSEV - Pascal Ballet - Free Software under GPL License");
+	        frame.setTitle("NetMDyn - University of Bordeaux - Master 2 of Bioinformatics - Free Software under GPL License");
 	        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	        frame.addWindowListener(new WindowAdapter() {
 
@@ -117,8 +118,14 @@ public class Controller_NetMDyn{
 	        frame.setVisible(true);
 	}
 	
+		//Initialization of the 3DView
 	   protected void init3D() {
-	        frame3D = new JFrame("3D View");
+		   if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+			   frame3D = new JFrame("3D View");
+		   }
+		   else{
+			   frame3D = new JFrame("Vue 3D");
+		   }
 	        Container topAncestor = env.getTopLevelAncestor();
 	        frame3D.setBounds(topAncestor.getBounds().x + topAncestor.getBounds().width, topAncestor.getBounds().y, 640, topAncestor.getBounds().height);
 
@@ -134,7 +141,7 @@ public class Controller_NetMDyn{
 
 	            // Create a animator that drives canvas' display() at the specified FPS. 
 	            final FPSAnimator animator = new FPSAnimator(canvas, 60, true);
-	            // start the animation loop
+	            // Start the animation loop
 	            animator.start();
 	            frame3D.setVisible(false);
 	            this.addKeyListener(frame3D);
@@ -142,7 +149,8 @@ public class Controller_NetMDyn{
 	            disable3D(e.toString());
 	        }
 	    }
-
+	   
+	   //Remove he 3D view
 	    protected void disable3D(String message) {
 	        env.disabled3D();
 	        File file = new File("./log_netbiodyn.txt");
@@ -167,6 +175,7 @@ public class Controller_NetMDyn{
 	        frame3D.setVisible(!frame3D.isVisible());
 	    }
 	
+	 //Add an Entity into the Controller
 	 public void addEntity() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -179,6 +188,7 @@ public class Controller_NetMDyn{
 	            model.addProtoReaxel(wc._cli);
 	        }
 	    }
+	 //Add a Behavior into the Controller
 	 public void addBehaviour() {
 		 if (simulator.isRunning()) {
 			 this.pauseSimulation();
@@ -217,7 +227,7 @@ public class Controller_NetMDyn{
 	        }
 	        */
 	 }
-	 
+	 //Edition of an Entity into the Controller
 	    public void editEntity() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -240,15 +250,17 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
+	    //Edition of the probabilities of a Behavior
 	    public void changeProba(String name, double value) {
 	        model.editBehaviourProba(name, value);
 	    }
-
+	    
+	    //Edition of parameters of the Controller
 	    public void changeParameters(HashMap<String, ArrayList<Parameter>> param) {
 	        model.changeParameters(param, env.getPictureBoxDimensions());
 	    }
 	 
-	 
+	 //Edition of a Behavior
 	 public void editBehaviour() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -268,6 +280,7 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	 
+	 	// Remove a Behavior
 	   public void delBehaviour(int[] tab) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -284,7 +297,7 @@ public class Controller_NetMDyn{
 	        model.delMoteurReaction(reactions);
 	    }
 
-
+	   //Remove an Entity
 	    public void delEntity(int[] tab) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -302,7 +315,8 @@ public class Controller_NetMDyn{
 	            simulator.ProtoReaxelDeleted(entities);
 	        }
 	    }
-
+	    
+	    
 	    public void randomlyPopulate(int bottom_rightX, int bottom_rightY, int top_leftX, int top_leftY, int z) {
 	        int num_col = env.getDataGridView_entites().getSelectedIndex();
 	        if (num_col >= 0) {
@@ -420,7 +434,7 @@ public class Controller_NetMDyn{
 	            this.pauseSimulation();
 	        }
 
-	        UtilFileFilter filtre = new UtilFileFilter("NetBioDyn", "nbd");
+	        UtilFileFilter filtre = new UtilFileFilter("NetMDyn", "nbd");
 	        File file = FileSaverLoader.chooseFileToLoad(nameSaved, filtre);
 
 	        if (file != null) {
@@ -449,12 +463,13 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
+	    //Save the Model
 	    public int saveModel(String nameSaved) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
 
-	        File file = FileSaverLoader.chooseFileToSave(nameSaved, "NetBioDyn", new String[]{"nbd"});
+	        File file = FileSaverLoader.chooseFileToSave(nameSaved, "NetMDyn", new String[]{"nbd"});
 
 	        if (file != null) {
 	            env.setNom_sauvegarde(UtilDivers.removeExtension(UtilDivers.fichier(file.getPath())));
@@ -485,12 +500,12 @@ public class Controller_NetMDyn{
 	    }
 	    
 	    public void play() {
-	        if (simulator.isRunning() && !simulator.isPause()) { // On est en PLAY et on fait PAUSE
+	        if (simulator.isRunning() && !simulator.isPause()) { // Pause of the simulation
 	            this.pauseSimulation();
-	        } else if (!simulator.isRunning() && simulator.isPause()) { // On est en PAUSE et on fait PLAY
+	        } else if (!simulator.isRunning() && simulator.isPause()) { // Run the simulation, pause before
 	            env.unpause_simulation();
 	            simulator.setPause(false);
-	        } else { // On est en STOP et on fait PLAY
+	        } else { // Run the simulation, stop before
 	            env.simulationStarted();
 	            simulator.start();
 	        }
@@ -528,11 +543,10 @@ public class Controller_NetMDyn{
 	    }
 	    
 	    public void adjustmentStopped(boolean finished) {
-	        // TODO Arreter l'ajustement auto et recharger le modèle initial !
 	        env.freeze(false);
 	        stopWithoutAsking();
 	        if (!finished) {
-	            // recharger le modèle initial
+	            // Reload initial model
 	        } else {
 	            int res;
 	            System.out.println("Ajustement terminé avec succès !");
@@ -565,7 +579,7 @@ public class Controller_NetMDyn{
 	    public void export() {
 	        String str_model = "\\fs32 \\b Entites:\n\\par\n\\b0";
 
-	        // Entites
+	        // Entities
 	        ArrayList<Entity_NetMDyn> lstc = model.getListManipulesNoeuds();
 	        for (Entity_NetMDyn cli : lstc) {
 	            str_model += cli.getEtiquettes() + "\\b:\\b0";
@@ -579,7 +593,7 @@ public class Controller_NetMDyn{
 	        }
 	        str_model += "\n\\par\n";
 
-	        // Comportements
+	        // Behaviors
 	        str_model += "\\b Comportements:\n\\par\n\\b0";
 
 	        List<Behavior_NetMDyn> lst = model.getListManipulesReactions();
@@ -1096,7 +1110,13 @@ public class Controller_NetMDyn{
                 wC.setTextBoxRadius(Integer.toString(old_radius));
                 wC.button_OKActionPerformed(null);
         		JOptionPane jop = new JOptionPane();
-        		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en dehors de l'envirronement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
+        		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en-dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
+        		}
+        		else{
+        			jop.showMessageDialog(null, "You can't create a compartment outside the environment", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
+        		}
+        		
     		}
     	}else{
     		wC.setTextBoxCenterX(Integer.toString(old_centerX));
@@ -1104,7 +1124,13 @@ public class Controller_NetMDyn{
             wC.setTextBoxRadius(Integer.toString(old_radius));
             wC.button_OKActionPerformed(null);
     		JOptionPane jop = new JOptionPane();
-    		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+    		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+    			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+    		}
+    		else{
+    			jop.showMessageDialog(null, "You can't create a compartment on an other one", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+    		}
+    		
     	}
     	model.editCompartment(wC._cli, name);
         editCompartmentMembrane(wC._cli, name);
@@ -1265,18 +1291,26 @@ public class Controller_NetMDyn{
                             wc.setTextBoxRadius(Integer.toString(old_radius));
                             wc.button_OKActionPerformed(null);
                     		JOptionPane jop = new JOptionPane();
-                    		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                		}
+                    		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+                    			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en-dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
+                    		}
+                    		else{
+                    			jop.showMessageDialog(null, "You can't create a compartment outside the environment", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
+                    		}                		}
                 	}else{
                 		wc.setTextBoxCenterX(Integer.toString(old_centerX));
                         wc.setTextBoxCenterY(Integer.toString(old_centerY));
                         wc.setTextBoxRadius(Integer.toString(old_radius));
                         wc.button_OKActionPerformed(null);
                 		JOptionPane jop = new JOptionPane();
-                		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+                			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		}
+                		else{
+                			jop.showMessageDialog(null, "You can't create a compartment on an other one", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		}
                 	}
                 }
-                
                 model.editCompartment(wc._cli, name);
                 editCompartmentMembrane(wc._cli, name);
             }
