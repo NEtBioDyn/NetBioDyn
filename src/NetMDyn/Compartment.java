@@ -21,10 +21,12 @@ public class Compartment extends ProtoBioDyn{
 	public boolean Vidable = true;
 	protected JTextPane _description = new JTextPane();
 	
+	//Initialization of the Compartment object
 	public Compartment(){
 		initComponents();
 	}
 	
+	//Clone of this object into a new one
     public Compartment clone() {
         Compartment comp = new Compartment();
         comp.center = center;
@@ -36,28 +38,33 @@ public class Compartment extends ProtoBioDyn{
         return comp;
     }	
 	
+  //Return the description of the Compartment
 	public JTextPane getDescription() {
 		return _description;
 	}
 
+	//Put a new value to the description of the Compartment
 	public void setDescription( JTextPane _description) {
 		this._description = _description;
 	}
 
+	//Return the center of the UtilPoint3D
 	public UtilPoint3D getCenter() {
 		return center;
 	}
-
+	
+	//Put a new value to the center of the UtilPoint3D
 	public void setCenter(UtilPoint3D center) {
 		this.center.x = center.x;
 		this.center.y = center.y;
 		
 	}
-
+	
+	//Return the radius of the Compartment
 	public int getRadius() {
 		return radius;
 	}
-
+	//Put a new value to the radius of the Compartment
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
@@ -70,6 +77,8 @@ public class Compartment extends ProtoBioDyn{
 		this.ent = ent;
 	}
 */	
+	
+	//Save the object with all its parameters
     public ArrayList<String> toSave() {
         ArrayList<String> toSave = new ArrayList<String>();
         String classe = this.getClass().toString();
@@ -84,6 +93,7 @@ public class Compartment extends ProtoBioDyn{
         return toSave;
     }
     
+    //Initialization of the components of the Compament
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();

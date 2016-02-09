@@ -5,7 +5,7 @@
  */
 package NetMDyn.ihm;
 
-import java.util.ArrayList;
+import java.util.ArrayList; //Possible creation of tables
 
 import NetMDyn.Model_NetMDyn;
 import NetMDyn.Simulator_NetMDyn;
@@ -24,6 +24,7 @@ public class AddCommand_NetMDyn implements Command {
     private final String type;
     private Command opposite;
 
+    //Initialization of this object with all needed parameters
     public AddCommand_NetMDyn(Model_NetMDyn model, Simulator_NetMDyn simulator, ArrayList<UtilPoint3D> points, String type) {
         this.model = model;
         this.simulator = simulator;
