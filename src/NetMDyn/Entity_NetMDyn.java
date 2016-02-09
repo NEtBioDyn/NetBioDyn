@@ -7,7 +7,7 @@ import netbiodyn.Entity;
 
 public class Entity_NetMDyn extends Entity{
 	
-	protected String _compartment = "Cytosol";
+	public String _compartment = "Cytosol";
 	
     public Entity_NetMDyn() {
         super();

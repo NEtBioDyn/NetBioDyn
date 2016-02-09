@@ -1,8 +1,13 @@
-package NetMDyn;
+package NetMDyn.ihm;
 
+import NetMDyn.AllInstances_NetMDyn;
+import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Compartment;
-import NetMDyn.WndEditCompartment;
-import NetMDyn.WndReactionGlobal;
+import NetMDyn.Entity_NetMDyn;
+import NetMDyn.InstanceReaxel_NetMDyn;
+import NetMDyn.Model_NetMDyn;
+import NetMDyn.Simulator_NetMDyn;
+import NetMDyn.util.UtilPoint3D_NetMDyn;
 import jadeAgentServer.util.Parameter;
 
 import java.awt.Container;
@@ -175,7 +180,29 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	 public void addBehaviour() {
-	        if (simulator.isRunning()) {
+		 if (simulator.isRunning()) {
+			 this.pauseSimulation();
+		 }
+
+		 WndBehaviourChoice wC = new WndBehaviourChoice(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+		 wC.setVisible(true);
+		 if (wC.getDialogResult().equals("OK")) {
+			 int reaction_type = wC.getBehaviourType();
+			 if (reaction_type==1){
+				 WndEditMvt wC1 = new WndEditMvt(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+				 wC1.setVisible(true);
+			 }
+			 else if (reaction_type==2){
+				 WndEditTraverse wC1 = new WndEditTraverse(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+				 wC1.setVisible(true);
+			 }
+			 else{
+				 WndEditBehaviour wC1 = new WndEditBehaviour(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+				 wC1.setVisible(true);
+			 }
+		 }
+	        /*
+		    if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
 
@@ -188,7 +215,8 @@ public class Controller_NetMDyn{
 	                model.addMoteurReaction(w._r3);
 	            }
 	        }
-	    }
+	        */
+	 }
 	 
 	    public void editEntity() {
 	        if (simulator.isRunning()) {

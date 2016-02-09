@@ -1,4 +1,4 @@
-package NetMDyn;
+package NetMDyn.util;
 
 public abstract class SaverLoader_NetMDyn {
 	    

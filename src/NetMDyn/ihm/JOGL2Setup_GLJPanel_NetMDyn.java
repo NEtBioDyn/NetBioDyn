@@ -1,4 +1,4 @@
-package NetMDyn;
+package NetMDyn.ihm;
 
 	import static com.jogamp.opengl.GL.GL_BLEND;
 	import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
@@ -26,9 +26,14 @@ package NetMDyn;
 	import com.jogamp.opengl.util.texture.Texture;
 	import com.jogamp.opengl.util.texture.TextureIO;
 
-	import NetMDyn.Compartment;
+import NetMDyn.AllInstances_NetMDyn;
+import NetMDyn.Behavior_NetMDyn;
+import NetMDyn.Compartment;
+import NetMDyn.Entity_NetMDyn;
+import NetMDyn.InstanceReaxel_NetMDyn;
+import NetMDyn.util.Serialized_NetMDyn;
 
-	import java.awt.event.ActionEvent;
+import java.awt.event.ActionEvent;
 	import java.awt.event.ActionListener;
 	import java.awt.event.KeyEvent;
 	import java.awt.event.KeyListener;

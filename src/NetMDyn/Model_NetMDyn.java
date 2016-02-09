@@ -20,6 +20,12 @@ import java.util.HashMap; //Création de hashmap
 import javax.swing.event.EventListenerList; //Création possible de listeners d'événements
 
 import NetMDyn.Compartment;
+import NetMDyn.ihm.Environment_NetMDyn;
+import NetMDyn.ihm.IhmListener_NetMDyn;
+import NetMDyn.util.FileSaverLoader_NetMDyn;
+import NetMDyn.util.SaverLoader_NetMDyn;
+import NetMDyn.util.Serialized_NetMDyn;
+import NetMDyn.util.UtilPoint3D_NetMDyn;
 import netbiodyn.ihm.IhmListener;
 import netbiodyn.Model;
 import netbiodyn.util.Lang;

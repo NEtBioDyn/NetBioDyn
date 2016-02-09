@@ -1,4 +1,4 @@
-package NetMDyn;
+package NetMDyn.ihm;
 
 import netbiodyn.util.UtilPointF;
 import netbiodyn.util.UtilDivers;
@@ -12,6 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import NetMDyn.Behavior_NetMDyn;
+import NetMDyn.Compartment;
+import NetMDyn.Entity_NetMDyn;
 import netbiodyn.ihm.WndEditElementDeReaction;
 import netbiodyn.util.Lang;
 

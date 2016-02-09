@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package NetMDyn;
+package NetMDyn.ihm;
 
 import java.util.ArrayList;
+
+import NetMDyn.Model_NetMDyn;
+import NetMDyn.Simulator_NetMDyn;
 import netbiodyn.ihm.Command;
 import netbiodyn.util.UtilPoint3D;
 

@@ -1,4 +1,4 @@
-package NetMDyn;
+package NetMDyn.util;
 
 import netbiodyn.ihm.Environment;
 import netbiodyn.ihm.WndEditReaction;
@@ -28,7 +28,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Compartment;
+import NetMDyn.Entity_NetMDyn;
+import NetMDyn.ihm.Environment_NetMDyn;
+import NetMDyn.ihm.WndEditReaction_NetMDyn;
 import netbiodyn.ihm.Env_Parameters;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;

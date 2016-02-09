@@ -3,13 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package NetMDyn;
+package NetMDyn.util;
 
 import netbiodyn.ihm.Env_Parameters;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import NetMDyn.AllInstances_NetMDyn;
+import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Compartment;
+import NetMDyn.Entity_NetMDyn;
+import NetMDyn.InstanceReaxel_NetMDyn;
 import netbiodyn.AllInstances;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;

@@ -1,10 +1,14 @@
-package NetMDyn;
+package NetMDyn.ihm;
 
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
 
+import NetMDyn.AllInstances_NetMDyn;
+import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Compartment;
+import NetMDyn.Entity_NetMDyn;
+import NetMDyn.util.Serialized_NetMDyn;
 import netbiodyn.AllInstances;
 import netbiodyn.util.Serialized;
 import netbiodyn.Behavior;

@@ -1,7 +1,8 @@
-package NetMDyn;
+package NetMDyn.util;
 
 import java.util.ArrayList;
 
+import NetMDyn.InstanceReaxel_NetMDyn;
 import netbiodyn.util.UtilPoint3D;
 
 public class UtilPoint3D_NetMDyn extends UtilPoint3D{

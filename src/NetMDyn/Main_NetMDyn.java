@@ -1,6 +1,6 @@
 package NetMDyn;
 
-import NetMDyn.Controller_NetMDyn;
+import NetMDyn.ihm.Controller_NetMDyn;
 
 public class Main_NetMDyn {
 	//Default size of the software window

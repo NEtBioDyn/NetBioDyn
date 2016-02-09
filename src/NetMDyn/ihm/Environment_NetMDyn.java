@@ -1,4 +1,4 @@
-package NetMDyn;
+package NetMDyn.ihm;
 
 import netbiodyn.util.UtilAnimatedGifEncoder;
 import netbiodyn.util.UtilPoint3D;
@@ -20,7 +20,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import NetMDyn.AllInstances_NetMDyn;
+import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Compartment;
+import NetMDyn.Entity_NetMDyn;
+import NetMDyn.InstanceReaxel_NetMDyn;
+import NetMDyn.util.Serialized_NetMDyn;
+import NetMDyn.util.UtilPoint3D_NetMDyn;
 
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;

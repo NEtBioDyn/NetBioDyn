@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.event.EventListenerList;
+
+import NetMDyn.ihm.IhmListener_NetMDyn;
 import netbiodyn.ihm.IhmListener;
 import netbiodyn.AllInstances;
 import netbiodyn.InstanceReaction;

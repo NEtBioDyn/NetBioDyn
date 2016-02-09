@@ -1,4 +1,4 @@
-package NetMDyn;
+package NetMDyn.ihm;
 
 import netbiodyn.util.UtilFileFilter;
 import java.awt.Color;
@@ -12,6 +12,9 @@ import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import NetMDyn.Behavior_NetMDyn;
+import NetMDyn.Compartment;
+import NetMDyn.Entity_NetMDyn;
 import netbiodyn.util.Lang;
 import netbiodyn.util.RandomGen;
 
