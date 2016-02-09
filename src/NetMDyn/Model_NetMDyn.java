@@ -45,6 +45,7 @@ public class Model_NetMDyn {
 	
 	protected SaverLoader_NetMDyn sl;
 	
+	//Initialization of the Model object with all Environment parameters but with no entities, behaviors or compartments
     public Model_NetMDyn(Env_Parameters parameters) {
     	listeners = new EventListenerList();
         this.parameters = parameters;
@@ -55,6 +56,7 @@ public class Model_NetMDyn {
         instances = new AllInstances_NetMDyn(parameters.getX(), parameters.getY(), parameters.getZ());
     }
 
+    //Initialization of the Model object with all Environment parameters, entities, behaviors and compartments
     public Model_NetMDyn(Env_Parameters parameters, AllInstances_NetMDyn instances, ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviors, ArrayList<Compartment> compartments) {
     	this.parameters = parameters;
         this.instances = instances;
@@ -68,6 +70,7 @@ public class Model_NetMDyn {
         listeners.add(IhmListener_NetMDyn.class, listen);
     }
     
+    //Creation of a new Model, with action of the listeners
     public void newModel() {
         entities = new ArrayList<>();
         behaviors = new ArrayList<>();
@@ -80,7 +83,7 @@ public class Model_NetMDyn {
             listen.matrixUpdate(getInstances(), getInitialState(), 0);
         }
     }
-
+    
     public String getType(int x, int y, int z) {
         InstanceReaxel r = instances.getFast(x, y, z);
         if (r != null) {
@@ -90,6 +93,7 @@ public class Model_NetMDyn {
         }
     }
     
+    //Clear the created Environment (clear of all compartments and entities)
     public void clearEnvironment() {
     	for(Compartment comp : compartments){
     		comp.setRadius(0);
@@ -101,6 +105,7 @@ public class Model_NetMDyn {
         }
     }
     
+    //Clear the created Environment of all cleanable Compartments
     public void clear_OnlyCleanable() {
     	for(Compartment comp : compartments){
     		if(comp.Vidable){
@@ -137,25 +142,20 @@ public class Model_NetMDyn {
         }
     }
 
-    public void reboot() {
-        // TODO charger une ancienne version du modèle
-
-    }
-
     public void deplacer(ArrayList<InstanceReaxel_NetMDyn> _cubes_selectionnes, int new_x, int new_y, int new_z) {
         System.out.println(_cubes_selectionnes.toString());
         this.unselect(_cubes_selectionnes);
-        // Calcul du cdg de la liste de reaxels, si toutes les places sont libres
+        // Calculation of the cdg of the Reaxels list, if all locations are free
         UtilPoint3D cdg = placeLibre(_cubes_selectionnes, new_x, new_y, new_z);
         if (cdg != null) {
             int dx = cdg.x;
             int dy = cdg.y;
             int dz = cdg.z;
-            // Vidage des emplacements initiaux
+            // Clean initial sites
             for (InstanceReaxel_NetMDyn r : _cubes_selectionnes) {
                 instances.removeReaxel(r.getX(), r.getY(), r.getZ());
             }
-            // Deplacement de tous les reaxels de l'ensemble
+            // Displacement off all selected reaxels
             for (InstanceReaxel_NetMDyn r : _cubes_selectionnes) {
                 if (instances.getFast(r.getX() + dx, r.getY() + dy, r.getZ() + dz) == null) {
                     r.setX(r.getX() + dx);
@@ -170,18 +170,19 @@ public class Model_NetMDyn {
         }
     }
 
+   	//Return if the Reaxels list is empty
     protected UtilPoint3D_NetMDyn placeLibre(ArrayList<InstanceReaxel_NetMDyn> lst, int xg1, int yg1, int zg1) {
         if (lst == null) {
             return null;
         }
 
-        // Calcul du cdg de la liste de reaxels
+        // Calculation of the cdg of the Reaxels list
         UtilPoint3D_NetMDyn pt_g0 = UtilPoint3D_NetMDyn.centreDeGravite(lst, true);
         int dx = xg1 - pt_g0.x;
         int dy = yg1 - pt_g0.y;
         int dz = zg1 - pt_g0.z;
         UtilPoint3D_NetMDyn new_point = new UtilPoint3D_NetMDyn(dx, dy, dz);
-        // Verif que toutes les places sont libres
+        // Verify that all sites are free
         for (InstanceReaxel_NetMDyn r : lst) {
             InstanceReaxel_NetMDyn rf = instances.getFast(r.getX() + dx, r.getY() + dy, r.getZ() + dz);
             if (rf != null) {
@@ -192,7 +193,8 @@ public class Model_NetMDyn {
         }
         return new_point;
     }
-
+    
+    //Put a new value to the Environment parameters 
     public void setParameters(Env_Parameters parameters) {
         this.parameters = parameters;
         for (final IhmListener listen : listeners.getListeners(IhmListener.class)) {
@@ -201,6 +203,7 @@ public class Model_NetMDyn {
 
     }
     
+    //Add a Reaxel to the Model
     protected boolean AjouterReaxel(int i, int j, int k, String etiquette) {
         boolean changed = false;
         for (int n = 0; n < entities.size(); n++) {
@@ -216,6 +219,7 @@ public class Model_NetMDyn {
         return changed;
     }
     
+    //Add new Entities (UtilPoint3D objects) to the model
     public void addEntityInstances(ArrayList<UtilPoint3D> points, String etiquette) {
         boolean toUpdate = false;
         for (UtilPoint3D point : points) {
@@ -234,6 +238,7 @@ public class Model_NetMDyn {
         }
     }
 
+    //Remove Entities placed on these coordinates
     public void removeEntityInstance(int x, int y, int z) {
         instances.removeReaxel(x, y, z);
         for (final IhmListener_NetMDyn listen : listeners.getListeners(IhmListener_NetMDyn.class)) {
@@ -252,10 +257,12 @@ public class Model_NetMDyn {
         return init;
     }
     
+    //Return the Environmen parameters of the Model
     public Env_Parameters getParameters() {
         return parameters;
     }
-
+    
+    //Modification of Model parameters
     public void changeParameters(HashMap<String, ArrayList<Parameter>> param, UtilPoint3D maxPoint) {
         ArrayList<Parameter> ent = param.get("Entities");
         for (Parameter p : ent) {
@@ -277,6 +284,7 @@ public class Model_NetMDyn {
         }
     }
     
+    //Edition of te initial state of Instances
     public void editInstancesInitialState(String nom, int value, UtilPoint3D maxPoint) {
         int delta = value - getInitialState().get(nom);
         if (delta > 0) {
@@ -319,12 +327,12 @@ public class Model_NetMDyn {
 
     }
 
-
+    //Return the Instances of the Model
     public AllInstances_NetMDyn getInstances() {
         return instances;
     }
 
-    
+    //Return the name of the Compartment
     public Compartment getCompartment(String name) {
         for (int i = compartments.size() - 1; i >= 0; i--) {
             Compartment comp = compartments.get(i);
@@ -334,6 +342,7 @@ public class Model_NetMDyn {
         }
         return null;
     }
+    
     
     public void addCompartment(Compartment comp) {
         compartments.add(comp);
@@ -376,7 +385,7 @@ public class Model_NetMDyn {
     }
     
     
-    
+    //Verification if two Compartments into the Model don't have coordinates in common
     public boolean verifCollision(String name, ArrayList<UtilPoint3D> points){
     	boolean rep = false;
     	for (Compartment comp: compartments){
@@ -396,6 +405,7 @@ public class Model_NetMDyn {
     	return true;
     }
     
+    //Return a ProtoReaxel
     public Entity_NetMDyn getProtoReaxel(String name) {
         for (Entity_NetMDyn entity : entities) {
             if (entity._etiquettes.equals(name)) {
@@ -405,6 +415,7 @@ public class Model_NetMDyn {
         return null;
     }
 
+    //Return the names of the Entities into the Model
     public ArrayList<String> getEntitiesNames() {
         ArrayList<String> names = new ArrayList<>();
         for (Entity r : entities) {
@@ -413,6 +424,7 @@ public class Model_NetMDyn {
         return names;
     }
     
+    //Add a ProtoReaxel
     public void addProtoReaxel(Entity_NetMDyn entity) {
         entities.add(entity);
         for (final IhmListener_NetMDyn listen : listeners.getListeners(IhmListener_NetMDyn.class)) {
@@ -420,6 +432,7 @@ public class Model_NetMDyn {
         }
     }
 
+    //Edit a ProtoReaxel
     public void editProtoReaxel(Entity_NetMDyn entity, String old_name, int time) {
         int index = 0;
         for (int i = 0; i < entities.size(); i++) {
@@ -445,6 +458,7 @@ public class Model_NetMDyn {
         }
     }
     
+    //Delete ProtoReaxels
     public void delProtoReaxel(ArrayList<String> entities) {
         for (String r : entities) {
             Entity_NetMDyn rea = getProtoReaxel(r);
@@ -459,6 +473,7 @@ public class Model_NetMDyn {
         }
     }
     
+    //Put a new value to the half-life of the entities 
     public void editEntitiesHalfLife(String nom, double value) {
         Entity_NetMDyn entity = getProtoReaxel(nom);
         if (entity != null) {
@@ -467,12 +482,12 @@ public class Model_NetMDyn {
         }
     }
     
-
+    //Get the Entities of the Model
     public ArrayList<Entity_NetMDyn> getListManipulesNoeuds() {
         return entities;
     }
     
-    
+    //Get the Behaviors of the Model
     public Behavior_NetMDyn getBehaviour(String name) {
         for (int i = behaviors.size() - 1; i >= 0; i--) {
             Behavior_NetMDyn moteur = behaviors.get(i);
@@ -483,12 +498,14 @@ public class Model_NetMDyn {
         return null;
     }
     
+    //Edit the Behaviors of the Model
     protected void editInBehaviors(String entity, String old_name) {
         for (Behavior_NetMDyn moteur : behaviors) {
             moteur.protoReaxelNameChanged(old_name, entity);
         }
     }
     
+    //Edit the probabilities of he Behaviors of the Model
     public void editBehaviourProba(String name, double value) {
         for (int i = behaviors.size() - 1; i >= 0; i--) {
             Behavior_NetMDyn moteur = behaviors.get(i);
@@ -535,6 +552,7 @@ public class Model_NetMDyn {
         }
     }
     
+    //Load the Model
     public void load(Environment_NetMDyn env, String nomFichier) {
     	System.out.println("blip");
         sl = new FileSaverLoader_NetMDyn(env, nomFichier);
@@ -555,6 +573,7 @@ public class Model_NetMDyn {
         }
     }
     
+    //Save the Model
     public void save(Environment_NetMDyn env, String nomFichier, String path) {
         sl = new FileSaverLoader_NetMDyn(env, nomFichier);
         ((FileSaverLoader_NetMDyn) (sl)).setParentPath(path);
@@ -602,6 +621,7 @@ public class Model_NetMDyn {
         return moteurs;
     }
     
+    //Clone the Model from this one
     public Model_NetMDyn clone() {
         return new Model_NetMDyn(getParameters(), getInstances().clone(), getListManipulesNoeuds(), getListManipulesReactions(), getListManipulesCompartment());
     }
