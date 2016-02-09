@@ -1,11 +1,11 @@
 package NetMDyn;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import javax.swing.event.EventListenerList;
+import java.awt.event.ActionEvent; //A semantic event which indicates that a component-defined action occurred.
+import java.awt.event.ActionListener; //The listener interface for receiving action events. 
+import java.util.ArrayList; //Possible creation of tables
+import java.util.HashMap; //Possible creation of hashmaps
+import java.util.List; //Possible creation of lists
+import javax.swing.event.EventListenerList; //Possible creation of EventListeners lists
 
 import NetMDyn.ihm.IhmListener_NetMDyn;
 import netbiodyn.ihm.IhmListener;
@@ -33,6 +33,7 @@ public class Simulator_NetMDyn {
 
 	    private int nb_processus_a_traiter = 0;
 
+	    //Initialization of the Simulator from the Model
 	    public Simulator_NetMDyn(Model_NetMDyn model) {
 	        listeners = new EventListenerList();
 
@@ -40,15 +41,18 @@ public class Simulator_NetMDyn {
 	        init();
 	        initTimer();
 	    }
-
+	    
+	    //Creation of the instances from the Model
 	    private void init() {
 	        instances = new AllInstances_NetMDyn(model.getInstances());
 	    }
 
+	    //Creation of the Listeners from the Model
 	    public void addListener(IhmListener_NetMDyn listen) {
 	        listeners.add(IhmListener_NetMDyn.class, listen);
 	    }
-
+	    
+	    //Initialization of the Simulator to time 0
 	    private void initTimer() {
 	        timer_play = new javax.swing.Timer(this.getSpeed(), new ActionListener() {
 	            @Override
@@ -58,6 +62,7 @@ public class Simulator_NetMDyn {
 	        });
 	    }
 
+	    //Begin the simulation
 	    public void start() {
 	        if (getTime() == 0) {
 	            init();
@@ -66,6 +71,7 @@ public class Simulator_NetMDyn {
 	        setPause(false);
 	    }
 
+	    //Stop the simulation
 	    public void stop() {
 	        setStopped(true);
 	        timer_play.stop();
@@ -78,12 +84,13 @@ public class Simulator_NetMDyn {
 	        }
 	    }
 
+	    
 	    private void play() {        
-	        // 1/2 vie
+	        // Half-time
 	        // --------
 	        for (int pos_in_list = instances.getSize() - 1; pos_in_list >= 0; pos_in_list--) {
 	            InstanceReaxel_NetMDyn c = instances.getInList(pos_in_list);//_matrice_cubes[i, j];
-	            // Gestion de la demie-vie
+	            // Management of the half-time
 	            if (c.getDemie_vie() > 0 && !c.isSelectionne()) {
 	                double proba_mort = 1 - Math.pow(0.5, 1.0 / c.getDemie_vie());
 	                if (RandomGen.getInstance().nextDouble() < proba_mort) {
@@ -93,68 +100,63 @@ public class Simulator_NetMDyn {
 	        }
 
 	        // ***************************************
-	        // Prise en compte des diverses reactions
+	        // Inclusion of various reactions
 	        // ***************************************
-	        // Liste de ts les moteurs de reactions
+	        // List of all reactions motors
 	        List<Behavior_NetMDyn> lst_react = model.getListManipulesReactions();
-	        // RAZ de la matrice future des reaxels        
+	        // Set to zero of the future matrix of reaxels
 	        Env_Parameters param = model.getParameters();
 	        instancesFutur = new AllInstances_NetMDyn(param.getX(), param.getY(), param.getZ());
 
-	        // Lancement en // de toutes les reactions
+	        // Parallel launch of all reactions
 	        setNb_processus_a_traiter(lst_react.size());
 	        for (Behavior_NetMDyn lst_react1 : lst_react) {
 	            lst_react1.computeReactions(this, param, instances.clone(), getTime());
 	        }
 
-	        // Attente passive de tous les retours
-	        while (getNb_processus_a_traiter() > 0) {
-	            // TODO pour le moment, c une attente active, à corriger !
-	        }
-
-	        // Concatenation de toutes les reactions possibles
+	        // Concatenation of all possible reactions
 	        ArrayList<InstanceReaction> lst_rp = new ArrayList<>();
 	        for (Behavior_NetMDyn lst_react1 : lst_react) {
 	            lst_rp.addAll(lst_react1._reactionsPossibles);
 	        }
 
-	        // Index de parcours melanges
+	        // Index of blended reactions
 	        ArrayList<Integer> lst_int = RandomGen.getInstance().liste_entiers_melanges(lst_rp.size());
-	        // Execution du choix effectif des reactions
+	        // Execution of effective choice of reactions
 	        for (int r = 0; r < lst_rp.size(); r++) {
 	            InstanceReaction rp = lst_rp.get(lst_int.get(r));
-	            // On tente d'appliquer la transformation
+	            // Tentative of application of the transformation 
 	            boolean possible = true;
 
-	            if (rp._type != 2) { // Reaction situees et semi-situee
-	                // Reactifs tjs présents ?
+	            if (rp._type != 2) { // Located and "semi-situées" reactions
+	                // Reagents always present ?
 	                for (int i = 0; i < rp._reactifs_noms.size(); i++) {
 	                    int x = rp._reactifs_pos.get(i).x;
 	                    int y = rp._reactifs_pos.get(i).y;
 	                    int z = rp._reactifs_pos.get(i).z;
-	                    // Cas du vide
+	                    // Case of vacuum
 	                    if (instances.getFast(x, y, z) == null) {
-	                        if (!rp._reactifs_noms.get(i).equals("0")) { // La reaction veut un vide sinon...
+	                        if (!rp._reactifs_noms.get(i).equals("0")) { //The reaction wants a vacuum
 	                            possible = false;
 	                            i = rp._reactifs_noms.size();
 	                        }
-	                    } else // cas non vide
+	                    } else // Case of no-vacuum 
 	                    {
-	                        if (!instances.getFast(x, y, z).getNom().equals(rp._reactifs_noms.get(i))) { // La reaction peut trouver le bon nom de reaxel ds la présente matrice
+	                        if (!instances.getFast(x, y, z).getNom().equals(rp._reactifs_noms.get(i))) { // The reaction can find the good Reaxel name into the actual matrix
 	                            possible = false;
-	                            i = rp._reactifs_noms.size(); // mais s'il n'y est pas, il n'y est pas
+	                            i = rp._reactifs_noms.size(); 
 	                        }
 	                    }
 	                }
 
-	                // Place encore là pour les produits ?
+	                // Verify if there is some place for products 
 	                if (possible == true) {
 	                    for (int i = 0; i < rp._produits_noms.size(); i++) {
 	                        int x = rp._produits_pos.get(i).x;
 	                        int y = rp._produits_pos.get(i).y;
 	                        int z = rp._produits_pos.get(i).z;
-	                        if (instancesFutur.getFast(x, y, z) != null) { // Si espace occupé...
-	                            if (!rp._produits_noms.get(i).equals("")) { // et si volonté d'y placer un produit alors impossible !
+	                        if (instancesFutur.getFast(x, y, z) != null) { // If the space is occupied
+	                            if (!rp._produits_noms.get(i).equals("")) { // No possibility to put into it a product
 	                                possible = false;
 	                                i = rp._produits_noms.size();
 	                            }
@@ -162,9 +164,9 @@ public class Simulator_NetMDyn {
 	                    }
 	                }
 
-	                // On effectue la transformation si tjs possible
+	                // Do the transformation if it's possible 
 	                if (possible == true) {
-	                    // on ajoute les produits dans la matrice future
+	                    // Add the products into the future matrix
 	                    for (int i = 0; i < rp._produits_noms.size(); i++) {
 	                        int x = rp._produits_pos.get(i).x;
 	                        int y = rp._produits_pos.get(i).y;
@@ -172,7 +174,7 @@ public class Simulator_NetMDyn {
 	                        this.AjouterFuturReaxel(x, y, z, rp._produits_noms.get(i));
 	                    }
 
-	                    // on enleve les reactifs de la matrice courante pour eviter qu'il ne reagissent a nouveau (conservation E et matiere)
+	                    // Remove the reagents of actual matrix for preventing new reactions 
 	                    for (int i = 0; i < rp._reactifs_noms.size(); i++) {
 	                        int x = rp._reactifs_pos.get(i).x;
 	                        int y = rp._reactifs_pos.get(i).y;
@@ -183,13 +185,13 @@ public class Simulator_NetMDyn {
 	                    }
 	                }
 	            }
-	            // Reaction possible suivante...
+	            // Next possible reaction
 	        }
 
-	        // Fin de l'application effective des reactions
-	        // On verse les réaxels qui n'ont pas réagit dans la liste future et dans la matrice future
+	        // End of effective application of reactions
+	        // Put no-reacting reaxels into the future list and into the future matrix
 	        instancesFutur.setMatrixAndList(instances.getList());
-	        // Attente passive de tous les retours
+	        // Passive waiting of all returns 
 	        while (getNb_processus_a_traiter() > 0) {
 	        }
 
@@ -203,7 +205,7 @@ public class Simulator_NetMDyn {
 	                timer_play.stop();
 	                pause = false;
 	                setMaxStep(-1);
-//	                setTime(0); // ATTENTION !! 
+//	                setTime(0); // WARNING !! 
 	            }
 	        }
 
