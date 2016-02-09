@@ -454,16 +454,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        controller.editEntity();
 	    }//GEN-LAST:event_jButtonEditEntityActionPerformed
 
-	    protected void dataGridView_comportementsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dataGridView_comportementsValueChanged
-	        int i = dataGridView_comportements.getSelectedIndex();
-	        if (i < 0) {
-	            return;
-	        }
-	        String nom_moteur = dataGridView_comportements.getSelectedValue().toString();
-	        Behavior moteur = getBehaviour(nom_moteur);
-	        jSliderProba.setValue((int) (moteur.get_k() * 1000));
-	        setProba(moteur.get_k());
-	    }//GEN-LAST:event_dataGridView_comportementsValueChanged
+
 
 	    protected void jButtonAddBehavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddBehavActionPerformed
 	        controller.addBehaviour();
@@ -484,12 +475,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        drawAll(0, 0, 0, 0, 0);
 	    }//GEN-LAST:event_jSliderZStateChanged
 
-	    protected void jSliderProbaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderProbaStateChanged
-	        int i = dataGridView_comportements.getSelectedIndex();
-	        if (i >= 0) {
-	            jLabelProba.setText("p=" + (jSliderProba.getValue() / 10) / 100.0);
-	        }
-	    }//GEN-LAST:event_jSliderProbaStateChanged
 
 	    protected void dataGridView_entitesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_entitesMouseClicked
 	        if (evt.getClickCount() == 2 && !evt.isConsumed() && !freezed) {
@@ -543,15 +528,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    protected void checkBox_paint_randomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_randomMousePressed
 	        releverToutesCheckBoxPaint(checkBox_paint_random);
 	    }//GEN-LAST:event_checkBox_paint_randomMousePressed
-
-	    protected void jSliderProbaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderProbaMouseReleased
-	        int i = dataGridView_comportements.getSelectedIndex();
-	        if (i >= 0) {
-	            String nom_moteur = dataGridView_comportements.getSelectedValue().toString();
-	            Double value = ((jSliderProba.getValue() / 10) / 100.0);
-	            controller.changeProba(nom_moteur, value);
-	        }
-	    }//GEN-LAST:event_jSliderProbaMouseReleased
 
 	    protected void jSliderSpeedMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderSpeedMouseReleased
 	        controller.changeSpeed(jSliderSpeed.getValue());
@@ -1188,10 +1164,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        checkBox_avi.setSelected(false);
 	    }
 
-	    public void setProba(double value) {
-	        jLabelProba.setText("p=" + value);
-	    }
-
 	    public void disabled3D() {
 	        jButton3D.setEnabled(false);
 	    }
@@ -1245,7 +1217,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    protected javax.swing.JLabel jLabelDivers;
 	    protected javax.swing.JLabel jLabelEntites;
 	    protected javax.swing.JLabel jLabelEnvironnement;
-	    protected javax.swing.JLabel jLabelProba;
 	    protected javax.swing.JLabel jLabelSimulateur;
 	    protected javax.swing.JLabel jLabelSpeed;
 	    protected javax.swing.JLabel jLabelTps;
@@ -1262,7 +1233,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    protected javax.swing.JPanel jPanelSimulator;
 	    protected javax.swing.JScrollPane jScrollPaneBehaviors;
 	    protected javax.swing.JScrollPane jScrollPane_Entities;
-	    protected javax.swing.JSlider jSliderProba;
 	    protected javax.swing.JSlider jSliderSpeed;
 	    public javax.swing.JSlider jSliderZ;
 	    public javax.swing.JLabel labelTime;
@@ -1288,7 +1258,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        checkBox_paint_random.setEnabled(!bool);
 	        checkBox_paint_spray.setEnabled(!bool);
 	        checkBox_paint_stylo.setEnabled(!bool);
-	        jSliderProba.setEnabled(!bool);
 	        bouton_environnement.setEnabled(!bool);
 	        bouton_vider.setEnabled(!bool);
 	        bouton_new.setEnabled(!bool);
@@ -1489,8 +1458,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jButtonDelBehav = new javax.swing.JButton();
         jScrollPaneBehaviors = new javax.swing.JScrollPane();
         dataGridView_comportements = new javax.swing.JList();
-        jSliderProba = new javax.swing.JSlider();
-        jLabelProba = new javax.swing.JLabel();
         
         // Envirronnement
         jPanelEnv = new javax.swing.JPanel();
@@ -2038,53 +2005,15 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 dataGridView_comportementsMouseClicked(evt);
             }
         });
-        dataGridView_comportements.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                dataGridView_comportementsValueChanged(evt);
-            }
-        });
+
         jScrollPaneBehaviors.setViewportView(dataGridView_comportements);
 
-        jSliderProba.setBackground(new java.awt.Color(153, 153, 255));
-        jSliderProba.setMaximum(1000);
-        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-        	jSliderProba.setToolTipText("Proba des comportements sélectionnés");
-        }
-        else{
-        	jSliderProba.setToolTipText("Proba of selected behaviour");
-        }
-        
-        jSliderProba.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jSliderProba.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jSliderProbaMouseReleased(evt);
-            }
-        });
-        jSliderProba.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSliderProbaStateChanged(evt);
-            }
-        });
-
-        jLabelProba.setBackground(new java.awt.Color(153, 153, 255));
-        jLabelProba.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
-        jLabelProba.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelProba.setText("p=");
-        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-        	jLabelProba.setToolTipText("Proba des comportements sélectionnés");
-        }
-        else{
-        	jLabelProba.setToolTipText("Proba of selected behaviour");
-        }
+       
         javax.swing.GroupLayout jPanelBehaviorsLayout = new javax.swing.GroupLayout(jPanelBehaviors);
         jPanelBehaviors.setLayout(jPanelBehaviorsLayout);
         jPanelBehaviorsLayout.setHorizontalGroup(
             jPanelBehaviorsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBehaviorsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelBehaviorsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSliderProba, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jLabelProba, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addComponent(jLabelComportements, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBehaviorsLayout.createSequentialGroup()
@@ -2111,9 +2040,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneBehaviors, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSliderProba, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelProba)
                 .addContainerGap())
         );
 

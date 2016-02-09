@@ -180,28 +180,7 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	 public void addBehaviour() {
-		 if (simulator.isRunning()) {
-			 this.pauseSimulation();
-		 }
 
-		 WndBehaviourChoice wC = new WndBehaviourChoice(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
-		 wC.setVisible(true);
-		 if (wC.getDialogResult().equals("OK")) {
-			 int reaction_type = wC.getBehaviourType();
-			 if (reaction_type==1){
-				 WndEditMvt wC1 = new WndEditMvt(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
-				 wC1.setVisible(true);
-			 }
-			 else if (reaction_type==2){
-				 WndEditTraverse wC1 = new WndEditTraverse(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
-				 wC1.setVisible(true);
-			 }
-			 else{
-				 WndEditBehaviour wC1 = new WndEditBehaviour(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
-				 wC1.setVisible(true);
-			 }
-		 }
-	        /*
 		    if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
@@ -215,7 +194,7 @@ public class Controller_NetMDyn{
 	                model.addMoteurReaction(w._r3);
 	            }
 	        }
-	        */
+
 	 }
 	 
 	    public void editEntity() {
@@ -240,10 +219,6 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
-	    public void changeProba(String name, double value) {
-	        model.editBehaviourProba(name, value);
-	    }
-
 	    public void changeParameters(HashMap<String, ArrayList<Parameter>> param) {
 	        model.changeParameters(param, env.getPictureBoxDimensions());
 	    }
