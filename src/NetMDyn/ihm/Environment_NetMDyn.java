@@ -2,6 +2,7 @@ package NetMDyn.ihm;
 
 import netbiodyn.util.UtilAnimatedGifEncoder;
 import netbiodyn.util.UtilPoint3D;
+
 import java.awt.Color; // Encapsulate colors in the default sRGB color space or colors in arbitrary color spaces identified by a ColorSpace
 import java.awt.Graphics; // Abstract base class for all graphics contexts that allow an application to draw onto components
 import java.awt.Image; // Provides classes for creating and modifying images
@@ -11,9 +12,11 @@ import java.awt.event.ActionListener; // The listener interface for receiving ac
 import java.awt.event.MouseEvent; // Indicates that a mouse action occurred in a component.
 import java.awt.image.BufferedImage; // Possible creation of an Image with an accessible buffer of image data
 import java.awt.image.BufferedImageOp; // Single-input/single-output operations performed on BufferedImage objects
+import java.io.IOException;
 import java.net.URL; // Uniform Resource Locator, a pointer to a "resource" on the World Wide Web
 import java.util.ArrayList; // Possible creation of tables
 import java.util.HashMap; // Possible creation of hashmaps
+
 import javax.imageio.ImageIO; // Static convenience methods for locating ImageReaders and ImageWriters, and performing simple encoding and decoding
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon; // An implementation of the Icon interface that paints Icons from Images.
@@ -30,7 +33,10 @@ import NetMDyn.util.UtilPoint3D_NetMDyn;
 
 import java.awt.image.ConvolveOp; // Implements a convolution from the source to the destination
 import java.awt.image.Kernel; // Matrix that describes how a specified pixel and its surrounding pixels affect the value computed for the pixel's position in the output image of a filtering operation.
+
 import javax.swing.JList; //Possible creation of lists
+import javax.xml.stream.XMLStreamException;
+
 import netbiodyn.AllInstances;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
@@ -291,7 +297,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        controller.saveModel(_nom_sauvegarde);
 	    }//GEN-LAST:event_bouton_saveMouseClicked
 
-	    protected void bouton_openMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_openMouseClicked
+	    protected void bouton_openMouseClicked(java.awt.event.MouseEvent evt) throws XMLStreamException, IOException {//GEN-FIRST:event_bouton_openMouseClicked
 	        controller.loadModel(_nom_sauvegarde);
 	    }//GEN-LAST:event_bouton_openMouseClicked
 
@@ -1539,7 +1545,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         bouton_open.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bouton_open.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bouton_openMouseClicked(evt);
+                try {
+					bouton_openMouseClicked(evt);
+				} catch (XMLStreamException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         add(bouton_open);

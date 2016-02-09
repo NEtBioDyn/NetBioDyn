@@ -6,7 +6,9 @@ import NetMDyn.Compartment;
 import NetMDyn.Entity_NetMDyn;
 import NetMDyn.InstanceReaxel_NetMDyn;
 import NetMDyn.Model_NetMDyn;
+import NetMDyn.SbmlParser;
 import NetMDyn.Simulator_NetMDyn;
+import NetMDyn.util.FileSaverLoader_NetMDyn;
 import NetMDyn.util.UtilPoint3D_NetMDyn;
 import jadeAgentServer.util.Parameter;
 
@@ -31,6 +33,10 @@ import javax.swing.JComponent; // The base class for all Swing components except
 import javax.swing.JFrame; // Possible creation of windows
 import javax.swing.JOptionPane; //Possible creation of dialog windows
 import javax.swing.KeyStroke; // Key action on the keyboard, or equivalent input device
+import javax.xml.stream.XMLStreamException;
+
+import org.sbml.jsbml.SBMLDocument;
+import org.sbml.jsbml.SBMLReader;
 
 import com.jogamp.opengl.awt.GLJPanel; // Provides OpenGL rendering support.
 import com.jogamp.opengl.util.FPSAnimator; // Attempt to achieve a target frames-per-second rate to avoid using all CPU time
@@ -409,18 +415,35 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
-	    public void loadModel(String nameSaved) {
+	    public void loadModel(String nameSaved) throws XMLStreamException, IOException {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
 
 	        UtilFileFilter filtre = new UtilFileFilter("NetMDyn", "nbd");
-	        File file = FileSaverLoader.chooseFileToLoad(nameSaved, filtre);
-
-	        if (file != null) {
+	        UtilFileFilter filtre2 = new UtilFileFilter("sbml", "xml");
+	        File file = FileSaverLoader_NetMDyn.chooseFileToLoad(nameSaved, filtre,filtre2);
+//	        File file2 = FileSaverLoader.chooseFileToLoad(nameSaved, filtre2);
+	        String extensionFile=file.getPath().substring( file.getPath().indexOf('.'));
+	        System.out.println(extensionFile);
+	        if ((file != null)&&(extensionFile.equals(".nbd"))) {
+	        	System.out.println(extensionFile);
 	            env.setNom_sauvegarde(UtilDivers.removeExtension(file.getPath()));
 	            this.stopWithoutAsking();
 	            model.load(env, file.getPath());
+	        }
+	        if ((file != null)&&(extensionFile.equals(".xml"))){
+	        	System.out.println(extensionFile);
+	        	SBMLReader slread = new SBMLReader();
+	    		SBMLDocument document = slread.readSBML(file);
+	    		MetaboliteVisualizer visualize = new MetaboliteVisualizer(document);
+	    		SbmlParser parser=new SbmlParser();
+	    		ControlerMetabolite c =new ControlerMetabolite(visualize, parser, document) ;
+	    		visualize.setController(c);
+//	    		WriterNbd writer= c.getWriter();
+//	    		 env.setNom_sauvegarde(UtilDivers.removeExtension( writer.getFileName(document)));
+//		            this.stopWithoutAsking();
+//	    		model.load(env, writer.getFileName(document) );
 	        }
 	    }
 

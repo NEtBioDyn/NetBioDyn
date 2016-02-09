@@ -425,7 +425,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	     * @param filter
 	     * @return
 	     */
-	    public static File chooseFileToLoad(String nameSaved, UtilFileFilter filter) {
+	    public static File chooseFileToLoad(String nameSaved, UtilFileFilter filter,UtilFileFilter filter2) {
 	        File toReturn = null;
 
 	        String nomFichier = nameSaved;
@@ -434,6 +434,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	        //String path = null;
 	        JFileChooser loadFileDialog1 = new JFileChooser();
 	        loadFileDialog1.setFileFilter(filter);
+	        loadFileDialog1.setFileFilter(filter2);
 	        if (Lang.getInstance().getLang().equals("FR")) {
 	            loadFileDialog1.setDialogTitle("Charger une simulation");
 	        } else {
