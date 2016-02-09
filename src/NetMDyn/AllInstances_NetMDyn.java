@@ -3,6 +3,8 @@ package NetMDyn;
 import java.util.ArrayList; //Possible creation of tables
 import java.util.HashMap; //Possible creation of hashmaps
 
+import netbiodyn.util.Lang;
+
 public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> implements Cloneable{
 
 
@@ -258,7 +260,12 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	    public void test(String name) {
 	        for (InstanceReaxel_NetMDyn r : this) { //Path of all InstanceReaxel into the AllInstances object 
 	            if (matrix[r.getX()][r.getY()][r.getZ()] == null) { 
-	                System.err.println(name + " TEST FAILED !!!! " + r.getX() + "*" + r.getY() + "*" + r.getZ()); //if the InstanceReaxel hasn't its coordinates into the matrix, return an error
+	                if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+		                System.err.println(name + " ECHEC DU TEST !!!! " + r.getX() + "*" + r.getY() + "*" + r.getZ()); //if the InstanceReaxel hasn't its coordinates into the matrix, return an error
+	                }
+	                else{
+	                	System.err.println(name + " TEST FAILED !!!! " + r.getX() + "*" + r.getY() + "*" + r.getZ()); //if the InstanceReaxel hasn't its coordinates into the matrix, return an error
+	                }
 	            }
 	        }
 	    }

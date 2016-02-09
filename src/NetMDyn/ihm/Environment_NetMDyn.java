@@ -397,7 +397,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	            controller.record_animation();
 	        } else {
 	            if (Lang.getInstance().getLang().equals("FR")) {
-	                JOptionPane.showMessageDialog(this, "Animation enregistree.");
+	                JOptionPane.showMessageDialog(this, "Animation enregistrée.");
 	            } else {
 	                JOptionPane.showMessageDialog(this, "Animation created");
 	            }
@@ -615,17 +615,37 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	            InstanceReaxel r = instances.getFast(new_x, new_y, jSliderZ.getValue());
 	            if (r == null) {
 	                try {
-	                    JOptionPane.showMessageDialog(this, "Simulation :\n" + parameters.getDescription());
+	                    if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+	                    	JOptionPane.showMessageDialog(this, "Simulation :\n" + parameters.getDescription());
+	                    }
+	                    else{
+	                    	JOptionPane.showMessageDialog(this, "Simulation :\n" + parameters.getDescription());
+	                    }
 	                } catch (Exception ex) {
-	                    JOptionPane.showMessageDialog(this, "Dans afficherInformations : " + ex);
+	                	if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+	                		JOptionPane.showMessageDialog(this, "Dans afficherInformations : " + ex);
+	                	}
+	                	else{
+	                		JOptionPane.showMessageDialog(this, "Into afficherInformations function : " + ex);
+	                	}
 	                }
 
 	            } else {
 	                Entity n = getReaxelByName(r.getNom());
 	                try {
-	                    JOptionPane.showMessageDialog(this, "Entite :" + r.getNom() + "\n" + n.getDescription().getDocument().getText(0, n.getDescription().getDocument().getLength()));
+	                	if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+	                		JOptionPane.showMessageDialog(this, "Entité :" + r.getNom() + "\n" + n.getDescription().getDocument().getText(0, n.getDescription().getDocument().getLength()));
+	                	}
+	                	else{
+	                		JOptionPane.showMessageDialog(this, "Entity :" + r.getNom() + "\n" + n.getDescription().getDocument().getText(0, n.getDescription().getDocument().getLength()));	                		
+	                	}
 	                } catch (Exception ex) {
-	                    JOptionPane.showMessageDialog(this, "Dans afficherInformations : " + ex);
+	                	if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+	                		JOptionPane.showMessageDialog(this, "Dans afficherInformations : " + ex);
+	                	}
+	                	else{
+	                		JOptionPane.showMessageDialog(this, "Into afficherInformations function : " + ex);
+	                	}
 	                }
 	            }
 	        }
@@ -1527,8 +1547,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
             }
         });
         setLayout(null);
-
-        bouton_save.setToolTipText("Save");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	bouton_save.setToolTipText("Sauvegarder");
+        }
+        else {
+        	bouton_save.setToolTipText("Save");
+        }
         bouton_save.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bouton_save.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1537,8 +1561,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
         add(bouton_save);
         bouton_save.setBounds(220, 5, 20, 20);
-
-        bouton_new.setToolTipText("New");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	bouton_new.setToolTipText("Nouveau");
+        }
+        else{
+            bouton_new.setToolTipText("New");        	
+        }
         bouton_new.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bouton_new.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1547,8 +1575,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
         add(bouton_new);
         bouton_new.setBounds(180, 5, 20, 20);
-
-        bouton_open.setToolTipText("Load");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	bouton_open.setToolTipText("Charger");	        	
+        }
+        else{
+            bouton_open.setToolTipText("Load");
+        }
         bouton_open.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bouton_open.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1559,7 +1591,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         bouton_open.setBounds(200, 5, 20, 20);
 
         bouton_about.setFont(new java.awt.Font("DejaVu Sans", 0, 8)); // NOI18N
-        bouton_about.setToolTipText("About NetBioDyn");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	bouton_about.setToolTipText("A propos de NetBioDyn");
+        }
+        else{
+            bouton_about.setToolTipText("About NetBioDyn");
+        }
         bouton_about.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bouton_about.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1571,22 +1608,28 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
         jLabel_version.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
         jLabel_version.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel_version.setText("Version 05/2015 - University of Brest - Lab STICC- IHSEV");
+        jLabel_version.setText("Version 02/2016 - University of BOrdeaux - Master 2 of Bioinformatics");
         add(jLabel_version);
         jLabel_version.setBounds(600, 10, 270, 16);
-        jLabel_version.getAccessibleContext().setAccessibleName("version 20/05/2012 - Universite de Brest - Lab-STICC- Equipe IHSEV");
+        jLabel_version.getAccessibleContext().setAccessibleName("Version 02/2016 - University of Bordeaux - Master 2 of Bioinformatics");
 
         jLabel_NetBioDyn.setFont(new java.awt.Font("Chalkduster", 3, 20)); // NOI18N
         jLabel_NetBioDyn.setForeground(new java.awt.Color(102, 0, 153));
         jLabel_NetBioDyn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel_NetBioDyn.setText("NetBioDyn");
+        jLabel_NetBioDyn.setText("NetMDyn");
         add(jLabel_NetBioDyn);
         jLabel_NetBioDyn.setBounds(0, 0, 160, 30);
 
         bouton_lang.setBackground(new java.awt.Color(255, 255, 255));
         bouton_lang.setFont(new java.awt.Font("DejaVu Sans", 0, 9)); // NOI18N
-        bouton_lang.setText("English");
-        bouton_lang.setToolTipText("Change language");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            bouton_lang.setText("English");
+            bouton_lang.setToolTipText("Change language");
+        }
+        else{
+            bouton_lang.setText("Français");
+            bouton_lang.setToolTipText("Changer de langue");
+        }
         bouton_lang.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bouton_lang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1605,7 +1648,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelCompartment.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabelCompartment.setForeground(new java.awt.Color(102, 0, 153));
         jLabelCompartment.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelCompartment.setText("Compartment");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            jLabelCompartment.setText("Compartiments");
+        }
+        else{
+            jLabelCompartment.setText("Compartments");
+        }
 
         jButtonAddCompartment.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         jButtonAddCompartment.setText("+");
@@ -1616,7 +1664,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         jButtonEditCompartment.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        jButtonEditCompartment.setText("Edit");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            jButtonEditCompartment.setText("Editer");        	
+        }
+        else{
+            jButtonEditCompartment.setText("Edit");       	
+        }
         jButtonEditCompartment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEditCompartmentActionPerformed(evt);
@@ -1632,7 +1685,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         dataGridView_Compartment.setFont(new java.awt.Font("DejaVu Sans", 0, 11)); // NOI18N
-        dataGridView_Compartment.setToolTipText("Created Compartment");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	dataGridView_Compartment.setToolTipText("Compartiment créé");
+        }
+        else{
+        	dataGridView_Compartment.setToolTipText("Created compartment");
+        }
         dataGridView_Compartment.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dataGridView_CompartmentMouseClicked(evt);
@@ -1640,8 +1698,13 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         jScrollPane_Compartment.setViewportView(dataGridView_Compartment);
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            checkBox_paint_rond.setToolTipText("Cercle");
         
-        checkBox_paint_rond.setToolTipText("Circle");
+        }
+        else{
+            checkBox_paint_rond.setToolTipText("Circle");
+        }
         checkBox_paint_rond.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         checkBox_paint_rond.setPreferredSize(new java.awt.Dimension(30, 30));
         checkBox_paint_rond.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1704,8 +1767,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelEntites.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabelEntites.setForeground(new java.awt.Color(102, 0, 153));
         jLabelEntites.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelEntites.setText("Entites");
-
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jLabelEntites.setText("Entités");
+        }
+        else{
+        	jLabelEntites.setText("Entities");
+        }
         jButtonAddEntity.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         jButtonAddEntity.setText("+");
         jButtonAddEntity.addActionListener(new java.awt.event.ActionListener() {
@@ -1715,6 +1782,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         jButtonEditEntity.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jButtonEditEntity.setText("Editer");
+        }
+        else{
+        	jButtonEditEntity.setText("Edit");
+        }
         jButtonEditEntity.setText("Edit");
         jButtonEditEntity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1731,8 +1804,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         dataGridView_entites.setFont(new java.awt.Font("DejaVu Sans", 0, 11)); // NOI18N
-
-        dataGridView_entites.setToolTipText("Created Entities");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	dataGridView_entites.setToolTipText("Entitéss créées");
+        }
+        else{
+        	dataGridView_entites.setToolTipText("Created Entities");
+        }
         dataGridView_entites.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dataGridView_entitesMouseClicked(evt);
@@ -1749,8 +1826,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
             }
         });
         jScrollPane_Entities.setViewportView(dataGridView_entites);
-
-        checkBox_paint_move.setToolTipText("Move entities / View");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	checkBox_paint_move.setToolTipText("Déplacer des entités / Voir");
+        }
+        else{
+        	checkBox_paint_move.setToolTipText("Move entities / View");
+        }
         checkBox_paint_move.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         checkBox_paint_move.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         checkBox_paint_move.setIconTextGap(0);
@@ -1763,8 +1844,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 checkBox_paint_moveMousePressed(evt);
             }
         });
-
-        checkBox_paint_stylo.setToolTipText("Pen");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	checkBox_paint_stylo.setToolTipText("Crayon");
+        }
+        else{
+        	checkBox_paint_stylo.setToolTipText("Pen");
+        }
         checkBox_paint_stylo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         checkBox_paint_stylo.setPreferredSize(new java.awt.Dimension(30, 30));
         checkBox_paint_stylo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1775,7 +1860,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 checkBox_paint_styloMousePressed(evt);
             }
         });
-
+        
         checkBox_paint_spray.setToolTipText("Spray");
         checkBox_paint_spray.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         checkBox_paint_spray.setPreferredSize(new java.awt.Dimension(30, 30));
@@ -1787,8 +1872,13 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 checkBox_paint_sprayMouseClicked(evt);
             }
         });
-
-        checkBox_paint_ligne.setToolTipText("Line");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	checkBox_paint_ligne.setToolTipText("Ligne");
+        }
+        else{
+        	checkBox_paint_ligne.setToolTipText("Line");
+        }
+        
         checkBox_paint_ligne.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         checkBox_paint_ligne.setPreferredSize(new java.awt.Dimension(30, 30));
         checkBox_paint_ligne.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1799,8 +1889,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 checkBox_paint_ligneMousePressed(evt);
             }
         });
-
-        checkBox_paint_random.setToolTipText("Random");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	checkBox_paint_random.setToolTipText("Aléatoire");
+        }
+        else{
+        	checkBox_paint_random.setToolTipText("Random");
+        }
         checkBox_paint_random.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         checkBox_paint_random.setPreferredSize(new java.awt.Dimension(30, 30));
         checkBox_paint_random.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1811,8 +1905,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 checkBox_paint_randomMousePressed(evt);
             }
         });
-
-        checkBox_paint_gomme.setToolTipText("Eraser");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	checkBox_paint_gomme.setToolTipText("Gomme");
+        }
+        else{
+        	checkBox_paint_gomme.setToolTipText("Eraser");
+        }
         checkBox_paint_gomme.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         checkBox_paint_gomme.setPreferredSize(new java.awt.Dimension(30, 30));
         checkBox_paint_gomme.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1886,7 +1984,13 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelComportements.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabelComportements.setForeground(new java.awt.Color(102, 0, 153));
         jLabelComportements.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelComportements.setText("Comportements");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jLabelComportements.setText("Comportements");
+        }
+        else{
+        	jLabelComportements.setText("Behaviors");
+        }
+        
 
         jButtonAddBehav.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         jButtonAddBehav.setText("+");
@@ -1897,7 +2001,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         jButtonEditBehav.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        jButtonEditBehav.setText("Edit");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jButtonEditBehav.setText("Editer");
+        }
+        else{
+        	jButtonEditBehav.setText("Edit");
+        }
         jButtonEditBehav.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEditBehavActionPerformed(evt);
@@ -1918,7 +2027,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        dataGridView_comportements.setToolTipText("Created Behaviours");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	dataGridView_comportements.setToolTipText("Comportement créés");
+        }
+        else{
+        	dataGridView_comportements.setToolTipText("Created Behaviours");
+        }
         dataGridView_comportements.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dataGridView_comportementsMouseClicked(evt);
@@ -1933,7 +2047,13 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
         jSliderProba.setBackground(new java.awt.Color(153, 153, 255));
         jSliderProba.setMaximum(1000);
-        jSliderProba.setToolTipText("Proba of selected behaviour");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jSliderProba.setToolTipText("Proba des comportements sélectionnés");
+        }
+        else{
+        	jSliderProba.setToolTipText("Proba of selected behaviour");
+        }
+        
         jSliderProba.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jSliderProba.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -1950,8 +2070,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelProba.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         jLabelProba.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelProba.setText("p=");
-        jLabelProba.setToolTipText("Proba of selected behaviour");
-
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jLabelProba.setToolTipText("Proba des comportements sélectionnés");
+        }
+        else{
+        	jLabelProba.setToolTipText("Proba of selected behaviour");
+        }
         javax.swing.GroupLayout jPanelBehaviorsLayout = new javax.swing.GroupLayout(jPanelBehaviors);
         jPanelBehaviors.setLayout(jPanelBehaviorsLayout);
         jPanelBehaviorsLayout.setHorizontalGroup(
@@ -2002,11 +2126,21 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelEnvironnement.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabelEnvironnement.setForeground(new java.awt.Color(102, 0, 153));
         jLabelEnvironnement.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelEnvironnement.setText("Environnement");
-
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jLabelEnvironnement.setText("Environnement");
+        }
+        else{
+        	jLabelEnvironnement.setText("Environment");
+        }
         bouton_environnement.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
-        bouton_environnement.setText("Edit");
-        bouton_environnement.setToolTipText("Modify the environment");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            bouton_environnement.setText("Editer");
+            bouton_environnement.setToolTipText("Modifier l'environnement");        	
+        }
+        else{
+            bouton_environnement.setText("Edit");
+            bouton_environnement.setToolTipText("Modify the environment");       	
+        }
         bouton_environnement.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bouton_environnementMouseClicked(evt);
@@ -2014,8 +2148,15 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         bouton_vider.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
-        bouton_vider.setText("Vider");
-        bouton_vider.setToolTipText("Clean the environment");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            bouton_vider.setText("Vider");
+            bouton_vider.setToolTipText("Vider l'environnement");        	
+        }
+        else{
+            bouton_vider.setText("Clean");
+            bouton_vider.setToolTipText("Clean the environment");        	
+        }
+
         bouton_vider.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bouton_viderMouseClicked(evt);
@@ -2116,8 +2257,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelCourbes.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabelCourbes.setForeground(new java.awt.Color(102, 0, 153));
         jLabelCourbes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelCourbes.setText("Courbes");
-
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jLabelCourbes.setText("Courbes");
+        }
+        else{
+        	jLabelCourbes.setText("Curves");
+        }
         pictureBox_courbes.setBackground(java.awt.Color.white);
         pictureBox_courbes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         pictureBox_courbes.setOpaque(true);
@@ -2139,16 +2284,27 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
         abscissaBox.setFont(new java.awt.Font("Tahoma", 2, 10)); // NOI18N
         abscissaBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        abscissaBox.setToolTipText("Change the abscissa");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	abscissaBox.setToolTipText("Changer l'abscisse");
+        }
+        else{
+        	abscissaBox.setToolTipText("Change the abscissa");
+        }
         abscissaBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
                 abscissaBoxActionPerformed(evt);
             }
         });
         
         jButtonReaction.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
-        jButtonReaction.setText("Reaction");
-        jButtonReaction.setToolTipText("Creation de reaction");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            jButtonReaction.setText("Réaction");
+            jButtonReaction.setToolTipText("Création de réaction");       	
+        }
+        else{
+            jButtonReaction.setText("Reaction");
+            jButtonReaction.setToolTipText("Creation of a reaction");        	
+        }
         jButtonReaction.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
             	jButtonReaction_tMouseClicked(evt);
@@ -2212,8 +2368,16 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelDivers.setText("Divers");
 
         Ajustement.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        Ajustement.setText("Ajustement des parametres");
-        Ajustement.setToolTipText("Self-adaptive parameters tool");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	Ajustement.setText("Ajustement des parametres");
+            Ajustement.setToolTipText("Outil auto-adaptatif de paramètres ");
+        }
+        else{
+        	Ajustement.setText("Adjustment of parameters");
+            Ajustement.setToolTipText("Self-adaptive parameters tool");
+
+        }
+        	
         Ajustement.setEnabled(false);
         Ajustement.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2222,8 +2386,14 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         bouton_export_model.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        bouton_export_model.setText("Export modele");
-        bouton_export_model.setToolTipText("Export the model (text)");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	bouton_export_model.setText("Exporter un modele");
+        	bouton_export_model.setToolTipText("Exporter un modèle (texte)");
+        }
+        else{
+        	bouton_export_model.setText("Export a model");
+        	bouton_export_model.setToolTipText("Export the model (text)");
+        }
         bouton_export_model.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bouton_export_modelMouseClicked(evt);
@@ -2231,8 +2401,14 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         bouton_export_courbes.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        bouton_export_courbes.setText("Export courbes");
-        bouton_export_courbes.setToolTipText("Export curves (text)");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            bouton_export_courbes.setText("Exporter les courbes");
+            bouton_export_courbes.setToolTipText("Exporter les courbes (texte)");        	
+        }
+        else{
+            bouton_export_courbes.setText("Export curves");
+            bouton_export_courbes.setToolTipText("Export curves (text)");        	
+        }
         bouton_export_courbes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 bouton_export_courbesMouseClicked(evt);
@@ -2241,8 +2417,14 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
         checkBox_avi.setBackground(new java.awt.Color(153, 153, 255));
         checkBox_avi.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        checkBox_avi.setText("Filmer");
-        checkBox_avi.setToolTipText("Record an animated GIF");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            checkBox_avi.setText("Filmer");
+            checkBox_avi.setToolTipText("Enregistrer un GIF animé");        	
+        }
+        else{
+            checkBox_avi.setText("Record");
+            checkBox_avi.setToolTipText("Record an animated GIF");       	
+        }
         checkBox_avi.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 checkBox_aviMouseClicked(evt);
@@ -2251,8 +2433,15 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
         checkBox_Flou.setBackground(new java.awt.Color(153, 153, 255));
         checkBox_Flou.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        checkBox_Flou.setText("Flouter");
-        checkBox_Flou.setToolTipText("Follow the entity movements");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            checkBox_Flou.setText("Flouter");
+            checkBox_Flou.setToolTipText("Suivre les mouvements des entités");        	
+        }
+        else{
+            checkBox_Flou.setText("Blur");
+            checkBox_Flou.setToolTipText("Follow the entity movements");       	
+        }
+
 
         jButton3D.setBackground(new java.awt.Color(255, 255, 51));
         jButton3D.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -2351,10 +2540,19 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelSimulateur.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabelSimulateur.setForeground(new java.awt.Color(102, 0, 153));
         jLabelSimulateur.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelSimulateur.setText("Simulateur");
-
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jLabelSimulateur.setText("Simulateur");
+        }
+        else{
+        	jLabelSimulateur.setText("Simulator");
+        }
         button_play.setBackground(new java.awt.Color(255, 255, 255));
-        button_play.setToolTipText("Play (ENTER)");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	button_play.setToolTipText("Lire (ENTRER)");
+        }
+        else{
+        	button_play.setToolTipText("Play (ENTER)");	
+        }
         button_play.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         button_play.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -2363,15 +2561,25 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
 
         button_play1.setBackground(new java.awt.Color(255, 255, 255));
-        button_play1.setToolTipText("Play 1 step");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	button_play1.setToolTipText("Lire une étape");
+        }
+        else{
+        	button_play1.setToolTipText("Play 1 step");
+        }
         button_play1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         button_play1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 button_play1MouseClicked(evt);
             }
         });
-
-        button_init.setToolTipText("Stop (ESCAPE)");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	button_init.setToolTipText("Arrêt");
+        }
+        else{
+        	button_init.setToolTipText("Stop (ESCAPE)");
+        }
+        
         button_init.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         button_init.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -2382,26 +2590,44 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelTps.setBackground(new java.awt.Color(248, 241, 181));
         jLabelTps.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         jLabelTps.setText("Tps =");
-        jLabelTps.setToolTipText("Nbr of time steps");
-
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jLabelTps.setToolTipText("Nbr d'étapes par pas de temps");
+        }
+        else{
+        	jLabelTps.setToolTipText("Nbr of time steps");
+        }
         labelTime.setBackground(new java.awt.Color(248, 241, 181));
         labelTime.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         labelTime.setText("0");
-        labelTime.setToolTipText("Nbr of time steps");
-
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	labelTime.setToolTipText("Nbr d'étapes par pas de temps");
+        }
+        else{
+        	labelTime.setToolTipText("Nbr of time steps");
+        }
         jLabelSpeed.setFont(new java.awt.Font("Lucida Grande", 2, 10)); // NOI18N
         jLabelSpeed.setForeground(new java.awt.Color(102, 0, 153));
         jLabelSpeed.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabelSpeed.setText("Speed");
-        jLabelSpeed.setToolTipText("Simulation's speed : from 1s to 1ms between time steps");
-
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+            jLabelSpeed.setText("Vitesse");
+            jLabelSpeed.setToolTipText("Vitesse de simulation : de 1s à 1ms entre les pas de temps");        	
+        }
+        else{
+            jLabelSpeed.setText("Speed");
+            jLabelSpeed.setToolTipText("Simulation's speed : from 1s to 1ms between time steps");        	
+        }
         jSliderSpeed.setBackground(new java.awt.Color(153, 153, 255));
         jSliderSpeed.setForeground(new java.awt.Color(153, 153, 255));
         jSliderSpeed.setMajorTickSpacing(1);
         jSliderSpeed.setMaximum(3);
         jSliderSpeed.setMinorTickSpacing(1);
         jSliderSpeed.setSnapToTicks(true);
-        jSliderSpeed.setToolTipText("Simulation's speed : from 1s to 1ms between time steps");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jSliderSpeed.setToolTipText("Vitesse de simulation : de 1s à 1ms entre les pas de temps");        	
+        }
+        else{
+        	jSliderSpeed.setToolTipText("Simulation's speed : from 1s to 1ms between time steps");        	
+        }
         jSliderSpeed.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jSliderSpeedMouseReleased(evt);
@@ -2575,7 +2801,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                             }
                         } else {
                             JOptionPane jop = new JOptionPane();			
-                            int option = jop.showConfirmDialog(null, "Voulez-vous redessiner le compartiment ?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            int option = jop.showConfirmDialog(null, "Do you want to redraw the compartment ?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                             if (option == 0){
                             	controller.editCompartmentGraphique(dataGridView_Compartment.getSelectedIndex(), center, radius);
                             }
