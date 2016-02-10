@@ -1,0 +1,799 @@
+version:3d-1.0
+class netbiodyn.Entity
+	Etiquettes:4330673...
+	visibleDansPanel:true
+	couleur:-1339880
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4325309...
+	visibleDansPanel:true
+	couleur:-459680
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4332293...
+	visibleDansPanel:true
+	couleur:-2567812
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4333181...
+	visibleDansPanel:true
+	couleur:-40986
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4324263...
+	visibleDansPanel:true
+	couleur:-2997000
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4329021...
+	visibleDansPanel:true
+	couleur:-470592
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4332736
+	visibleDansPanel:true
+	couleur:-3729424
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4343294...
+	visibleDansPanel:true
+	couleur:-3352096
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4324717...
+	visibleDansPanel:true
+	couleur:-1748700
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4326249...
+	visibleDansPanel:true
+	couleur:-3115544
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4328012...
+	visibleDansPanel:true
+	couleur:-132912
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4329518...
+	visibleDansPanel:true
+	couleur:-923800
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4330146...
+	visibleDansPanel:true
+	couleur:-537912
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4326136...
+	visibleDansPanel:true
+	couleur:-1657500
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4351460
+	visibleDansPanel:true
+	couleur:-1112736
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4328010...
+	visibleDansPanel:true
+	couleur:-662216
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4326849...
+	visibleDansPanel:true
+	couleur:-7400
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:4340702...
+	visibleDansPanel:true
+	couleur:-299936
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Dihydrolipoamide-E
+	visibleDansPanel:true
+	couleur:-1323000
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Lipoamide-E
+	visibleDansPanel:true
+	couleur:-1199910
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:S-Acetyldihydrolipoamide-E
+	visibleDansPanel:true
+	couleur:-583740
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:2-Hydroxyethyl-ThPP
+	visibleDansPanel:true
+	couleur:-4347756
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Glycerone phosphate
+	visibleDansPanel:true
+	couleur:-5214300
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Lactaldehyde
+	visibleDansPanel:true
+	couleur:-958125
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:1,2-Propanediol
+	visibleDansPanel:true
+	couleur:-9795654
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:2-Butynedioic acid
+	visibleDansPanel:true
+	couleur:-970280
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:PEP
+	visibleDansPanel:true
+	couleur:-4446117
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:enol-Oxaloacetate
+	visibleDansPanel:true
+	couleur:-4799724
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Formate
+	visibleDansPanel:true
+	couleur:-6764373
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Malate
+	visibleDansPanel:true
+	couleur:-974592
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Acetoacetyl-CoA
+	visibleDansPanel:true
+	couleur:-2882262
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Acetyl-CoA
+	visibleDansPanel:true
+	couleur:-18018
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Acetyl phosphate
+	visibleDansPanel:true
+	couleur:-5461040
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Acetyl adenylate
+	visibleDansPanel:true
+	couleur:-52380
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:alpha-Isopropylmalate
+	visibleDansPanel:true
+	couleur:-1781060
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:(R)-2-Ethylmalate
+	visibleDansPanel:true
+	couleur:-2777307
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:2-propyl-
+	visibleDansPanel:true
+	couleur:-7207200
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Homocitrate
+	visibleDansPanel:true
+	couleur:-1228430
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Malonyl-CoA
+	visibleDansPanel:true
+	couleur:-824160
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Ethanal
+	visibleDansPanel:true
+	couleur:-7326480
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Acetate
+	visibleDansPanel:true
+	couleur:-382536
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:L-Lactate
+	visibleDansPanel:true
+	couleur:-325600
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:D-Lactate
+	visibleDansPanel:true
+	couleur:-281015
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:S-D-Lactoylglutathione
+	visibleDansPanel:true
+	couleur:-2464000
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:D-Lactaldehyde
+	visibleDansPanel:true
+	couleur:-1487193
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:L-Lactaldehyde
+	visibleDansPanel:true
+	couleur:-689472
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Methylglyoxal
+	visibleDansPanel:true
+	couleur:-985920
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Pyruvate
+	visibleDansPanel:true
+	couleur:-7417152
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Oxaloacetate
+	visibleDansPanel:true
+	couleur:-487425
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:TPP
+	visibleDansPanel:true
+	couleur:-2303910
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:Phosphate
+	visibleDansPanel:true
+	couleur:-2051280
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:H2O
+	visibleDansPanel:true
+	couleur:-1744000
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:CO2
+	visibleDansPanel:true
+	couleur:-858762
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:ATP
+	visibleDansPanel:true
+	couleur:-478800
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:ADP
+	visibleDansPanel:true
+	couleur:-1312311
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:AMP
+	visibleDansPanel:true
+	couleur:-1403136
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:PPi
+	visibleDansPanel:true
+	couleur:-300735
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:NTP
+	visibleDansPanel:true
+	couleur:-9493824
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:NDP
+	visibleDansPanel:true
+	couleur:-211500
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:GSH
+	visibleDansPanel:true
+	couleur:-12297600
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:NAD
+	visibleDansPanel:true
+	couleur:-32940
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:NADH
+	visibleDansPanel:true
+	couleur:-112518
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:H+
+	visibleDansPanel:true
+	couleur:-149040
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:TPN
+	visibleDansPanel:true
+	couleur:-964650
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:TPNH
+	visibleDansPanel:true
+	couleur:-6215000
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:malate dehydrogenase [NAD(P)+]
+	visibleDansPanel:true
+	couleur:-4394772
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:CoA
+	visibleDansPanel:true
+	couleur:-202020
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:aldehyde dehydrogenase [NAD(P)+]
+	visibleDansPanel:true
+	couleur:-210800
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:aldehyde dehydrogenase (NADP+)
+	visibleDansPanel:true
+	couleur:-345092
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:2-Ketovaline
+	visibleDansPanel:true
+	couleur:-332640
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:acetolactate synthase
+	visibleDansPanel:true
+	couleur:-597618
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+class netbiodyn.Entity
+	Etiquettes:pyruvate decarboxylase
+	visibleDansPanel:true
+	couleur:-1690368
+	demie_vie:0.0
+	vidable:true
+	compartment:cytosol
+	forme:1
+	taille:0
+fin
+
+netbiodyn.Environnement
+	tailleX:1000
+	tailleY:1000
+	tailleZ:100
+fin
+

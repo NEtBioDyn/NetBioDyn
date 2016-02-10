@@ -16,8 +16,36 @@ import java.util.HashMap;
 
 
 public class Behavior_NetMDyn extends Behavior {
+	private int type_behavior;
+	private double K = 0.0;
+	private double proba;
 	
-    public void computeReactions(Simulator_NetMDyn s, Env_Parameters param, AllInstances_NetMDyn instances, int time) {
+	
+    public int getType_behavior() {
+		return type_behavior;
+	}
+
+	public void setType_behavior(int type_behavior) {
+		this.type_behavior = type_behavior;
+	}
+
+	public double getK() {
+		return K;
+	}
+
+	public void setK(double k) {
+		K = k;
+	}
+
+	public double getProba() {
+		return proba;
+	}
+
+	public void setProba(double proba) {
+		this.proba = proba;
+	}
+
+	public void computeReactions(Simulator_NetMDyn s, Env_Parameters param, AllInstances_NetMDyn instances, int time) {
         this.setParameters(param); //Put new values to parameters of Env_Parameters object linked to the Behavior one
         _reactionsPossibles = new ArrayList<>(); //Creation of a new table which will contain all possible reactions
         this.simuler_semi_situee(instances, time);
@@ -33,7 +61,9 @@ public class Behavior_NetMDyn extends Behavior {
         m._produits = (ArrayList<String>) _produits.clone();
         m._positions = (ArrayList<String>) _positions.clone();
         m._ListElementsReactions = (ArrayList<WndEditElementDeReaction>) _ListElementsReactions.clone();
-        m.set_k(get_k());
+        m.setProba(getProba());
+        m.setK(getK());
+        m.setType_behavior(getType_behavior());
         return m; //Return the new Behavior object
     }
     public void simuler_semi_situee(AllInstances_NetMDyn instances, int time) {
@@ -57,7 +87,7 @@ public class Behavior_NetMDyn extends Behavior {
                 z = c_a.getZ();
                 // Test if a reaction occurs or not
                 double hasard = RandomGen.getInstance().nextDouble();
-                if (hasard < this._k) {
+                if (hasard < this.proba) {
                     int x_min, x_max, y_min, y_max, z_min, z_max;
 
                     x_min = Math.max(0, x - 1);
@@ -268,6 +298,15 @@ public class Behavior_NetMDyn extends Behavior {
                 }
             }
         }
+    }
+    
+    public ArrayList<String> toSave() {
+        ArrayList<String> toSave = super.toSave();
+        // Description
+        toSave.add("\tType_Behaviour:" + type_behavior + "\n");
+        toSave.add("\tK:" + K + "\n");
+        toSave.add("\tProba:" + proba + "\n");
+        return toSave;
     }
 
 

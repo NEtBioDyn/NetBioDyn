@@ -266,7 +266,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
         jScrollPane4.setVisible(false);
 
         textBox_etiquette.setText(_r3.getEtiquettes());
-        textBox_k.setText(((Double) _r3.get_k()).toString());
+        textBox_k.setText(((Double) _r3.getProba()).toString());
 
         // Table des reactifs
         Object[][] donnees_reactifs = {
@@ -768,10 +768,10 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
 
         // Valeur d k
         try {
-            _r3.set_k(Double.parseDouble(textBox_k.getText()));
+            _r3.setProba(Double.parseDouble(textBox_k.getText()));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
-            _r3.set_k(0);
+            _r3.setProba(0);
         }
 
         String etiq = textBox_etiquette.getText();

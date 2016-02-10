@@ -35,13 +35,15 @@ public class WndEditMvt extends javax.swing.JDialog {
     		_r3 = new Behavior_NetMDyn();
     	}else{
     		_r3 = behavior;
+    		comboBox_entity.setSelectedItem(_r3._reactifs.get(0));
+        	if (_r3.getProba()==0.5){
+        		comboBox_mvt.setSelectedItem("Protéine");
+        	}
+        	else{
+        		comboBox_mvt.setSelectedItem("Métabolite");
+        	}
     	}
-    	comboBox_entity.setSelectedItem(_r3._reactifs.get(0));
-    	for (Entity_NetMDyn ent : entities){
-    		if(ent.getEtiquettes().equals(_r3._produits.get(1))){
-    			//comboBox_mvt.setSelectedItem(ent.getType());
-    		}
-    	}
+    
     }
     
     private void initComponents() {
@@ -145,7 +147,22 @@ public class WndEditMvt extends javax.swing.JDialog {
             }
             return;
     	}
-    	
+        _r3._reactifs.clear();
+        _r3._produits.clear();
+    	_r3.setEtiquettes("Move_"+ comboBox_entity.getSelectedItem());
+    	_r3._reactifs.add((String) comboBox_entity.getSelectedItem());
+    	_r3._reactifs.add("0");
+    	_r3._produits.add("0");
+    	_r3._produits.add((String) comboBox_entity.getSelectedItem());
+    	_r3._positions.add("122222222");
+    	_r3._positions.add("212111211");
+    	_r3.setType_behavior(1);
+    	if (comboBox_mvt.getSelectedItem().equals("Protéine")){
+    		_r3.setProba(0.5);
+    	}
+    	else{
+    		_r3.setProba(0.8);
+    	}
     	String moving_entity = getComboBox_entity();
     	String entity_type = getComboBox_mvt();
     	
@@ -168,7 +185,9 @@ public class WndEditMvt extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_button_CANCELActionPerformed
 
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+
+
+	private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         // TODO add your handling code here:
 
         //if()
@@ -187,6 +206,14 @@ public class WndEditMvt extends javax.swing.JDialog {
 
 	public void setComboBox_mvt(String comboBox_mvt) {
 		this.comboBox_mvt.setSelectedItem(comboBox_mvt);
+	}
+	
+    public String getDialogResult() {
+		return DialogResult;
+	}
+
+	public void setDialogResult(String dialogResult) {
+		DialogResult = dialogResult;
 	}
 	
 	// Variables declaration - do not modify//GEN-BEGIN:variables

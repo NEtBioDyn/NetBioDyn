@@ -2,26 +2,23 @@ package NetMDyn.ihm;
 
 import netbiodyn.util.UtilAnimatedGifEncoder;
 import netbiodyn.util.UtilPoint3D;
-
-import java.awt.Color; // Encapsulate colors in the default sRGB color space or colors in arbitrary color spaces identified by a ColorSpace
-import java.awt.Graphics; // Abstract base class for all graphics contexts that allow an application to draw onto components
-import java.awt.Image; // Provides classes for creating and modifying images
-import java.awt.Rectangle; // Possible creation of rectangles
-import java.awt.event.ActionEvent; // A semantic event which indicates that a component-defined action occurred
-import java.awt.event.ActionListener; // The listener interface for receiving action events
-import java.awt.event.MouseEvent; // Indicates that a mouse action occurred in a component.
-import java.awt.image.BufferedImage; // Possible creation of an Image with an accessible buffer of image data
-import java.awt.image.BufferedImageOp; // Single-input/single-output operations performed on BufferedImage objects
-import java.io.IOException;
-import java.net.URL; // Uniform Resource Locator, a pointer to a "resource" on the World Wide Web
-import java.util.ArrayList; // Possible creation of tables
-import java.util.HashMap; // Possible creation of hashmaps
-
-import javax.imageio.ImageIO; // Static convenience methods for locating ImageReaders and ImageWriters, and performing simple encoding and decoding
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon; // An implementation of the Icon interface that paints Icons from Images.
-import javax.swing.JButton; // An implementation of a "push" button
-import javax.swing.JOptionPane; // Possible creation of dialog windows
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import NetMDyn.AllInstances_NetMDyn;
 import NetMDyn.Behavior_NetMDyn;
@@ -31,12 +28,9 @@ import NetMDyn.InstanceReaxel_NetMDyn;
 import NetMDyn.util.Serialized_NetMDyn;
 import NetMDyn.util.UtilPoint3D_NetMDyn;
 
-import java.awt.image.ConvolveOp; // Implements a convolution from the source to the destination
-import java.awt.image.Kernel; // Matrix that describes how a specified pixel and its surrounding pixels affect the value computed for the pixel's position in the output image of a filtering operation.
-
-import javax.swing.JList; //Possible creation of lists
-import javax.xml.stream.XMLStreamException;
-
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
+import javax.swing.JList;
 import netbiodyn.AllInstances;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
@@ -54,7 +48,9 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
 	
 	protected final Controller_NetMDyn controller;
-	protected Env_Parameters parameters;    
+	protected Env_Parameters parameters;
+	public String _site_publication = "http://virtulab.univ-brest.fr/?page_id=172";
+    
 
 	// Animation
 	protected UtilAnimatedGifEncoder _animation_gif = null;
@@ -78,10 +74,10 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    protected int _time = 0;
 
 	    // Observed area
-	    protected float _observed_width; // Between 0 and getTailleX()
-	    protected float _observed_height; // Between 0 and getTailleY()
-	    protected float _observed_left = 0;     // Between 0 and getTailleX()
-	    protected float _observed_top = 0;      // Between 0 and getTailleY()
+	    protected float _observed_width; // Entre 0 et getTailleX()
+	    protected float _observed_height; // Entre 0 et getTailleY()
+	    protected float _observed_left = 0;     // Entre 0 et getTailleX()
+	    protected float _observed_top = 0;      // Entre 0 et getTailleY()
 	    protected int _x0_mouse_down = 0;
 	    protected int _y0_mouse_down = 0;
 	    protected boolean _mouse_left_down = false;
@@ -93,7 +89,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
 	    protected BufferedImage _image_deco = null;
 
-	    // Save / Load
+	    // Sauvegarde / Chargement
 	    protected String _nom_sauvegarde = "simulation.nbd";
 
 	    protected boolean _dataGridView_entitesIsChanging = false;
@@ -112,21 +108,19 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    protected BufferedImage bmp_memory = null;
 	    protected Graphics g_mem = null;
 
-	    // Decoration images of buttons
+	    // Images de décoration des boutons
 	    protected ImageIcon icon_paint_move, icon_paint_stylo, icon_paint_spray, icon_paint_ligne, icon_paint_rond, icon_paint_random, icon_paint_gomme;
 	    protected ImageIcon icon_bouton_play, icon_bouton_pause, icon_bouton_step, icon_bouton_stop;
 	    protected ImageIcon icon_bouton_new, icon_bouton_open, icon_bouton_save;
 	    protected ImageIcon icon_interogation;
 
-	    //Initialization of Environment object
 	    public Environment_NetMDyn(Controller_NetMDyn controller, Env_Parameters parameters) {
 	        super();
 	        this.parameters = parameters;
 	        this.controller = controller;
 	        curves = new SimulationCurves();
 	    }
-	    
-	    //Load of a new Environment
+
 	    public void newEnvLoaded(Serialized_NetMDyn saved, HashMap<String, Integer> entitesBook) {
 	        dataGridView_entites.clearSelection();
 	        this.pictureBox_Env.setIcon(null);
@@ -164,7 +158,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        maj_pas_de_temps();
 	    }
 
-	    //Edit of Environment parameters
+	    @Override
 	    public void newEnvParameters(Env_Parameters parameters) {
 	        this.setParameters(parameters);
 	    }
@@ -178,11 +172,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    @Override
 	    public void ready() {
 	        controller.stopWithoutAsking();
-	        // Recover first step !
+	        // Récupérer first step !
 	    }
 
 	    @Override
 	    public void newAdjustedValues(ArrayList<String[]> valuesToDisplay) {
+	        // TODO Auto-ajustement en cours, avec valeurs des paramètres en évolution
 	        System.err.println("MISE A JOUR");
 	        for (String[] v : valuesToDisplay) {
 	            System.err.println(v.toString());
@@ -191,11 +186,13 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
 	    @Override
 	    public void adjustmentDone(boolean success) {
+	        // TODO si success, demander si garder nouvelles valeurs, sinon demander une mise à jour du modèle
 	        controller.adjustmentStopped(true);
 	    }
 
 	    /**
-	     * Initialization of  Environment control
+	     * Permet d'initialiser le controle Environment (composants, images des
+	     * boutons et site de publication de l'applet)
 	     *
 	     *
 	     * @see initComponents()
@@ -204,6 +201,15 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        initComponents();
 	        fillDataGridEntities();
 	        fillDataGridBehaviours();
+	        if (_site_publication != null) {
+	            if (_site_publication.length() > 0) {
+	                if (!_site_publication.startsWith("http://")) {
+	                    //JOptionPane.showMessageDialog(this, "4) OK : _site_publication DO NOT starts with http://\n" + _site_publication);
+	                    //_site_publication = new String("file://") + new String(_site_publication);
+	                    //JOptionPane.showMessageDialog(this, "5) OK : _site_publication=\n" + _site_publication);
+	                }
+	            }
+	        }
 	        lireImagesURL();
 
 	        instances = new AllInstances_NetMDyn(getTailleX(), getTailleY(), getTailleZ());
@@ -297,7 +303,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        controller.saveModel(_nom_sauvegarde);
 	    }//GEN-LAST:event_bouton_saveMouseClicked
 
-	    protected void bouton_openMouseClicked(java.awt.event.MouseEvent evt) throws XMLStreamException, IOException {//GEN-FIRST:event_bouton_openMouseClicked
+	    protected void bouton_openMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_openMouseClicked
 	        controller.loadModel(_nom_sauvegarde);
 	    }//GEN-LAST:event_bouton_openMouseClicked
 
@@ -346,7 +352,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        if (x_univers >= getTailleX() || y_univers >= getTailleY() || x_univers < 0 || y_univers < 0) {
 	            return;
 	        }
-	        // Memorization of possible taken reaxel 
+	        //// Memorisation du possible reaxel pris
 	        _case_x0 = (int) (x_univers);
 	        _case_y0 = (int) (y_univers);
 	        if (checkBox_paint_move.getBackground().equals(Color.GREEN)) { //.getX() == jLabel_sel.getX() /*|| checkBox_paint_ligne.getBackground().equals(Color.GREEN)*/) {
@@ -448,7 +454,16 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        controller.editEntity();
 	    }//GEN-LAST:event_jButtonEditEntityActionPerformed
 
-
+	    protected void dataGridView_comportementsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dataGridView_comportementsValueChanged
+	        int i = dataGridView_comportements.getSelectedIndex();
+	        if (i < 0) {
+	            return;
+	        }
+	        String nom_moteur = dataGridView_comportements.getSelectedValue().toString();
+	        Behavior_NetMDyn moteur = getBehaviour(nom_moteur);
+	        jSliderProba.setValue((int) (moteur.getProba() * 1000));
+	        setProba(moteur.getProba());
+	    }//GEN-LAST:event_dataGridView_comportementsValueChanged
 
 	    protected void jButtonAddBehavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddBehavActionPerformed
 	        controller.addBehaviour();
@@ -469,6 +484,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        drawAll(0, 0, 0, 0, 0);
 	    }//GEN-LAST:event_jSliderZStateChanged
 
+	    protected void jSliderProbaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderProbaStateChanged
+	        int i = dataGridView_comportements.getSelectedIndex();
+	        if (i >= 0) {
+	            jLabelProba.setText("p=" + (jSliderProba.getValue() / 10) / 100.0);
+	        }
+	    }//GEN-LAST:event_jSliderProbaStateChanged
 
 	    protected void dataGridView_entitesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_entitesMouseClicked
 	        if (evt.getClickCount() == 2 && !evt.isConsumed() && !freezed) {
@@ -523,6 +544,15 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        releverToutesCheckBoxPaint(checkBox_paint_random);
 	    }//GEN-LAST:event_checkBox_paint_randomMousePressed
 
+	    protected void jSliderProbaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderProbaMouseReleased
+	        int i = dataGridView_comportements.getSelectedIndex();
+	        if (i >= 0) {
+	            String nom_moteur = dataGridView_comportements.getSelectedValue().toString();
+	            Double value = ((jSliderProba.getValue() / 10) / 100.0);
+	            controller.changeProba(nom_moteur, value);
+	        }
+	    }//GEN-LAST:event_jSliderProbaMouseReleased
+
 	    protected void jSliderSpeedMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderSpeedMouseReleased
 	        controller.changeSpeed(jSliderSpeed.getValue());
 	    }//GEN-LAST:event_jSliderSpeedMouseReleased
@@ -565,7 +595,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        jLabelZ.setText("Z=" + jSliderZ.getValue());
 	    }
 
-	    public Behavior getBehaviour(String nom_moteur) {
+	    public Behavior_NetMDyn getBehaviour(String nom_moteur) {
 	        ArrayList<Behavior_NetMDyn> allMoteurs = getListManipulesReactions();
 	        // Get all the Reactions
 	        for (int i = allMoteurs.size() - 1; i >= 0; i--) {
@@ -654,7 +684,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        _observed_width = (getTailleX() * 1.0f) / zoom;
 	        _observed_height = (getTailleY() * 1.0f) / zoom;
 
-	        // Centered zoom 
+	        // Zoom au centre
 	        _observed_left -= (_observed_width - old_width) / 2.0f;
 	        _observed_top -= (_observed_height - old_height) / 2.0f;
 
@@ -739,8 +769,8 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        int dY = 67;
 	        int decalY = 550;//this.getHeight()+1;
 	        int nb_par_lignes = this.getWidth() / dX;
-	        for (Behavior cpt : lstCmpt) {
-	            String k_str = ((Double) cpt.get_k()).toString();
+	        for (Behavior_NetMDyn cpt : lstCmpt) {
+	            String k_str = ((Double) cpt.getProba()).toString();
 	            if (cpt._visibleDansPanel == true) {
 	                int X = pos % nb_par_lignes;
 	                int Y = (int) Math.floor(pos / nb_par_lignes);
@@ -757,7 +787,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        repaint();
 	    }
 
-	    // Sclae changes
+	    // Changement d'echelle
 	    public float universeToWindow(float univers_min, float univers_max, float x_univers, float fenetre_max) {
 	        float a = (1.0f * fenetre_max) / (univers_max - univers_min);
 	        float b = -a * univers_min;
@@ -806,9 +836,9 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    }
 
 	    public void fillDataGridEntities() {
-	        // Entities to place into the dataGrid
+	        // Entites a placer dans la dataGrid
 	        DefaultListModel model = new DefaultListModel();
-	        for (Entity _ListManipulesNoeud : this._ListManipulesNoeuds) {
+	        for (Entity_NetMDyn _ListManipulesNoeud : this._ListManipulesNoeuds) {
 	            if (((ProtoSimplexel) _ListManipulesNoeud)._visibleDansPanel) {
 	                String nom_cli = str_aujout_nbr(((ProtoSimplexel) _ListManipulesNoeud).getEtiquettes(), 0);
 	                model.addElement(nom_cli);
@@ -818,11 +848,13 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    }
 
 	    public void fillDataGridBehaviours() {
-	        // Behaviors to place into the dataGrid
+	        // Comportements a placer dans la dataGrid
 	        DefaultListModel model = new DefaultListModel();
-	        for (Behavior moteur : this._ListManipulesReactions) {
-	            String nom_moteur = moteur.getEtiquettes();
-	            model.addElement(nom_moteur);
+	        for (Behavior_NetMDyn moteur : this._ListManipulesReactions) {
+	        	 if (moteur._visibleDansPanel) {
+	        		 String nom_moteur = moteur.getEtiquettes();
+	        		 model.addElement(nom_moteur);
+	        	 }
 	        }
 	        dataGridView_comportements.setModel(model);
 	    }
@@ -851,12 +883,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        }
 
 	        BufferedImage bmp = new BufferedImage(pictureBox_courbes.getWidth(), pictureBox_courbes.getHeight() - 3, BufferedImage.TYPE_INT_RGB);
-	        // Reset of the image
+	        // RAZ de l'image            
 	        Graphics g = bmp.getGraphics();
 	        g.setColor(Color.WHITE);
 	        g.fillRect(0, 0, bmp.getWidth(), bmp.getHeight());
 
-	        // Landmark
+	        // Bornes
 	        int max_x = curves.getMaxAbsc().intValue();
 
 	        ArrayList<String> selectedEntities = getSelectedEntities();
@@ -868,7 +900,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        if (max_y <= 0) {
 	            max_y = 0.0;
 	        }
-	        // Effective display of the curve
+	        // Affichage effectif de la courbe
 	        double scale_x = (pictureBox_courbes.getWidth() - 3) / (1.0 * max_x);
 	        double scale_y = (pictureBox_courbes.getHeight() - 8) / (1.0 * max_y);
 
@@ -958,11 +990,11 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 
 	    protected void checkForChangesInCurves(ArrayList<Entity_NetMDyn> old, ArrayList<Entity_NetMDyn> update) {
 	        if (old.size() > update.size()) {
-	            // Find the one which has been removed to remove points 
+	            // chercher celui qui a été supprimé pour supprimer les points
 
 	        } else {
 	            if (old.size() == update.size()) {
-	                //Find if there is a name change
+	                //chercher s'il y eu un changement de nom
 	                for (Entity_NetMDyn reaxel : old) {
 	                    for (Entity_NetMDyn up : update) {
 	                        if (!old.contains(up)) {
@@ -1006,7 +1038,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        }
 	    }
 
-	    // Updating of entities list and of their account
+	    // MAJ de la liste des entites et de leur compte
 	    protected void majEntites() {
 	        String nom;
 
@@ -1158,6 +1190,10 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        checkBox_avi.setSelected(false);
 	    }
 
+	    public void setProba(double value) {
+	        jLabelProba.setText("p=" + value);
+	    }
+
 	    public void disabled3D() {
 	        jButton3D.setEnabled(false);
 	    }
@@ -1211,6 +1247,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    protected javax.swing.JLabel jLabelDivers;
 	    protected javax.swing.JLabel jLabelEntites;
 	    protected javax.swing.JLabel jLabelEnvironnement;
+	    protected javax.swing.JLabel jLabelProba;
 	    protected javax.swing.JLabel jLabelSimulateur;
 	    protected javax.swing.JLabel jLabelSpeed;
 	    protected javax.swing.JLabel jLabelTps;
@@ -1227,6 +1264,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    protected javax.swing.JPanel jPanelSimulator;
 	    protected javax.swing.JScrollPane jScrollPaneBehaviors;
 	    protected javax.swing.JScrollPane jScrollPane_Entities;
+	    protected javax.swing.JSlider jSliderProba;
 	    protected javax.swing.JSlider jSliderSpeed;
 	    public javax.swing.JSlider jSliderZ;
 	    public javax.swing.JLabel labelTime;
@@ -1236,7 +1274,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    protected javax.swing.JLabel pictureBox_courbes;
 	    protected javax.swing.JSlider trackBar_zoom;
 	    // End of variables declaration//GEN-END:variables
-	    // Curves
+	    // Courbes
 
 	    public void freeze(boolean bool) {
 	        freezed = bool;
@@ -1252,6 +1290,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        checkBox_paint_random.setEnabled(!bool);
 	        checkBox_paint_spray.setEnabled(!bool);
 	        checkBox_paint_stylo.setEnabled(!bool);
+	        jSliderProba.setEnabled(!bool);
 	        bouton_environnement.setEnabled(!bool);
 	        bouton_vider.setEnabled(!bool);
 	        bouton_new.setEnabled(!bool);
@@ -1279,11 +1318,11 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
     }
     
     public boolean lireImagesURL() {
-        // Setting up images into buttons
-    	
+        // Mise en place des images dans les boutons
+
         URL url;
         try {
-            // Button Move
+            // Bouton Move
             {
                 url = getClass().getClassLoader().getResource("Images/paint_move.png");
                 BufferedImage img;
@@ -1291,7 +1330,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_paint_move = new ImageIcon(img);
                 this.checkBox_paint_move.setIcon(icon_paint_move);
             }
-            // Button Stylo
+            // Bouton Stylo
             {
                 url = getClass().getClassLoader().getResource("Images/paint_stylo.png");
                 BufferedImage img;
@@ -1299,7 +1338,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_paint_stylo = new ImageIcon(img);
                 this.checkBox_paint_stylo.setIcon(icon_paint_stylo);
             }
-            // Button Spray
+            // Bouton Spray
             {
                 url = getClass().getClassLoader().getResource("Images/paint_spray.png");
                 BufferedImage img;
@@ -1307,7 +1346,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_paint_spray = new ImageIcon(img);
                 this.checkBox_paint_spray.setIcon(icon_paint_spray);
             }
-            // Button Ligne
+            // Bouton Ligne
             {
                 url = getClass().getClassLoader().getResource("Images/paint_ligne.png");
                 BufferedImage img;
@@ -1315,7 +1354,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_paint_ligne = new ImageIcon(img);
                 this.checkBox_paint_ligne.setIcon(icon_paint_ligne);
             }
-            // Button Rond
+            // Bouton Rond
             {
                 url = getClass().getClassLoader().getResource("Images/paint_rond.png");
                 BufferedImage img;
@@ -1323,7 +1362,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_paint_rond = new ImageIcon(img);
                 this.checkBox_paint_rond.setIcon(icon_paint_rond);
             }
-            // Button Random
+            // Bouton Random
             {
                 url = getClass().getClassLoader().getResource("Images/paint_random.png");
                 BufferedImage img;
@@ -1331,7 +1370,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_paint_random = new ImageIcon(img);
                 this.checkBox_paint_random.setIcon(icon_paint_random);
             }
-            // Button Gomme
+            // Bouton Gomme
             {
                 url = getClass().getClassLoader().getResource("Images/paint_gomme.png");
                 BufferedImage img;
@@ -1339,7 +1378,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_paint_gomme = new ImageIcon(img);
                 this.checkBox_paint_gomme.setIcon(icon_paint_gomme);
             }
-            // Button Play
+            // Bouton Play
             {
                 url = getClass().getClassLoader().getResource("Images/bouton_play.png");
                 BufferedImage img;
@@ -1347,14 +1386,14 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_bouton_play = new ImageIcon(img);
                 this.button_play.setIcon(icon_bouton_play);
             }
-            // Button Pause
+            // Bouton Pause
             {
                 url = getClass().getClassLoader().getResource("Images/bouton_pause.png");
                 BufferedImage img;
                 img = ImageIO.read(url);
                 icon_bouton_pause = new ImageIcon(img);
             }
-            // Button Step
+            // Bouton Step
             {
                 url = getClass().getClassLoader().getResource("Images/bouton_step.png");
                 BufferedImage img;
@@ -1362,7 +1401,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_bouton_step = new ImageIcon(img);
                 this.button_play1.setIcon(icon_bouton_step);
             }
-            // Button Record
+            // Bouton Record
             {
                 url = getClass().getClassLoader().getResource("Images/bouton_stop.png");
                 BufferedImage img;
@@ -1370,7 +1409,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_bouton_stop = new ImageIcon(img);
                 this.button_init.setIcon(icon_bouton_stop);
             }
-            // Button New
+            // Bouton New
             {
                 url = getClass().getClassLoader().getResource("Images/bouton_new.png");
                 BufferedImage img;
@@ -1378,7 +1417,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_bouton_new = new ImageIcon(img);
                 this.bouton_new.setIcon(icon_bouton_new);
             }
-            // Buton Open
+            // Bouton Open
             {
                 url = getClass().getClassLoader().getResource("Images/bouton_open.png");
                 BufferedImage img;
@@ -1386,7 +1425,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_bouton_open = new ImageIcon(img);
                 this.bouton_open.setIcon(icon_bouton_open);
             }
-            // Button New
+            // Bouton New
             {
                 url = getClass().getClassLoader().getResource("Images/bouton_save.png");
                 BufferedImage img;
@@ -1394,7 +1433,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 icon_bouton_save = new ImageIcon(img);
                 this.bouton_save.setIcon(icon_bouton_save);
             }
-            // Button Interrogation
+            // Bouton Interrogation
             {
                 url = getClass().getClassLoader().getResource("Images/interogation.png");
                 BufferedImage img;
@@ -1452,8 +1491,10 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jButtonDelBehav = new javax.swing.JButton();
         jScrollPaneBehaviors = new javax.swing.JScrollPane();
         dataGridView_comportements = new javax.swing.JList();
+        jSliderProba = new javax.swing.JSlider();
+        jLabelProba = new javax.swing.JLabel();
         
-        // Environment
+        // Envirronnement
         jPanelEnv = new javax.swing.JPanel();
         jLabelEnvironnement = new javax.swing.JLabel();
         bouton_environnement = new javax.swing.JButton();
@@ -1463,7 +1504,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabelZ = new javax.swing.JLabel();
         jSliderZ = new javax.swing.JSlider();
         
-        // Curves
+        // Courbes
         jPanelCurves = new javax.swing.JPanel();
         jLabelCourbes = new javax.swing.JLabel();
         pictureBox_courbes = new javax.swing.JLabel();
@@ -1473,7 +1514,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         abscissaBox = new javax.swing.JComboBox();
         jButtonReaction = new javax.swing.JButton();
         
-        // Miscellaneous
+        // Divers
         jPanelMisc = new javax.swing.JPanel();
         jLabelDivers = new javax.swing.JLabel();
         Ajustement = new javax.swing.JButton();
@@ -1486,7 +1527,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         
        
         
-        // Environment box
+        // Boite d'envirronnement
         jPanelSimulator = new javax.swing.JPanel();
         pictureBox_Env = new javax.swing.JLabel();
         jLabelSimulateur = new javax.swing.JLabel();
@@ -1545,12 +1586,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         bouton_open.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bouton_open.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                try {
-					bouton_openMouseClicked(evt);
-				} catch (XMLStreamException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+                bouton_openMouseClicked(evt);
             }
         });
         add(bouton_open);
@@ -2004,14 +2040,53 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 dataGridView_comportementsMouseClicked(evt);
             }
         });
-
+        dataGridView_comportements.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                dataGridView_comportementsValueChanged(evt);
+            }
+        });
         jScrollPaneBehaviors.setViewportView(dataGridView_comportements);
 
+        jSliderProba.setBackground(new java.awt.Color(153, 153, 255));
+        jSliderProba.setMaximum(1000);
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jSliderProba.setToolTipText("Proba des comportements sélectionnés");
+        }
+        else{
+        	jSliderProba.setToolTipText("Proba of selected behaviour");
+        }
+        
+        jSliderProba.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jSliderProba.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jSliderProbaMouseReleased(evt);
+            }
+        });
+        jSliderProba.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSliderProbaStateChanged(evt);
+            }
+        });
+
+        jLabelProba.setBackground(new java.awt.Color(153, 153, 255));
+        jLabelProba.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        jLabelProba.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelProba.setText("p=");
+        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	jLabelProba.setToolTipText("Proba des comportements sélectionnés");
+        }
+        else{
+        	jLabelProba.setToolTipText("Proba of selected behaviour");
+        }
         javax.swing.GroupLayout jPanelBehaviorsLayout = new javax.swing.GroupLayout(jPanelBehaviors);
         jPanelBehaviors.setLayout(jPanelBehaviorsLayout);
         jPanelBehaviorsLayout.setHorizontalGroup(
             jPanelBehaviorsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBehaviorsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelBehaviorsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSliderProba, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jLabelProba, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addComponent(jLabelComportements, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBehaviorsLayout.createSequentialGroup()
@@ -2038,6 +2113,9 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneBehaviors, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSliderProba, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelProba)
                 .addContainerGap())
         );
 
@@ -2682,12 +2760,13 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
     }
 
     protected void pictureBox_EnvMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pictureBox_EnvMouseReleased
+        //// De-memorisation du cube lego pris
         _mouse_left_down = false;
         _mouse_right_down = false;
 
         timer_refresh.stop();
 
-        // Add of a link or plotting of a line of reaxels
+        // Ajout d'un lien ou tracage d'une ligne de reaxels
         if (checkBox_paint_ligne.getBackground().equals(Color.GREEN)) { //.getX() == jLabel_sel.getX()) {
             if (dataGridView_entites.getSelectedIndex() >= 0) {
                 int mouseX = evt.getX();
@@ -2924,7 +3003,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
     
     
     public void fillDataGridCompartment() {
-        // Compartments to place into the dataGrid
+        // Compartiments a placer dans la dataGrid
         DefaultListModel model = new DefaultListModel();
         for (Compartment moteur : this._ListManipulesCompartment) {
             String nom_moteur = moteur.getEtiquettes();
@@ -2933,13 +3012,13 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         dataGridView_Compartment.setModel(model);
     }
     
-    public void drawAll(int x0, int y0, int x1, int y1, int forme) { // Shape=1 => Line; Shape=2 => Rectangle
+    public void drawAll(int x0, int y0, int x1, int y1, int forme) { // forme=1 => Ligne; forme=2 => rectangle
         if (pictureBox_Env.getWidth() <= 0) {
             return;
         }
         dessinerCourbes();
 
-        // Creation of a bitmap
+        // Creation d'un bitmap
         if (bmp_memory == null) {
             initBufferedImageSimulator();
         }
@@ -2962,7 +3041,9 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
             g_mem.drawImage(_image_deco, 0, 0, pictureBox_Env.getWidth(), pictureBox_Env.getHeight(), (int) x_min_back_image, (int) y_min_back_image, (int) x_max_back_image, (int) y_max_back_image, null);//, GraphicsUnit.Pixel);
         }
 
-        // Creation of bitmaps of all entities in function of zoom level to accelerate display
+        // Creation des bitmaps de toutes les entites
+        // en fonction du niveau de zoom
+        // afin d'accelerer l'affichage
         HashMap<String, Image> dico_cube_image_adaptee = new HashMap<>();
         {
             for (Entity cli : _ListManipulesNoeuds) {
@@ -2978,14 +3059,14 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         }
             //////////////////////////////////////////
 
-        // Display of all entities at the selected depth 
+        // Affichage de toutes les entites à la profondeur sélectionnée
         if (instances == null) {
             return;
         }
         int k = jSliderZ.getValue();
         for (int i = 0; i < getTailleX(); i++) {
             for (int j = 0; j < getTailleY(); j++) {
-                // Cube display
+                // Affichage des cubes
                 InstanceReaxel c = instances.getFast(i, j, k);
                 if (c != null) {
                     if (c.getImage() == null) {
@@ -3080,8 +3161,8 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                         }
 
                     } else {
-                        // Image dictionnary (name, image)
-                        // Fast display of images
+                        // Dictionnaire des images (nom, image)
+                        // Affichage rapide des images
                         float left_in_bmp_memory = universeToWindow(_observed_left, _observed_width + _observed_left, c.getX(), bmp_memory.getWidth(null));
                         float top_in_bmp_memory = universeToWindow(_observed_top, _observed_height + _observed_top, c.getY(), bmp_memory.getHeight(null));
                         g_mem.drawImage(dico_cube_image_adaptee.get(c.getNom()), (int) left_in_bmp_memory, (int) top_in_bmp_memory, null);
@@ -3090,7 +3171,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
             }
         }
 
-        // Display on created link
+        // Affichage du lien en creation
         //Graphics gfx = pictureBox1.getGraphics();
         if (forme == 1) {
             g_mem.setColor(Color.BLACK);
@@ -3120,16 +3201,16 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
             g_src.drawImage(bmp_memory, 0, 0, null);
             blurFilter.filter(src_bmp, bmp_memory);
         }
-        // Display on screen
+        // Affichage a l'ecran
         pictureBox_Env.setIcon(new ImageIcon(bmp_memory));
 
-        // Recording of a video at format GIF
+        // Enregistrement d'une video au format GIF anime
         if (checkBox_avi.isSelected() == true) {
             if (_animation_gif != null) {// || _animation_mov != null) {
                 if (_animation_courbes == false) {
-                    _animation_gif.addFrame(bmp_memory); // Only the environment
+                    _animation_gif.addFrame(bmp_memory); // Uniquement l'env
                 } else {
-                    // Environment and curves
+                    // L'env + les courbes
                     BufferedImage bmp_memory_mega = new BufferedImage(pictureBox_Env.getWidth() * 2, pictureBox_Env.getHeight(), BufferedImage.TYPE_INT_ARGB);
                     Graphics gg = bmp_memory_mega.getGraphics();
                     gg.drawImage(bmp_memory, 0, 0, null);

@@ -6,42 +6,37 @@ import NetMDyn.Compartment;
 import NetMDyn.Entity_NetMDyn;
 import NetMDyn.InstanceReaxel_NetMDyn;
 import NetMDyn.Model_NetMDyn;
-import NetMDyn.SbmlParser;
 import NetMDyn.Simulator_NetMDyn;
-import NetMDyn.util.FileSaverLoader_NetMDyn;
 import NetMDyn.util.UtilPoint3D_NetMDyn;
 import jadeAgentServer.util.Parameter;
+import java.lang.Math;
 
-import java.awt.Container; // Component that can contain other Abstract Window Toolkit components. 
-import java.awt.Dimension; // Width and height of a component (in integer precision) in a single object
-import java.awt.event.ActionEvent; // A semantic event which indicates that a component-defined action occurred
-import java.awt.event.KeyEvent; // An event which indicates that a keystroke occurred in a component. 
-import java.awt.event.WindowAdapter; // Abstract class to receive window events 
-import java.awt.event.WindowEvent; // Possible to signal status changes of a window (opened, close, reduced,...)
-import java.io.File; // An abstract representation of file and directory pathnames. 
-import java.io.IOException; // Signals that an I/O exception of some sort has occurred
-import java.util.ArrayList; // Possible creation of tables
-import java.util.HashMap; // Possible creation of hashmaps
-import java.util.List; // Possible creation of lists
-import java.util.logging.Level; // Set of standard logging levels that can be used to control logging output
-import java.util.logging.Logger; //Log messages for a specific system or application component.
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter; //Classe abstraite pour recevoir les événements d'une fenêtre
+import java.awt.event.WindowEvent; // Permet de signaler les changements de statut d'une fenêtre (ouverte, fermée, réduite,...)
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList; //Permet de créer des ArrayListes dans la classe
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.swing.AbstractAction; // Standard behaviors like the get and set methods for Action object properties (icon, text, and enabled) are defined here.
-import javax.swing.ActionMap; // Mappings from Objects (called keys or Action names) to Actions.
-import javax.swing.InputMap; // Binding between an input event (currently only KeyStrokes are used) and an Object
-import javax.swing.JComponent; // The base class for all Swing components except top-level containers.
-import javax.swing.JFrame; // Possible creation of windows
-import javax.swing.JOptionPane; //Possible creation of dialog windows
-import javax.swing.KeyStroke; // Key action on the keyboard, or equivalent input device
-import javax.xml.stream.XMLStreamException;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JFrame; //Permet d'afficher une fenêtre via Swing
+import javax.swing.JOptionPane; //Permet d'afficher des fenêtre de dialogue
+import javax.swing.KeyStroke;
 
-import org.sbml.jsbml.SBMLDocument;
-import org.sbml.jsbml.SBMLReader;
+import com.jogamp.opengl.awt.GLJPanel;
+import com.jogamp.opengl.util.FPSAnimator;
 
-import com.jogamp.opengl.awt.GLJPanel; // Provides OpenGL rendering support.
-import com.jogamp.opengl.util.FPSAnimator; // Attempt to achieve a target frames-per-second rate to avoid using all CPU time
-
-import netbiodyn.AllInstances;
+import netbiodyn.AllInstances; //Pour tous les netbiodyn.* : import d'autres classes du logiciel
 import netbiodyn.Behavior;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Model;
@@ -80,7 +75,6 @@ public class Controller_NetMDyn{
     protected final ArrayList<Command> lastCommand; 
     protected final int maxMemory = 20;
     
-    //Initialization of the Controller
 	public Controller_NetMDyn(){
 		 	this.lastCommand = new ArrayList<>();
 	        frame = new JFrame();
@@ -92,9 +86,9 @@ public class Controller_NetMDyn{
 	        simulator.addListener(env);
 
 	        frame.add(env);
-	        frame.setName("NetMDyn");
+	        frame.setName("NetBioDyn");
 	        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-	        frame.setTitle("NetMDyn - University of Bordeaux - Master 2 of Bioinformatics - Free Software under GPL License");
+	        frame.setTitle("NetBioDyn - UEB - UBO - Lab STICC - IHSEV - Pascal Ballet - Free Software under GPL License");
 	        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	        frame.addWindowListener(new WindowAdapter() {
 
@@ -124,14 +118,8 @@ public class Controller_NetMDyn{
 	        frame.setVisible(true);
 	}
 	
-		//Initialization of the 3DView
 	   protected void init3D() {
-		   if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-			   frame3D = new JFrame("3D View");
-		   }
-		   else{
-			   frame3D = new JFrame("Vue 3D");
-		   }
+	        frame3D = new JFrame("3D View");
 	        Container topAncestor = env.getTopLevelAncestor();
 	        frame3D.setBounds(topAncestor.getBounds().x + topAncestor.getBounds().width, topAncestor.getBounds().y, 640, topAncestor.getBounds().height);
 
@@ -147,7 +135,7 @@ public class Controller_NetMDyn{
 
 	            // Create a animator that drives canvas' display() at the specified FPS. 
 	            final FPSAnimator animator = new FPSAnimator(canvas, 60, true);
-	            // Start the animation loop
+	            // start the animation loop
 	            animator.start();
 	            frame3D.setVisible(false);
 	            this.addKeyListener(frame3D);
@@ -155,8 +143,7 @@ public class Controller_NetMDyn{
 	            disable3D(e.toString());
 	        }
 	    }
-	   
-	   //Remove he 3D view
+
 	    protected void disable3D(String message) {
 	        env.disabled3D();
 	        File file = new File("./log_netbiodyn.txt");
@@ -181,7 +168,6 @@ public class Controller_NetMDyn{
 	        frame3D.setVisible(!frame3D.isVisible());
 	    }
 	
-	 //Add an Entity into the Controller
 	 public void addEntity() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -194,9 +180,55 @@ public class Controller_NetMDyn{
 	            model.addProtoReaxel(wc._cli);
 	        }
 	    }
-	 //Add a Behavior into the Controller
 	 public void addBehaviour() {
+		 if (simulator.isRunning()) {
+			 this.pauseSimulation();
+		 }
 
+		 WndBehaviourChoice wC = new WndBehaviourChoice(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+		 wC.setVisible(true);
+		 if (wC.getDialogResult().equals("OK")) {
+			 int reaction_type = wC.getBehaviourType();
+			 if (reaction_type==1){
+				 WndEditMvt wC1 = new WndEditMvt(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+				 wC1.WndEditMvt_load(null);
+				 wC1.setVisible(true);
+				 String r = wC1.getDialogResult();
+			        if (r != null) {
+			            if (r.equals("OK")) {
+			                model.addMoteurReaction(wC1._r3);
+			            }
+			        }
+			 }
+			 else if (reaction_type==2){
+				 WndEditTraverse wC1 = new WndEditTraverse(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+				 wC1.WndEditTraverse_load(null);
+				 wC1.setVisible(true);
+				 String r = wC1.getDialogResult();
+			        if (r != null) {
+			            if (r.equals("OK")) {
+			                model.addMoteurReaction(wC1._r3);
+			                model.addMoteurReaction(wC1._rNS);
+			            }
+			        }
+			 }
+			 else{
+				 WndEditBehaviour wC1 = new WndEditBehaviour(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+				 wC1.WndEditBehaviour_load(null, null);
+				 wC1.setVisible(true);
+				 String r = wC1.getDialogResult();
+			        if (r != null) {
+			            if (r.equals("OK")) {
+			                model.addMoteurReaction(wC1._r3);
+			                if (wC1.getComboBox_reaction()=="Reversible"){
+			                	model.addMoteurReaction(wC1._r3rev);
+			                }
+			            }
+			        }
+				 
+			 }
+		 }
+	        /*
 		    if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
@@ -210,9 +242,9 @@ public class Controller_NetMDyn{
 	                model.addMoteurReaction(w._r3);
 	            }
 	        }
-
+	        */
 	 }
-	 //Edition of an Entity into the Controller
+	 
 	    public void editEntity() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -234,19 +266,16 @@ public class Controller_NetMDyn{
 	            }
 	        }
 	    }
-
-	    //Edition of the probabilities of a Behavior
+	    
 	    public void changeProba(String name, double value) {
 	        model.editBehaviourProba(name, value);
 	    }
-	    
-	    //Edition of parameters of the Controller
 
 	    public void changeParameters(HashMap<String, ArrayList<Parameter>> param) {
 	        model.changeParameters(param, env.getPictureBoxDimensions());
 	    }
 	 
-	 //Edition of a Behavior
+	 
 	 public void editBehaviour() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -256,17 +285,97 @@ public class Controller_NetMDyn{
 	        if (i >= 0) {
 	            String name = env.getDataGridView_comportements().getSelectedValue().toString();
 	            Behavior_NetMDyn cpt = model.getBehaviour((String) env.getDataGridView_comportements().getModel().getElementAt(i));
-	            WndEditReaction_NetMDyn wc = new WndEditReaction_NetMDyn(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
-	            wc.WndCliEditReaction3_Load(cpt);
-	            wc.setVisible(true);
-	            String r = wc.getDialogResult();
-	            if (r != null && r.equals("OK")) {
-	                model.editMoteurReaction(wc._r3, name);
-	            }
+	            
+	            if (cpt.getType_behavior()==1){
+					 WndEditMvt wC1 = new WndEditMvt(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+					 wC1.WndEditMvt_load(cpt);
+					 wC1.setVisible(true);
+					 String r = wC1.getDialogResult();
+				        if (r != null) {
+				            if (r.equals("OK")) {
+				                model.editMoteurReaction(wC1._r3,name);
+				            }
+				        }
+				 }
+				 else if (cpt.getType_behavior()==2){
+					 WndEditTraverse wC1 = new WndEditTraverse(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+					 wC1.WndEditTraverse_load(cpt);
+					 wC1.setVisible(true);
+					 String r = wC1.getDialogResult();
+				        if (r != null) {
+				            if (r.equals("OK")) {
+				                model.editMoteurReaction(wC1._r3,name);
+				                model.editMoteurReaction(wC1._rNS,name+"NS");
+				            }
+				        }
+				 }
+				 else{
+					 WndEditBehaviour wC1 = new WndEditBehaviour(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+					 if (name.contains("_reverse")){
+						 for (Behavior_NetMDyn bev : model.getCopyListManipulesReactions()){
+							 if (bev.getEtiquettes().equals(name.split("_reverse")[0])){
+								 wC1.WndEditBehaviour_load(bev, cpt);
+								 break;
+							 }
+						 }
+						 wC1.setVisible(true);
+						 String r = wC1.getDialogResult();
+					        if (r != null) {
+					            if (r.equals("OK")) {
+					                model.editMoteurReaction(wC1._r3,name.split("_reverse")[0]);
+					                if (wC1.getComboBox_reaction()=="Reversible"){
+					                	model.editMoteurReaction(wC1._r3rev,name);
+					                }
+					                else{
+					                	ArrayList<String> suppr = new ArrayList<String>();
+					                	suppr.add(name+"_reverse");
+					                	model.delMoteurReaction(suppr);
+					                }
+					            }
+					        }
+					 }
+					 else{
+						 boolean test = false;
+						 for (Behavior_NetMDyn bev : model.getCopyListManipulesReactions()){
+							 if (bev.getEtiquettes().equals(name+"_reverse")){
+								 wC1.WndEditBehaviour_load(cpt, bev);
+								 test = true;
+								 wC1.setVisible(true);
+								 String r = wC1.getDialogResult();
+							        if (r != null) {
+							            if (r.equals("OK")) {
+							                model.editMoteurReaction(wC1._r3,name);
+							                if (wC1.getComboBox_reaction()=="Reversible"){
+							                	model.editMoteurReaction(wC1._r3rev, name+"_reverse");
+							                }
+							                else{
+							                	ArrayList<String> suppr = new ArrayList<String>();
+							                	suppr.add(name+"_reverse");
+							                	model.delMoteurReaction(suppr);
+							                }
+							            }
+							        }							
+							 break;
+							 }
+						 }
+						 if (test==false){
+						 wC1.WndEditBehaviour_load(cpt, null);
+						 wC1.setVisible(true);
+						 String r = wC1.getDialogResult();
+					        if (r != null) {
+					            if (r.equals("OK")) {
+					                model.editMoteurReaction(wC1._r3,name);
+					                if (wC1.getComboBox_reaction()=="Reversible"){
+					                	model.addMoteurReaction(wC1._r3rev);
+					                }
+					            }
+					        }
+						 }
+					 }					 					
+				 }
 	        }
 	    }
 	 
-	 	// Remove a Behavior
 	   public void delBehaviour(int[] tab) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -283,7 +392,7 @@ public class Controller_NetMDyn{
 	        model.delMoteurReaction(reactions);
 	    }
 
-	   //Remove an Entity
+
 	    public void delEntity(int[] tab) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -301,8 +410,7 @@ public class Controller_NetMDyn{
 	            simulator.ProtoReaxelDeleted(entities);
 	        }
 	    }
-	    
-	    
+
 	    public void randomlyPopulate(int bottom_rightX, int bottom_rightY, int top_leftX, int top_leftY, int z) {
 	        int num_col = env.getDataGridView_entites().getSelectedIndex();
 	        if (num_col >= 0) {
@@ -415,35 +523,18 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
-	    public void loadModel(String nameSaved) throws XMLStreamException, IOException {
+	    public void loadModel(String nameSaved) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
 
-	        UtilFileFilter filtre = new UtilFileFilter("NetMDyn", "nbd");
-	        UtilFileFilter filtre2 = new UtilFileFilter("sbml", "xml");
-	        File file = FileSaverLoader_NetMDyn.chooseFileToLoad(nameSaved, filtre,filtre2);
-//	        File file2 = FileSaverLoader.chooseFileToLoad(nameSaved, filtre2);
-	        String extensionFile=file.getPath().substring( file.getPath().indexOf('.'));
-	        System.out.println(extensionFile);
-	        if ((file != null)&&(extensionFile.equals(".nbd"))) {
-	        	System.out.println(extensionFile);
+	        UtilFileFilter filtre = new UtilFileFilter("NetBioDyn", "nbd");
+	        File file = FileSaverLoader.chooseFileToLoad(nameSaved, filtre);
+
+	        if (file != null) {
 	            env.setNom_sauvegarde(UtilDivers.removeExtension(file.getPath()));
 	            this.stopWithoutAsking();
 	            model.load(env, file.getPath());
-	        }
-	        if ((file != null)&&(extensionFile.equals(".xml"))){
-	        	System.out.println(extensionFile);
-	        	SBMLReader slread = new SBMLReader();
-	    		SBMLDocument document = slread.readSBML(file);
-	    		MetaboliteVisualizer visualize = new MetaboliteVisualizer(document);
-	    		SbmlParser parser=new SbmlParser();
-	    		ControlerMetabolite c =new ControlerMetabolite(visualize, parser, document) ;
-	    		visualize.setController(c);
-//	    		WriterNbd writer= c.getWriter();
-//	    		 env.setNom_sauvegarde(UtilDivers.removeExtension( writer.getFileName(document)));
-//		            this.stopWithoutAsking();
-//	    		model.load(env, writer.getFileName(document) );
 	        }
 	    }
 
@@ -466,13 +557,12 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
-	    //Save the Model
 	    public int saveModel(String nameSaved) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
 
-	        File file = FileSaverLoader.chooseFileToSave(nameSaved, "NetMDyn", new String[]{"nbd"});
+	        File file = FileSaverLoader.chooseFileToSave(nameSaved, "NetBioDyn", new String[]{"nbd"});
 
 	        if (file != null) {
 	            env.setNom_sauvegarde(UtilDivers.removeExtension(UtilDivers.fichier(file.getPath())));
@@ -502,13 +592,62 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
+	    public void miseAJourProba(){
+	    	int volume = env.getTailleX()*env.getTailleY()*env.getTailleZ();
+	    	Double NumberAvogadro = 6.022 * Math.pow(10.0, 23.0);
+	    			
+	    	ArrayList<Double> listK = new ArrayList<Double>();
+	    	for (Behavior_NetMDyn bev : model.getListManipulesReactions()){
+	    		if (bev.getType_behavior() == 3){
+	    			Double k = bev.getK();
+	    			Double newK = k/(volume*NumberAvogadro);
+	    			listK.add(newK);
+	    		}
+	    	}
+	    	ArrayList<Double> listProba = new ArrayList<Double>();
+	    	for (Double k : listK){
+	    		Double proba = (k - (min(listK)-0.1*min(listK)))/((max(listK)+0.1*max(listK)) -(min(listK)-0.1*min(listK))) ;
+	    		listProba.add(proba);
+	    	}
+	    	
+	    	for (Behavior_NetMDyn bev : model.getListManipulesReactions()){
+	    		if (bev.getType_behavior() == 3){
+	    			bev.setProba(listProba.get(0));
+	    			System.out.println(bev.getEtiquettes());
+	    			System.out.println(listProba.get(0));
+	    			listProba.remove(0);
+	    		}
+	    	}
+	    }
+	    
+	    public Double min(ArrayList<Double> list){
+	    	Double min = list.get(0);
+	    	for (Double elem : list){
+	    		if (elem < min){
+	    			min = elem;
+	    		}
+	    	}
+	    	return min;
+	    }
+	    
+	    public Double max(ArrayList<Double> list){
+	    	Double max = list.get(0);
+	    	for (Double elem : list){
+	    		if (elem > max){
+	    			max = elem;
+	    		}
+	    	}
+	    	return max;
+	    }
+	    
 	    public void play() {
-	        if (simulator.isRunning() && !simulator.isPause()) { // Pause of the simulation
+	    	miseAJourProba();
+	        if (simulator.isRunning() && !simulator.isPause()) { // On est en PLAY et on fait PAUSE
 	            this.pauseSimulation();
-	        } else if (!simulator.isRunning() && simulator.isPause()) { // Run the simulation, pause before
+	        } else if (!simulator.isRunning() && simulator.isPause()) { // On est en PAUSE et on fait PLAY
 	            env.unpause_simulation();
 	            simulator.setPause(false);
-	        } else { // Run the simulation, stop before
+	        } else { // On est en STOP et on fait PLAY
 	            env.simulationStarted();
 	            simulator.start();
 	        }
@@ -546,10 +685,11 @@ public class Controller_NetMDyn{
 	    }
 	    
 	    public void adjustmentStopped(boolean finished) {
+	        // TODO Arreter l'ajustement auto et recharger le modèle initial !
 	        env.freeze(false);
 	        stopWithoutAsking();
 	        if (!finished) {
-	            // Reload initial model
+	            // recharger le modèle initial
 	        } else {
 	            int res;
 	            System.out.println("Ajustement terminé avec succès !");
@@ -582,7 +722,7 @@ public class Controller_NetMDyn{
 	    public void export() {
 	        String str_model = "\\fs32 \\b Entites:\n\\par\n\\b0";
 
-	        // Entities
+	        // Entites
 	        ArrayList<Entity_NetMDyn> lstc = model.getListManipulesNoeuds();
 	        for (Entity_NetMDyn cli : lstc) {
 	            str_model += cli.getEtiquettes() + "\\b:\\b0";
@@ -596,7 +736,7 @@ public class Controller_NetMDyn{
 	        }
 	        str_model += "\n\\par\n";
 
-	        // Behaviors
+	        // Comportements
 	        str_model += "\\b Comportements:\n\\par\n\\b0";
 
 	        List<Behavior_NetMDyn> lst = model.getListManipulesReactions();
@@ -612,7 +752,7 @@ public class Controller_NetMDyn{
 	                    }
 	                }
 	            }
-	            str_model += " \\b=" + ((Double) reac.get_k()).toString() + "=> \\b0 ";
+	            str_model += " \\b=" + ((Double) reac.getProba()).toString() + "=> \\b0 ";
 	            if (!reac._produits.get(0).equals("")) {
 	                str_model += reac._produits.get(0);
 	            } else {
@@ -1113,13 +1253,7 @@ public class Controller_NetMDyn{
                 wC.setTextBoxRadius(Integer.toString(old_radius));
                 wC.button_OKActionPerformed(null);
         		JOptionPane jop = new JOptionPane();
-        		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-        			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en-dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
-        		}
-        		else{
-        			jop.showMessageDialog(null, "You can't create a compartment outside the environment", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
-        		}
-        		
+        		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en dehors de l'envirronement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
     		}
     	}else{
     		wC.setTextBoxCenterX(Integer.toString(old_centerX));
@@ -1127,13 +1261,7 @@ public class Controller_NetMDyn{
             wC.setTextBoxRadius(Integer.toString(old_radius));
             wC.button_OKActionPerformed(null);
     		JOptionPane jop = new JOptionPane();
-    		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-    			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-    		}
-    		else{
-    			jop.showMessageDialog(null, "You can't create a compartment on an other one", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-    		}
-    		
+    		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
     	}
     	model.editCompartment(wC._cli, name);
         editCompartmentMembrane(wC._cli, name);
@@ -1294,26 +1422,18 @@ public class Controller_NetMDyn{
                             wc.setTextBoxRadius(Integer.toString(old_radius));
                             wc.button_OKActionPerformed(null);
                     		JOptionPane jop = new JOptionPane();
-                    		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-                    			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en-dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
-                    		}
-                    		else{
-                    			jop.showMessageDialog(null, "You can't create a compartment outside the environment", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
-                    		}                		}
+                    		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		}
                 	}else{
                 		wc.setTextBoxCenterX(Integer.toString(old_centerX));
                         wc.setTextBoxCenterY(Integer.toString(old_centerY));
                         wc.setTextBoxRadius(Integer.toString(old_radius));
                         wc.button_OKActionPerformed(null);
                 		JOptionPane jop = new JOptionPane();
-                		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-                			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                		}
-                		else{
-                			jop.showMessageDialog(null, "You can't create a compartment on an other one", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                		}
+                		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 	}
                 }
+                
                 model.editCompartment(wc._cli, name);
                 editCompartmentMembrane(wc._cli, name);
             }

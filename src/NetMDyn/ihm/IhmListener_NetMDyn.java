@@ -1,8 +1,8 @@
 package NetMDyn.ihm;
 
-import java.util.ArrayList; //Possible creation of tables
-import java.util.EventListener; // All event listener interfaces must extend this interface
-import java.util.HashMap; //Possible creation of hashmaps
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.HashMap;
 
 import NetMDyn.AllInstances_NetMDyn;
 import NetMDyn.Behavior_NetMDyn;
@@ -19,9 +19,6 @@ import netbiodyn.ihm.Env_Parameters;
  *
  * @author riviere
  */
-
-
-//Interface of a particular type of Listener
 public interface IhmListener_NetMDyn extends EventListener{
     
     public void newEnvLoaded(Serialized_NetMDyn saved,HashMap<String, Integer> entitesBook);
