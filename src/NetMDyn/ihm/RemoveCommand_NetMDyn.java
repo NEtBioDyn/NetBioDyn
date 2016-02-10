@@ -5,7 +5,7 @@
  */
 package NetMDyn.ihm;
 
-import java.util.ArrayList;
+import java.util.ArrayList; // Possible creation of tables
 
 import NetMDyn.Model_NetMDyn;
 import NetMDyn.Simulator_NetMDyn;
@@ -26,19 +26,22 @@ public class RemoveCommand_NetMDyn implements Command {
     private ArrayList<UtilPoint3D> points;
     private Command opposite;
 
+    //Initialization of a new RemoveCommand object with only one point
     public RemoveCommand_NetMDyn(Model_NetMDyn model, Simulator_NetMDyn simulator, UtilPoint3D point) {
         this.points = new ArrayList<>();
         this.model = model;
         this.simulator = simulator;
         this.point = point;
     }
-
+    
+    //Initialization of a new RemoveCommand object with multiple points
     public RemoveCommand_NetMDyn(Model_NetMDyn model, Simulator_NetMDyn simulator, ArrayList<UtilPoint3D> points) {
         this.model = model;
         this.simulator = simulator;
         this.points = points;
     }
     
+    //Change this parameter
     public void setOpposite(Command opposite){
         this.opposite=opposite;
     }
