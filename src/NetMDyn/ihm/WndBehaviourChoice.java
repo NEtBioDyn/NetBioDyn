@@ -1,23 +1,23 @@
 package NetMDyn.ihm;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.BorderLayout;
-import java.awt.TextField;
+import java.awt.Dimension; // Encapsulate the width and height of a component (in integer precision) in a single object.
+import java.awt.GridLayout; // A layout manager that lays out a container's components in a rectangular grid
+import java.awt.BorderLayout; // Lay out a container, arranging and resizing its components to fit in five regions: north, south, east, west, and center
+import java.awt.TextField; // A text component that allows for the editing of a single line of text
 
-import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup; //Create a multiple-exclusion scope for a set of buttons
+import javax.swing.JFrame; // Possible creation of windows
+import javax.swing.JPanel; // A generic lightweight container
+import javax.swing.JRadioButton; // An implementation of a radio button -- an item that can be selected or deselected, and which displays its state to the user
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Entity_NetMDyn;
 
-import javax.swing.AbstractButton;
+import javax.swing.AbstractButton; // Define common behaviors for buttons and menu items
 
-import java.util.ArrayList;
+import java.util.ArrayList; //Possible creation of tables
 
-import javax.swing.JOptionPane;
+import javax.swing.JOptionPane; // A standard dialog box that prompts users for a value or informs them of something.
 
 import NetMDyn.Compartment;
 import netbiodyn.Entity;
@@ -30,13 +30,14 @@ public class WndBehaviourChoice extends javax.swing.JDialog{
     private String DialogResult = null;
     private int _mouseX = 0, _mouseY = 0;
 
-    
+    //Initialization of WndBehaviorChoice object
     public WndBehaviourChoice(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> arrayList) {
         this.setModal(true);
         setSize(new Dimension(640, 440));
         initComponents();
     }  
     
+    //Initialization of the parameters of the object
     private void initComponents() {
     	
    	 jLabelPlaceDuTitre = new javax.swing.JLabel();
@@ -45,9 +46,22 @@ public class WndBehaviourChoice extends javax.swing.JDialog{
         	button_OK = new javax.swing.JButton();
             button_CANCEL = new javax.swing.JButton();
         	
-            mvt = new JRadioButton("Mouvement", true);
-        	traverse = new JRadioButton("Traversée");
-            reaction = new JRadioButton("Reaction");
+            String textmvt="";
+            String texttraverse="";
+            String textgroupe="";
+            mvt = new JRadioButton(textmvt, true);
+        	traverse = new JRadioButton(texttraverse);
+            reaction = new JRadioButton(textgroupe);
+            if (Lang.getInstance().getLang().equals("FR")) {
+            	textmvt="Mouvement";
+            	texttraverse="Traversée";
+            	textgroupe="Réaction";
+            }
+            else{
+            	textmvt="Movement";
+            	texttraverse="Crossing";
+            	textgroupe="Reaction";            	
+            }
             groupe = new ButtonGroup();
             
             
@@ -89,7 +103,12 @@ public class WndBehaviourChoice extends javax.swing.JDialog{
 
             button_CANCEL.setBackground(new java.awt.Color(255, 153, 153));
             button_CANCEL.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-            button_CANCEL.setText("Annuler");
+            if (Lang.getInstance().getLang().equals("FR")) {
+            	button_CANCEL.setText("Annuler");
+            }
+            else{
+            	button_CANCEL.setText("Cancel");
+            }
             button_CANCEL.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     button_CANCELMouseClicked(evt);
@@ -107,7 +126,12 @@ public class WndBehaviourChoice extends javax.swing.JDialog{
             jLabelTitre.setBackground(new java.awt.Color(153, 153, 255));
             jLabelTitre.setFont(new java.awt.Font("DejaVu Sans", 1, 24)); // NOI18N
             jLabelTitre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            jLabelTitre.setText("Choix du comportement");
+            if (Lang.getInstance().getLang().equals("FR")) {
+            	jLabelTitre.setText("Choix du comportement");
+            }
+            else{
+            	jLabelTitre.setText("Choice of compartment");
+            }
             getContentPane().add(jLabelTitre);
             jLabelTitre.setBounds(0, 0, 533, 28);
             
@@ -148,8 +172,14 @@ public class WndBehaviourChoice extends javax.swing.JDialog{
         }
         
     	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
-            // TODO add your handling code here:
-            this.DialogResult = new String("CANCEL");
+            String textdialogresult="";
+            this.DialogResult = new String(textdialogresult);
+    		if (Lang.getInstance().getLang().equals("FR")) {
+            	textdialogresult="Annuler";
+            }
+            else{
+            	textdialogresult="Cancel";
+            }
             setVisible(false);
         }//GEN-LAST:event_button_CANCELActionPerformed
 
@@ -159,6 +189,7 @@ public class WndBehaviourChoice extends javax.swing.JDialog{
             //if()
         }//GEN-LAST:event_formKeyPressed
         
+        // Return the type of this behavior
         public int getBehaviourType(){
         	return type;
         }
@@ -175,6 +206,7 @@ public class WndBehaviourChoice extends javax.swing.JDialog{
         private javax.swing.JButton button_CANCEL;
         private int type;
         
+        //Return the String into DialogResult
         public String getDialogResult() {
             return DialogResult;
         }
