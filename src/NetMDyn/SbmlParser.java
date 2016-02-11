@@ -36,7 +36,7 @@ public class SbmlParser{
 	public void parseSpeciesName(SBMLDocument document){
 		Model model = document.getModel();
 		for (int k = 0; k <model.getSpeciesCount() ; k++) {
-			entities_name.add(model.getSpecies(k).getName());
+			entities_name.add(model.getSpecies(k).getName()+"_"+model.getSpecies(k).getCompartment());
 	}
 		}
 	public void parse_compartment(SBMLDocument document){

@@ -73,7 +73,8 @@ public class WriterNbd{
 		 parse.parse_reaction(document);
 		 for (Species entity : parse.getEntities()) {
 			 for (String name : entityName) {
-				 if (entity.getName().equals(name)) {
+				 String test= entity.getName()+"_"+entity.getCompartment();
+				 if (test.equals(name)) {
 						entities.add(entity);
 					}
 				}
@@ -88,18 +89,19 @@ public class WriterNbd{
 	    parse.parseSpecies(document);
 	    parse.parse_reaction(document);
 	for (Species entity : entities) {
+
 		
 	
 		String compartmenttmp = entity.getCompartment();
 		
 		out_file.write("class NetMDyn.Entity_NetMDyn\n");
-		out_file.write("\tEtiquettes:"+entity.getName()+"\n");
+		out_file.write("\tEtiquettes:"+entity.getName()+"_"+compartmenttmp+"\n");
 		out_file.write("\tvisibleDansPanel:"+visible+"\n");
 		out_file.write("\tcouleur:-"+create_color()+"\n");
 		out_file.write("\tdemie_vie:0.0\n");
 		out_file.write("\tvidable:true\n");
 		if (compartmenttmp.equals("default")){
-		out_file.write("\tcompartment:"+"cytosol"+"\n");
+		out_file.write("\tcompartment:"+"Cytosol"+"\n");
 		}
 		else{
 			out_file.write("\tcompartment:"+compartmenttmp+"\n");
@@ -112,7 +114,7 @@ public class WriterNbd{
 	    }
 	visible=false;
 	for (int i = 0; i < parse.getCompartments().size(); i++) {
-	if(((!parse.getCompartments().get(i).getName().equals("default"))||((!parse.getCompartments().get(i).getName().equals("Cytosol"))))){
+	if((!parse.getCompartments().get(i).getName().equals("default"))||(!parse.getCompartments().get(i).getName().equals("Cytosol"))){
 		
 			out_file.write("class NetMDyn.Entity_NetMDyn\n");
 			out_file.write("\tEtiquettes:"+"membrane_"+parse.getCompartments().get(i).getName()+"\n");
@@ -133,9 +135,9 @@ public class WriterNbd{
 public void write_compartment(BufferedWriter out_file, SBMLDocument document) throws IOException{
 	 parse.parse_compartment(document);
 		for (int i = 0; i < parse.getCompartments().size(); i++) {
-			if(!parse.getCompartments().get(i).getName().equals("default")){
+			if(!(parse.getCompartments().get(i).getName().equals("default"))||(parse.getCompartments().get(i).getName().equals("Cytosol"))){
 				
-			out_file.write("class netbiodyn.Compartment\n");
+			out_file.write("class NetMDyn.Compartment\n");
 			out_file.write("\tEtiquettes:"+parse.getCompartments().get(i).getName()+"\n");
 			out_file.write("\tcenterX:"+"0"+"\n");
 			out_file.write("\tcenterY:"+"0"+"\n");
@@ -190,14 +192,14 @@ public void write_behaviors(BufferedWriter out_file, SBMLDocument document) thro
 			
 		
 			for (SpeciesReference reactant:reactantList){
-				out_file.write("\treactif:"+reactant.getSpeciesInstance().getName()+"\n");
+				out_file.write("\treactif:"+reactant.getSpeciesInstance().getName()+"_"+parse.getReactions().get(i).getCompartment()+"\n");
 			}
 			if (reactantList.size()<=2) {
 				out_file.write("\treactif:*\n");
 						}
 		
 			for (SpeciesReference product:productList){
-				out_file.write("\tproduit:"+product.getSpeciesInstance().getName()+"\n");
+				out_file.write("\tproduit:"+product.getSpeciesInstance().getName()+"_"+parse.getReactions().get(i).getCompartment()+"\n");
 			}
 			if (productList.size()<=2) {
 				out_file.write("\tproduit:-\n");
