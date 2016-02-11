@@ -211,6 +211,16 @@ public class WndEditTraverse extends javax.swing.JDialog {
             }
             return;
     	}
+    	
+    	if (getComboBox_TargetEntity().equals(getComboBox_OriginEntity())) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Les deux entités ne peuvent pas être identiques", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "Both entities can't be identical", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}
+    	
     	if (getComboBox_compartment().equals("-")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
     			JOptionPane.showMessageDialog(this, "Merci de choisir un compartiment", "Information", JOptionPane.INFORMATION_MESSAGE, null);
