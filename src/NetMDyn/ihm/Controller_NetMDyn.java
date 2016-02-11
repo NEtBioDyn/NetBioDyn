@@ -1002,7 +1002,7 @@ public class Controller_NetMDyn{
         if (wC.getDialogResult().equals("OK") && !wC.getTextBoxName().equals("")) {
             String equation = wC.getTextBoxReaction();
             String compartment = wC.getComboBox_compartment();
-            String enzymeName = "Enzyme_"+wC.getTextBoxName();
+            String enzymeName = wC.getTextBoxName();
             Boolean reverse = wC.getjCheckBox_reversible();
             String[] typeS = {wC.getComboBox_TypeS1(), wC.getComboBox_TypeS2()};
             String[] typeP = {wC.getComboBox_TypeP1(), wC.getComboBox_TypeP2()};
@@ -1041,6 +1041,15 @@ public class Controller_NetMDyn{
             ArrayList<String> listProduits = new ArrayList<String>();
             for (int i = 0; i<produitsTmp.length; i++){
                 listProduits.add(produitsTmp[i]);
+                Boolean testExistence = false;
+                for (Entity_NetMDyn ent: model.getListManipulesNoeuds()){
+                	if (ent.getEtiquettes().equals(produitsTmp[i])){
+                		testExistence = true;
+                	}
+                }
+                if(testExistence){
+                	continue;
+                }
                 addEntityReaction(produitsTmp[i], compartment, true);
                 addBehaviorMoveReaction(produitsTmp[i], typeP[i]);
             }

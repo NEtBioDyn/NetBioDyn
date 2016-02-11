@@ -79,13 +79,13 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         getContentPane().setLayout(null);
         
         jLabelNom.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        jLabelNom.setText("Nom");
+        jLabelNom.setText("Enzyme");
         getContentPane().add(jLabelNom);
         jLabelNom.setBounds(10, 40, 60, 20);
         
         
         textBoxName.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        textBoxName.setText("nom");
+        textBoxName.setText("");
         textBoxName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 textBoxKeyTyped(evt);
@@ -266,6 +266,19 @@ public class WndReactionGlobal extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }
             return;
+        }
+        
+        for (Behavior_NetMDyn bev: behaviors){
+        	if (bev.getType_behavior() == 3){
+        		if ((bev.getEtiquettes().split("React_")[1]).equals(getTextBoxName())){
+        			if (Lang.getInstance().getLang().equals("FR")) {
+        				JOptionPane.showMessageDialog(this, "Cette enzyme est deja engagé dans une reaction", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+        			}else {
+        				JOptionPane.showMessageDialog(this, "Please name the reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+        			}
+        			return;
+        		}
+        	}
         }
         
         String equation = getTextBoxReaction();
