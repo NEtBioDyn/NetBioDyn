@@ -175,7 +175,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         
         
         textBoxK1.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        textBoxK1.setText("");
+        textBoxK1.setText("0.0");
         getContentPane().add(textBoxK1);
         textBoxK1.setBounds(80, 160, 150, 20);
         
@@ -186,7 +186,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         
         
         textBoxKmoins1.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        textBoxKmoins1.setText("0");
+        textBoxKmoins1.setText("0.0");
         getContentPane().add(textBoxKmoins1);
         textBoxKmoins1.setBounds(320, 160, 150, 20);
         
@@ -345,6 +345,20 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         	if(getComboBox_TypeP1().equals("-") || (!getComboBox_TypeP2().equals("-"))){
         		if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Ne donne la catégorie qu'au premier produit", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }else {
+                    JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+        	}
+        }
+        
+        try{
+        	Double.parseDouble(getTextBoxK1());
+        	Double.parseDouble(getTextBoxKmoins1());
+        }catch(Exception e){
+        	if(getComboBox_TypeP1().equals("-") || (!getComboBox_TypeP2().equals("-"))){
+        		if (Lang.getInstance().getLang().equals("FR")) {
+                    JOptionPane.showMessageDialog(this, "Les constantes catalytiques doivent etre de type 0.0", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }else {
                     JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }

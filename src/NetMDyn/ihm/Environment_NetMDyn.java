@@ -454,17 +454,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        controller.editEntity();
 	    }//GEN-LAST:event_jButtonEditEntityActionPerformed
 
-	    protected void dataGridView_comportementsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_dataGridView_comportementsValueChanged
-	        int i = dataGridView_comportements.getSelectedIndex();
-	        if (i < 0) {
-	            return;
-	        }
-	        String nom_moteur = dataGridView_comportements.getSelectedValue().toString();
-	        Behavior_NetMDyn moteur = getBehaviour(nom_moteur);
-	        jSliderProba.setValue((int) (moteur.getProba() * 1000));
-	        setProba(moteur.getProba());
-	    }//GEN-LAST:event_dataGridView_comportementsValueChanged
-
 	    protected void jButtonAddBehavActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddBehavActionPerformed
 	        controller.addBehaviour();
 	    }//GEN-LAST:event_jButtonAddBehavActionPerformed
@@ -2023,11 +2012,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 dataGridView_comportementsMouseClicked(evt);
             }
         });
-        dataGridView_comportements.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                dataGridView_comportementsValueChanged(evt);
-            }
-        });
+
         jScrollPaneBehaviors.setViewportView(dataGridView_comportements);
 
         jButtonReaction.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N

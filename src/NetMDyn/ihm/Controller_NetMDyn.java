@@ -1018,6 +1018,15 @@ public class Controller_NetMDyn{
             ArrayList<String> listSubstrats = new ArrayList<String>();
             for (int i = 0; i<substratsTmp.length; i++){
                 listSubstrats.add(substratsTmp[i]);
+                Boolean testExistence = false;
+                for (Entity_NetMDyn ent: model.getListManipulesNoeuds()){
+                	if (ent.getEtiquettes().equals(substratsTmp[i])){
+                		testExistence = true;
+                	}
+                }
+                if(testExistence){
+                	continue;
+                }
                 addEntityReaction(substratsTmp[i], compartment, true);
                 addBehaviorMoveReaction(substratsTmp[i], typeS[i] );
             }
