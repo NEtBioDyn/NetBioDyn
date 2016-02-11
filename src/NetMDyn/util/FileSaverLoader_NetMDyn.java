@@ -41,7 +41,7 @@ import netbiodyn.ProtoBioDyn;
 import netbiodyn.Entity;
 import netbiodyn.ihm.Controller;
 
-import netbiodyn.JSBMLvisualizer;
+//import netbiodyn.JSBMLvisualizer;
 import javax.xml.stream.XMLStreamException;
 import org.sbml.jsbml.SBMLException;
 
@@ -142,7 +142,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 
 			}
 		}
-		new JSBMLvisualizer(doc);
+//		new JSBMLvisualizer(doc);
 		String[] res = path.split("\\.");
 		System.out.println(res[0]);
 		System.out.println(path);

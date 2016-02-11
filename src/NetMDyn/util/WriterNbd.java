@@ -168,8 +168,8 @@ public void write_behaviors(BufferedWriter out_file, SBMLDocument document) thro
 					productList.add(product);
 				}
 			}
-	}
-ArrayList<SpeciesReference>reactantList=new ArrayList<SpeciesReference>();
+		}
+		ArrayList<SpeciesReference>reactantList=new ArrayList<SpeciesReference>();
 		
 		for (SpeciesReference reactant: parse.getReactions().get(i).getListOfReactants()) {
 			for (Species entity : entities) {
@@ -177,10 +177,10 @@ ArrayList<SpeciesReference>reactantList=new ArrayList<SpeciesReference>();
 					reactantList.add(reactant);
 				}
 			}
-	}
+		}
 		if (!((productList.isEmpty())||(reactantList.isEmpty()))) {
-			out_file.write("class netbiodyn.Environnement\n");
-			out_file.write("\tEtiquettes:"+parse.getReactions().get(i).getName()+"\n");
+			out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+			out_file.write("\tEtiquettes:React_"+parse.getReactions().get(i).getName()+"\n");
 		
 			out_file.write("\tvisibleDansPanel:true\n");
 			out_file.write("\tDescription:\n");
@@ -205,16 +205,23 @@ ArrayList<SpeciesReference>reactantList=new ArrayList<SpeciesReference>();
 		out_file.write("\tk:"+0+"\n");
 		out_file.write("\tpos:122222222\n");
 		for (int l = 0; l < 8; l++) {
-			out_file.write("\tpos:212111211\n");
+			out_file.write("\tpos:212111211\n");			
 		}
+			out_file.write("\tType_Behaviour:3\n");
+			for (int j = 0; j < parse.getReactions().get(i).getKineticLaw().getListOfLocalParameters().size(); j++){
+				if(parse.getReactions().get(i).getKineticLaw().getListOfLocalParameters().get(j).getId().equals("kon")){
+					out_file.write("\tK:"+parse.getReactions().get(i).getKineticLaw().getListOfLocalParameters().get(j).getValue()+"\n");
+					}
+				}
+			out_file.write("\tProba:0.0\n");
 			out_file.write("Fin\n");
 			out_file.write("\n");
 		} 
 		
 		if(parse.getReactions().get(i).getReversible()==true){
 			if (!((productList.isEmpty())||(reactantList.isEmpty()))) {
-				out_file.write("class netbiodyn.Environnement\n");
-				out_file.write("\tEtiquettes:"+parse.getReactions().get(i).getName()+"_reverse\n");
+				out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+				out_file.write("\tEtiquettes:React_"+parse.getReactions().get(i).getName()+"_reverse\n");
 				out_file.write("\tvisibleDansPanel:true\n");
 				out_file.write("\tDescription:\n");					
 				for (SpeciesReference product:productList){
@@ -234,6 +241,13 @@ ArrayList<SpeciesReference>reactantList=new ArrayList<SpeciesReference>();
 				for (int l = 0; l < 8; l++) {
 					out_file.write("\tpos:212111211\n");
 				}
+				out_file.write("\tType_Behaviour:3\n");
+				for (int j = 0; j < parse.getReactions().get(i).getKineticLaw().getListOfLocalParameters().size(); j++){
+					if(parse.getReactions().get(i).getKineticLaw().getListOfLocalParameters().get(j).getId().equals("koff")){
+						out_file.write("\tK:"+parse.getReactions().get(i).getKineticLaw().getListOfLocalParameters().get(j).getValue()+"\n");
+						}
+					}
+				out_file.write("\tProba:0.0\n");
 				out_file.write("Fin\n");
 				out_file.write("\n");
 			}				
@@ -244,7 +258,7 @@ ArrayList<SpeciesReference>reactantList=new ArrayList<SpeciesReference>();
 public void writeMovement(BufferedWriter out_file, SBMLDocument document) throws IOException{
 	for (String entityname : entityName) {
 		out_file.write("class NetMDyn.Behavior_NetMDyn\n");
-		out_file.write("\tEtiquettes:Move"+entityname+"\n");
+		out_file.write("\tEtiquettes:Move_"+entityname+"\n");
 		out_file.write("\tvisibleDansPanel:true\n");
 		out_file.write("\tDescription:\n");
 		out_file.write("\treactif:"+entityname+"\n");
@@ -258,10 +272,91 @@ public void writeMovement(BufferedWriter out_file, SBMLDocument document) throws
 		for (int l = 0; l < 8; l++) {
 			out_file.write("\tpos:212111211\n");
 		}
-			out_file.write("Fin\n");
-			out_file.write("\n");
+		out_file.write("\tType_Behaviour:1\n");
+		out_file.write("\tK:0.0\n");
+		boolean reactif=false;
+		boolean produit=false;
+		boolean enzyme=false;
+		for (int i = 0; i < parse.getReactions().size(); i++) {
+			reactif=false;
+			produit=false;
+			for(int j = 0; j < parse.getReactions().get(i).getListOfReactants().size(); j++){
+				if(parse.getReactions().get(i).getListOfReactants().get(j).getSpeciesInstance().getName().equals(entityname)){
+					reactif=true;
+				}
+			}
+			for(int j = 0; j < parse.getReactions().get(i).getListOfProducts().size(); j++){
+				if(parse.getReactions().get(i).getListOfProducts().get(j).getSpeciesInstance().getName().equals(entityname)){
+					produit=true;
+				}
+			}
+			if (reactif==true && produit==true){
+				enzyme=true;
+			}			
+		}
+		if (enzyme==true){
+			out_file.write("\tProba:0.5\n");
+		}
+		else {
+			out_file.write("\tProba:0.8\n");
+		}
+
+		out_file.write("Fin\n");
+		out_file.write("\n");
 	}
 }
+
+public void writeTraversee(BufferedWriter out_file, SBMLDocument document) throws IOException{
+	for (String entityname : entityName) {
+		out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+		out_file.write("\tEtiquettes:Traverse_"+entityname+"_"+"\n");
+		out_file.write("\tvisibleDansPanel:true\n");
+		out_file.write("\tDescription:\n");
+		out_file.write("\treactif:"+entityname+"\n");
+		out_file.write("\treactif:"+entityname+"\n");
+		out_file.write("\treactif:*\n");
+		out_file.write("\tproduit:"+entityname+"\n");
+		out_file.write("\tproduit:0\n");
+		out_file.write("\tproduit:"+entityname+"\n");
+		out_file.write("\tk:"+0.75+"\n");
+		out_file.write("\tpos:122222222\n");
+		out_file.write("\tpos:202100210\n");
+		out_file.write("\tpos:202100210\n");
+		for (int l = 0; l < 6; l++) {
+			out_file.write("\tpos:212101210\n");
+		}
+		out_file.write("\tType_Behaviour:1\n");
+		out_file.write("\tK:0.0\n");
+		out_file.write("\tProba:0.5\n");
+		out_file.write("Fin\n");
+		out_file.write("\n");
+			
+		out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+		out_file.write("\tEtiquettes:Traverse_"+entityname+"_"+"NS\n");
+		out_file.write("\tvisibleDansPanel:true\n");
+		out_file.write("\tDescription:\n");
+		out_file.write("\treactif:"+entityname+"\n");
+		out_file.write("\treactif:"+entityname+"\n");
+		out_file.write("\treactif:*\n");
+		out_file.write("\tproduit:"+entityname+"\n");
+		out_file.write("\tproduit:0\n");
+		out_file.write("\tproduit:"+entityname+"\n");
+		out_file.write("\tk:"+0.75+"\n");
+		out_file.write("\tpos:122222222\n");
+		out_file.write("\tpos:212001200\n");
+		out_file.write("\tpos:212001200\n");
+		for (int l = 0; l < 6; l++) {
+			out_file.write("\tpos:212101210\n");
+		}
+		out_file.write("\tType_Behaviour:1\n");
+		out_file.write("\tK:0.0\n");
+		out_file.write("\tProba:0.5\n");
+		out_file.write("Fin\n");
+		out_file.write("\n");		
+	}
+}
+
+
 	public int create_color(){
 		int color=0;
 	Random rnd=new Random();

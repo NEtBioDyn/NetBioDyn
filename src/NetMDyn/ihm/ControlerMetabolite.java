@@ -1,5 +1,6 @@
 package NetMDyn.ihm;
 import  NetMDyn.ihm.MetaboliteVisualizer;
+import NetMDyn.Model_NetMDyn;
 import NetMDyn.SbmlParser;
 import NetMDyn.util.WriterNbd;
 
@@ -21,11 +22,15 @@ public class ControlerMetabolite {
 	private NetMDyn.util.WriterNbd writer;
 	private SbmlParser parser = new SbmlParser();
 	private ArrayList<String> selection= new ArrayList<String>();
+	private Environment_NetMDyn env;
+	private Model_NetMDyn model;
 	public ControlerMetabolite(MetaboliteVisualizer visualize,
-			SbmlParser parser, SBMLDocument document) {
+			SbmlParser parser, SBMLDocument document, Environment_NetMDyn env, Model_NetMDyn model) {
 		this.visualize = visualize;
 		this.parser = parser;
 		this.document = document;
+		this.env= env;
+		this.model= model;
 	};
 
 	// public Integer newlist() {
@@ -69,6 +74,14 @@ public class ControlerMetabolite {
 				JOptionPane.showMessageDialog(visualize,"la liste des entités a bien été prise en compte" );
 				System.out.println(selection+"toto");
 				writer.setEntities(selection);
+//				Controller_NetMDyn c= new Controller_NetMDyn();
+//				try {
+//					env.controller.loadModel(writer.getFileName(document));
+//				} catch (XMLStreamException | IOException e2) {
+//					// TODO Auto-generated catch block
+//					e2.printStackTrace();
+//				}
+				model.load(env,writer.getFileName(document));
 				
 				
 			

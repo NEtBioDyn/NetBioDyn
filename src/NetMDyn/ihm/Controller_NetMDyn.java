@@ -438,7 +438,7 @@ public class Controller_NetMDyn{
 	    		SBMLDocument document = slread.readSBML(file);
 	    		MetaboliteVisualizer visualize = new MetaboliteVisualizer(document);
 	    		SbmlParser parser=new SbmlParser();
-	    		ControlerMetabolite c =new ControlerMetabolite(visualize, parser, document) ;
+	    		ControlerMetabolite c =new ControlerMetabolite(visualize, parser, document,env,model) ;
 	    		visualize.setController(c);
 //	    		WriterNbd writer= c.getWriter();
 //	    		 env.setNom_sauvegarde(UtilDivers.removeExtension( writer.getFileName(document)));
