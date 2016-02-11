@@ -29,18 +29,9 @@ public class WndReactionGlobal extends javax.swing.JDialog {
     private final ArrayList<Behavior_NetMDyn> behaviors;
     private final ArrayList<Entity_NetMDyn> entities;
     private final ArrayList<Compartment> compartment;
-<<<<<<< HEAD
+
 
     //Initialization of WndReactionGlobal object
-=======
-<<<<<<< Estelle
-    
-    
-=======
-
-    //Initialization of WndReactionGlobal object
->>>>>>> origin
->>>>>>> Estelle
     public WndReactionGlobal(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -266,45 +257,31 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         setSize(new java.awt.Dimension(530, 300));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-<<<<<<< Estelle
 
-	private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
-        if (textBoxName.getText().equals("")) {
-            if (Lang.getInstance().getLang().equals("FR")) {
-                JOptionPane.showMessageDialog(this, "Merci de nommer la reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-=======
-    
     //Errors when OK button is pushed
     private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	if (textBoxName.getText().equals("")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
     			JOptionPane.showMessageDialog(this, "Merci de nommer la réaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-<<<<<<< HEAD
-=======
->>>>>>> origin
->>>>>>> Estelle
+
             }else {
                 JOptionPane.showMessageDialog(this, "Please name the reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }
             return;
-<<<<<<< Estelle
+
         }
         if (textBoxReaction.getText().equals("")) {
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "Merci d'ecrire une réaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }else {
                 JOptionPane.showMessageDialog(this, "Please write a reaction equation.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-=======
+
     	}
     	if (textBoxReaction.getText().equals("")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
     			JOptionPane.showMessageDialog(this, "Merci d'écrire une réaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }else {
                 JOptionPane.showMessageDialog(this, "Please name the reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-<<<<<<< HEAD
-=======
->>>>>>> origin
->>>>>>> Estelle
             }
             return;
         }
@@ -410,7 +387,6 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         	Double.parseDouble(getTextBoxK1());
         	Double.parseDouble(getTextBoxKmoins1());
         }catch(Exception e){
-        	if(getComboBox_TypeP1().equals("-") || (!getComboBox_TypeP2().equals("-"))){
         		if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Les constantes catalytiques doivent etre de type 0.0", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }else {
@@ -435,18 +411,8 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         setVisible(false);
     }
     
-<<<<<<< HEAD
   //Errors when Cancel button is pushed
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
-=======
-<<<<<<< Estelle
-    private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
-        // TODO add your handling code here:
-=======
-  //Errors when Cancel button is pushed
-	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
->>>>>>> origin
->>>>>>> Estelle
         this.DialogResult = new String("CANCEL");
         setVisible(false);
     }//GEN-LAST:event_button_CANCELActionPerformed
@@ -465,15 +431,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
     }//GEN-LAST:event_textBox1KeyTyped
     
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-<<<<<<< HEAD
-=======
-<<<<<<< Estelle
         // TODO add your handling code here:
-=======
->>>>>>> Estelle
-
-        //if()
->>>>>>> origin
     }//GEN-LAST:event_formKeyPressed
     
     

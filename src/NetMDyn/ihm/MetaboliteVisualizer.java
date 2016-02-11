@@ -157,15 +157,10 @@ public class MetaboliteVisualizer extends javax.swing.JFrame {
 		return list.getSelectedIndices();
 	}
 
-<<<<<<< HEAD
 	public int getSelectedselectionId() {
 		return (jtp.getSelectedIndex() == 0 ? -1 : jtp.getSelectedIndex() - 1);
 	}
 
-	public  void alert(String msg) {
-		JOptionPane.showMessageDialog(this, msg, "Error",
-				JOptionPane.ERROR_MESSAGE);
-=======
 	//Error message
 	public void alert(String msg) {
 		if (Lang.getInstance().getLang().equals("FR")) {
@@ -174,7 +169,6 @@ public class MetaboliteVisualizer extends javax.swing.JFrame {
 		else{
 			JOptionPane.showMessageDialog(this, msg, "Error",JOptionPane.ERROR_MESSAGE);
 		}
->>>>>>> fc20bac9e94134fb0c8a802d5824aab7398fbb3f
 	}
 
 }

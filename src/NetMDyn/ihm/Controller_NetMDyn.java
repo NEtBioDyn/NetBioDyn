@@ -196,21 +196,53 @@ public class Controller_NetMDyn{
 	    }
 	 //Add a Behavior into the Controller
 	 public void addBehaviour() {
+		 if (simulator.isRunning()) {
+			 this.pauseSimulation();
+		 }
 
-		    if (simulator.isRunning()) {
-	            this.pauseSimulation();
-	        }
-
-	        WndEditReaction_NetMDyn w = new WndEditReaction_NetMDyn(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
-	        w.WndCliEditReaction3_Load(null);
-	        w.setVisible(true);
-	        String r = w.getDialogResult();
-	        if (r != null) {
-	            if (r.equals("OK")) {
-	                model.addMoteurReaction(w._r3);
-	            }
-	        }
-
+		 WndBehaviourChoice wC = new WndBehaviourChoice(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+		 wC.setVisible(true);
+		 if (wC.getDialogResult().equals("OK")) {
+			 int reaction_type = wC.getBehaviourType();
+			 if (reaction_type==1){
+				 WndEditMvt wC1 = new WndEditMvt(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+				 wC1.WndEditMvt_load(null);
+				 wC1.setVisible(true);
+				 String r = wC1.getDialogResult();
+			        if (r != null) {
+			            if (r.equals("OK")) {
+			                model.addMoteurReaction(wC1._r3);
+			            }
+			        }
+			 }
+			 else if (reaction_type==2){
+				 WndEditTraverse wC1 = new WndEditTraverse(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+				 wC1.WndEditTraverse_load(null);
+				 wC1.setVisible(true);
+				 String r = wC1.getDialogResult();
+			        if (r != null) {
+			            if (r.equals("OK")) {
+			                model.addMoteurReaction(wC1._r3);
+			                model.addMoteurReaction(wC1._rNS);
+			            }
+			        }
+			 }
+			 else{
+				 WndEditBehaviour wC1 = new WndEditBehaviour(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+				 wC1.WndEditBehaviour_load(null, null);
+				 wC1.setVisible(true);
+				 String r = wC1.getDialogResult();
+			        if (r != null) {
+			            if (r.equals("OK")) {
+			                model.addMoteurReaction(wC1._r3);
+			                if (wC1.getComboBox_reaction()=="Reversible"){
+			                	model.addMoteurReaction(wC1._r3rev);
+			                }
+			            }
+			        }
+				 
+			 }
+		 }
 	 }
 	 //Edition of an Entity into the Controller
 	    public void editEntity() {
@@ -247,7 +279,7 @@ public class Controller_NetMDyn{
 	    }
 	 
 	 //Edition of a Behavior
-	 public void editBehaviour() {
+	    public void editBehaviour() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
@@ -256,18 +288,99 @@ public class Controller_NetMDyn{
 	        if (i >= 0) {
 	            String name = env.getDataGridView_comportements().getSelectedValue().toString();
 	            Behavior_NetMDyn cpt = model.getBehaviour((String) env.getDataGridView_comportements().getModel().getElementAt(i));
-	            WndEditReaction_NetMDyn wc = new WndEditReaction_NetMDyn(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
-	            wc.WndCliEditReaction3_Load(cpt);
-	            wc.setVisible(true);
-	            String r = wc.getDialogResult();
-	            if (r != null && r.equals("OK")) {
-	                model.editMoteurReaction(wc._r3, name);
-	            }
+	            
+	            if (cpt.getType_behavior()==1){
+					 WndEditMvt wC1 = new WndEditMvt(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+					 wC1.WndEditMvt_load(cpt);
+					 wC1.setVisible(true);
+					 String r = wC1.getDialogResult();
+				        if (r != null) {
+				            if (r.equals("OK")) {
+				                model.editMoteurReaction(wC1._r3,name);
+				            }
+				        }
+				 }
+				 else if (cpt.getType_behavior()==2){
+					 WndEditTraverse wC1 = new WndEditTraverse(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+					 wC1.WndEditTraverse_load(cpt);
+					 wC1.setVisible(true);
+					 String r = wC1.getDialogResult();
+				        if (r != null) {
+				            if (r.equals("OK")) {
+				                model.editMoteurReaction(wC1._r3,name);
+				                model.editMoteurReaction(wC1._rNS,name+"NS");
+				            }
+				        }
+				 }
+				 else{
+					 WndEditBehaviour wC1 = new WndEditBehaviour(model.getListManipulesNoeuds(), model.getListManipulesReactions(), model.getListManipulesCompartment());
+					 if (name.contains("_reverse")){
+						 for (Behavior_NetMDyn bev : model.getCopyListManipulesReactions()){
+							 if (bev.getEtiquettes().equals(name.split("_reverse")[0])){
+								 wC1.WndEditBehaviour_load(bev, cpt);
+								 break;
+							 }
+						 }
+						 wC1.setVisible(true);
+						 String r = wC1.getDialogResult();
+					        if (r != null) {
+					            if (r.equals("OK")) {
+					                model.editMoteurReaction(wC1._r3,name.split("_reverse")[0]);
+					                if (wC1.getComboBox_reaction()=="Reversible"){
+					                	model.editMoteurReaction(wC1._r3rev,name);
+					                }
+					                else{
+					                	ArrayList<String> suppr = new ArrayList<String>();
+					                	suppr.add(name+"_reverse");
+					                	model.delMoteurReaction(suppr);
+					                }
+					            }
+					        }
+					 }
+					 else{
+						 boolean test = false;
+						 for (Behavior_NetMDyn bev : model.getCopyListManipulesReactions()){
+							 if (bev.getEtiquettes().equals(name+"_reverse")){
+								 wC1.WndEditBehaviour_load(cpt, bev);
+								 test = true;
+								 wC1.setVisible(true);
+								 String r = wC1.getDialogResult();
+							        if (r != null) {
+							            if (r.equals("OK")) {
+							                model.editMoteurReaction(wC1._r3,name);
+							                if (wC1.getComboBox_reaction()=="Reversible"){
+							                	model.editMoteurReaction(wC1._r3rev, name+"_reverse");
+							                }
+							                else{
+							                	ArrayList<String> suppr = new ArrayList<String>();
+							                	suppr.add(name+"_reverse");
+							                	model.delMoteurReaction(suppr);
+							                }
+							            }
+							        }							
+							 break;
+							 }
+						 }
+						 if (test==false){
+						 wC1.WndEditBehaviour_load(cpt, null);
+						 wC1.setVisible(true);
+						 String r = wC1.getDialogResult();
+					        if (r != null) {
+					            if (r.equals("OK")) {
+					                model.editMoteurReaction(wC1._r3,name);
+					                if (wC1.getComboBox_reaction()=="Reversible"){
+					                	model.addMoteurReaction(wC1._r3rev);
+					                }
+					            }
+					        }
+						 }
+					 }					 					
+				 }
 	        }
 	    }
 	 
 	 	// Remove a Behavior
-	   public void delBehaviour(int[] tab) {
+	    public void delBehaviour(int[] tab) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
@@ -278,6 +391,9 @@ public class Controller_NetMDyn{
 	            if (i >= 0) {
 	                String name = (String) env.getDataGridView_comportements().getModel().getElementAt(i);
 	                reactions.add(name);
+	                if (model.getBehaviour(name).getType_behavior() == 2){
+	                	reactions.add(name+"NS");
+	                }
 	            }
 	        }
 	        model.delMoteurReaction(reactions);
@@ -856,108 +972,75 @@ public class Controller_NetMDyn{
 		}
     }
     
-    public void addReaction(){
-    	WndReactionGlobal wC = new WndReactionGlobal(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+ public void addReaction(){
+        WndReactionGlobal wC = new WndReactionGlobal(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wC.setVisible(true);
         if (wC.getDialogResult().equals("OK") && !wC.getTextBoxName().equals("")) {
-        	String equation = wC.getTextBoxReaction();
-        	String compartment = wC.getComboBox_compartment();
-        	String enzymeName = "Enzyme_"+wC.getTextBoxName();
-        	
-        	System.out.println(equation);
-        	String []substrats = new String[3];
-        	String []produits = new String[3];
-        	
-        	if (equation.contains("=")){
-        		substrats = equation.split("=")[0].split("\\+");
-            	produits = equation.split("=")[1].split("\\+");
-        	}else{
-            	substrats = equation.split("->")[0].split("\\+");
-            	produits = equation.split("->")[1].split("\\+");
-        	}
+            String equation = wC.getTextBoxReaction();
+            String compartment = wC.getComboBox_compartment();
+            String enzymeName = wC.getTextBoxName();
+            Boolean reverse = wC.getjCheckBox_reversible();
+            String[] typeS = {wC.getComboBox_TypeS1(), wC.getComboBox_TypeS2()};
+            String[] typeP = {wC.getComboBox_TypeP1(), wC.getComboBox_TypeP2()};
+            Double kcat = (Double) Double.parseDouble(wC.getTextBoxK1());
+            Double kcat_1 = (Double) Double.parseDouble(wC.getTextBoxKmoins1());
             
-            for (String substrat : substrats ){
-            	addEntityReaction(substrat, compartment, true);
-            	addBehaviorMoveReaction(substrat);
+            String []substratsTmp;
+            String []produitsTmp;
+            
+            substratsTmp = equation.split("=")[0].split("\\+");
+            produitsTmp = equation.split("=")[1].split("\\+");
+            
+            ArrayList<String> listSubstrats = new ArrayList<String>();
+            for (int i = 0; i<substratsTmp.length; i++){
+                listSubstrats.add(substratsTmp[i]);
+                Boolean testExistence = false;
+                for (Entity_NetMDyn ent: model.getListManipulesNoeuds()){
+                	if (ent.getEtiquettes().equals(substratsTmp[i])){
+                		testExistence = true;
+                	}
+                }
+                if(testExistence){
+                	continue;
+                }
+                addEntityReaction(substratsTmp[i], compartment, true);
+                addBehaviorMoveReaction(substratsTmp[i], typeS[i] );
+            }
+            
+            if (listSubstrats.size() == 1){
+                listSubstrats.add("*");
             }
             
             addEntityReaction(enzymeName, compartment, true);
-        	addBehaviorMoveReaction(enzymeName);
-        	
-            for (String produit : produits ){
-            	addEntityReaction(produit, compartment, true);
-            	addBehaviorMoveReaction(produit);
+            addBehaviorMoveReaction(enzymeName, "Protéine");
+            
+            ArrayList<String> listProduits = new ArrayList<String>();
+            for (int i = 0; i<produitsTmp.length; i++){
+                listProduits.add(produitsTmp[i]);
+                Boolean testExistence = false;
+                for (Entity_NetMDyn ent: model.getListManipulesNoeuds()){
+                	if (ent.getEtiquettes().equals(produitsTmp[i])){
+                		testExistence = true;
+                	}
+                }
+                if(testExistence){
+                	continue;
+                }
+                addEntityReaction(produitsTmp[i], compartment, true);
+                addBehaviorMoveReaction(produitsTmp[i], typeP[i]);
             }
             
-        	int sizeReactif = substrats.length;
-        	int sizeProduit = produits.length;
-        	
-        	if (sizeProduit == 1){
-        		produits[1] = enzymeName;
-        		produits[2] = "-";
-        	}else if(sizeProduit == 2){
-        		produits[2] = enzymeName;
-        	}
-        	
-        	if (sizeReactif == 1){
-        		addBehaviorReaction(enzymeName, substrats[0], produits[0], produits[1], produits[2]);
-        	}
-        	else if(sizeReactif == 2){
-        		String []intermediaires = new String[2];
-        		intermediaires[0] = enzymeName+"_"+substrats[0].substring(0, 1);
-        		addBehaviorMoveReaction(intermediaires[0]);
-        		intermediaires[1] = enzymeName+"_"+substrats[1].substring(0, 1);
-        		addBehaviorMoveReaction(intermediaires[1]);
-        		addEntityReaction(intermediaires[0], compartment, false);
-        		addEntityReaction(intermediaires[1], compartment, false);
-        		addBehaviorReaction(enzymeName, substrats[0], intermediaires[0],"0","-");
-        		addBehaviorReaction(enzymeName, substrats[1], intermediaires[1],"0","-");
-        		addBehaviorReaction(intermediaires[0], substrats[0], produits[0], produits[1], produits[2]);
-        		addBehaviorReaction(intermediaires[1], substrats[0], produits[0], produits[1], produits[2]);
-        		addBehaviorDegradationReaction(intermediaires[0], "0", enzymeName, substrats[0], "-" );
-        		addBehaviorDegradationReaction(intermediaires[1], "0", enzymeName, substrats[1], "-" );
-        	}
-        	else{
-        		String []intermediaires = new String[6];
-        		intermediaires[0] = enzymeName+"_"+substrats[0].substring(0, 1);
-        		intermediaires[1] = enzymeName+"_"+substrats[1].substring(0, 1);
-        		intermediaires[2] = enzymeName+"_"+substrats[2].substring(0, 1);
-        		intermediaires[3] = enzymeName+"_"+substrats[0].substring(0, 1)+"_"+substrats[1].substring(0, 1);
-        		intermediaires[4] = enzymeName+"_"+substrats[0].substring(0, 1)+"_"+substrats[2].substring(0, 1);
-        		intermediaires[5] = enzymeName+"_"+substrats[1].substring(0, 1)+"_"+substrats[2].substring(0, 1);
-        		
-        		addEntityReaction(intermediaires[0], compartment, false);
-        		addEntityReaction(intermediaires[1], compartment, false);
-        		addEntityReaction(intermediaires[2], compartment, false);
-        		addEntityReaction(intermediaires[3], compartment, false);
-        		addEntityReaction(intermediaires[4], compartment, false);
-        		addEntityReaction(intermediaires[5], compartment, false);
-        		
-        		addBehaviorReaction(enzymeName, substrats[0], intermediaires[0],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[0], "0", enzymeName, substrats[0], "-" );
-        		addBehaviorReaction(enzymeName, substrats[1], intermediaires[1],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[1], "0", enzymeName, substrats[1], "-" );
-        		addBehaviorReaction(enzymeName, substrats[2], intermediaires[2],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[2], "0", enzymeName, substrats[2], "-" );
-        		addBehaviorReaction(intermediaires[0], substrats[1], intermediaires[3],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[3], "0", enzymeName, substrats[0], substrats[1] );
-        		addBehaviorReaction(intermediaires[0], substrats[2], intermediaires[4],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[4], "0", enzymeName, substrats[0], substrats[2] );
-        		addBehaviorReaction(intermediaires[1], substrats[0], intermediaires[3],"0","-");
-        		addBehaviorDegradationReaction(intermediaires[5], "0", enzymeName, substrats[1], substrats[2] );
-        		addBehaviorReaction(intermediaires[1], substrats[2], intermediaires[5],"0","-");
-        		addBehaviorReaction(intermediaires[2], substrats[0], intermediaires[4],"0","-");
-        		addBehaviorReaction(intermediaires[2], substrats[1], intermediaires[5],"0","-");
-        		addBehaviorReaction(intermediaires[3], substrats[2], produits[0], produits[1], produits[2]);
-        		addBehaviorReaction(intermediaires[4], substrats[1], produits[0], produits[1], produits[2]);
-        		addBehaviorReaction(intermediaires[5], substrats[0], produits[0], produits[1], produits[2]);
-        		
-        	}
+            if (listProduits.size() == 1){
+                listProduits.add("-");
+            }
             
-            
+            if (reverse){
+            	addBehaviorReaction(enzymeName, "Reversible", listSubstrats, listProduits, kcat, kcat_1);
+            }else{
+            	addBehaviorReaction(enzymeName, "Irreversible", listSubstrats, listProduits, kcat, 0.0);
+            }
         }	
     }
-    
     public void addEntityReaction(String entName, String comp, boolean visible){
         WndEditNoeud_NetMDyn wN = new WndEditNoeud_NetMDyn(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wN.setVisible(false);
@@ -972,62 +1055,38 @@ public class Controller_NetMDyn{
         model.addProtoReaxel(wN._cli);
     }
     
-    public void addBehaviorMoveReaction(String entName){
-        WndEditReaction_NetMDyn wR = new WndEditReaction_NetMDyn(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wR.WndCliEditReaction3_Load(null);
+    public void addBehaviorMoveReaction(String entName, String type){
+        WndEditMvt wR = new WndEditMvt(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wR.WndEditMvt_load(null);
         wR.setVisible(false);
         
-        wR.setTextBox_etiquette("Move_"+entName);
-        wR.setDataGridView_reactifs(entName, 0);
-        wR.setDataGridView_produits(entName, 1);
-        wR.setDataGridView_produits("0", 0);
-        wR.setDataGridView_reactifs("0", 1);
-        wR.setDataGridView_produits("-", 2);
-        wR.setDataGridView_reactifs("*", 2);
+        wR.setComboBox_entity(entName);
+        wR.setComboBox_mvt(type);
         
-        wR.button_OKMouseClicked(null);
+        wR.button_OKActionPerformed(null);
         model.addMoteurReaction(wR._r3);
     }
     
-    public void addBehaviorReaction(String substrat1, String substrat2, String produit1, String produit2, String produit3){
-    	WndEditReaction_NetMDyn wR = new WndEditReaction_NetMDyn(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wR.WndCliEditReaction3_Load(null);
+    public void addBehaviorReaction(String name, String reverse, ArrayList<String> listSubstrats, ArrayList<String> listProduits, Double kcat, Double kcat_1){
+    	WndEditBehaviour wR = new WndEditBehaviour(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
+        wR.WndEditBehaviour_load(null, null);
         wR.setVisible(false);
         
-        wR.setTextBox_etiquette("reaction_"+substrat1+"+"+substrat2);
-        wR.setDataGridView_reactifs(substrat1, 0);
-        wR.setDataGridView_produits(produit1, 1);
-        wR.setDataGridView_produits(produit2, 0);
-        wR.setDataGridView_reactifs(substrat2, 1);
-        wR.setDataGridView_produits(produit3, 2);
-        wR.setDataGridView_reactifs("*", 2);
+        wR.setTextBoxName(name);
+        wR.setComboBox_S1(listSubstrats.get(0));
+        wR.setComboBox_S2(listSubstrats.get(1));
+        wR.setComboBox_P1(listProduits.get(0));
+        wR.setComboBox_P2(listProduits.get(1));
+        wR.setComboBox_reaction(reverse);
+        wR.setTextBoxKCst(kcat.toString());
+        wR.setTextBoxKCst2(kcat_1.toString());
         
-        wR.button_OKMouseClicked(null);
+        wR.button_OKActionPerformed(null);
         model.addMoteurReaction(wR._r3);
+        if (reverse.equals("Reversible")){
+        	model.addMoteurReaction(wR._r3rev);
+        }
     }
-    
-    	
-    public void addBehaviorDegradationReaction(String substrat1, String substrat2, String produit1, String produit2, String produit3){
-    	WndEditReaction_NetMDyn wR = new WndEditReaction_NetMDyn(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
-        wR.WndCliEditReaction3_Load(null);
-        wR.setVisible(false);
-        
-        wR.setTextBox_etiquette("Degradation_"+substrat1);
-        wR.setDataGridView_reactifs(substrat1, 0);
-        wR.setDataGridView_produits(produit1, 1);
-        wR.setDataGridView_produits(produit2, 0);
-        wR.setDataGridView_reactifs(substrat2, 1);
-        wR.setDataGridView_produits(produit3, 2);
-        wR.setDataGridView_reactifs("*", 2);
-        wR.setTextBox_k("0.1");
-        
-        wR.button_OKMouseClicked(null);
-        model.addMoteurReaction(wR._r3);
-  
-    	
-    }
-
-
     
     
     public void addCompartment() {
@@ -1173,6 +1232,7 @@ public class Controller_NetMDyn{
         }
         ArrayList<String> compartments = new ArrayList<>();
         ArrayList<String> entities = new ArrayList<>();
+        ArrayList<String> behaviors = new ArrayList<>();
         for (int k = tab.length - 1; k >= 0; k--) {
             int i = tab[k];
             if (i >= 0) {
@@ -1183,11 +1243,17 @@ public class Controller_NetMDyn{
                 		entities.add(ent.getEtiquettes());
                 	}
                 }
+                for (Behavior_NetMDyn bev : model.getCopyListManipulesReactions()){
+                	if(bev.getType_behavior() == 2 && (bev._reactifs.get(0).split("Membrane_")[1].equals(name) && bev._produits.get(0).split("Membrane_")[1].equals(name))){
+                		behaviors.add(bev.getEtiquettes());
+                	}
+                }
             }
         }
         
         model.delCompartment(compartments);
         model.delProtoReaxel(entities);
+        model.delMoteurReaction(behaviors);
         if (!simulator.isStopped()) {
             simulator.ProtoReaxelDeleted(entities);
         }
@@ -1258,6 +1324,7 @@ public class Controller_NetMDyn{
     }
     
 
+
     public void editCompartment() {
         if (simulator.isRunning()) {
             this.pauseSimulation();
@@ -1294,28 +1361,27 @@ public class Controller_NetMDyn{
                             wc.setTextBoxRadius(Integer.toString(old_radius));
                             wc.button_OKActionPerformed(null);
                     		JOptionPane jop = new JOptionPane();
-                    		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-                    			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en-dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
-                    		}
-                    		else{
-                    			jop.showMessageDialog(null, "You can't create a compartment outside the environment", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
-                    		}                		}
+                    		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		}
                 	}else{
                 		wc.setTextBoxCenterX(Integer.toString(old_centerX));
                         wc.setTextBoxCenterY(Integer.toString(old_centerY));
                         wc.setTextBoxRadius(Integer.toString(old_radius));
                         wc.button_OKActionPerformed(null);
                 		JOptionPane jop = new JOptionPane();
-                		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-                			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                		}
-                		else{
-                			jop.showMessageDialog(null, "You can't create a compartment on an other one", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                		}
+                		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 	}
                 }
+                
                 model.editCompartment(wc._cli, name);
                 editCompartmentMembrane(wc._cli, name);
+                for (Entity_NetMDyn ent : model.getCopyListManipulesNoeuds()){
+                	if (ent._compartment.equals(name)){
+                		Entity_NetMDyn entTmp = model.getProtoReaxel(ent.getEtiquettes());
+                		entTmp._compartment = wc._cli.getEtiquettes();
+                		model.editProtoReaxel(entTmp, ent.getEtiquettes(), 0);
+                	}
+                }
             }
         }
         

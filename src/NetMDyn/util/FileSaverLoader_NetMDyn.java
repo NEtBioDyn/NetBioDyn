@@ -108,6 +108,9 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 		}
 		for (int i = 0; i < toSave.getListManipulesReactions().size(); i++) {
 			list_BioDyn.add(toSave.getListManipulesReactions().get(i));
+			if (!(toSave.getListManipulesReactions().get(i).getType_behavior()==3)){
+				continue;
+			}
 			org.sbml.jsbml.Reaction sbReaction = model
 					.createReaction(toSave.getListManipulesReactions().get(i).getEtiquettes());
 			sbReaction.setName(sbReaction.getId());
@@ -793,6 +796,18 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 
 	                    String code_g = tmp_wnd_react_cplx.genererCode();
 	                    react3._code.setText(code_g);
+	                }
+	                if (lst_mots[1].equals("Type_Behaviour")) {
+	                    String mot = lst_mots[2].replaceAll(",", ".");
+	                    react3.setType_behavior(Integer.parseInt(mot));
+	                }
+	                if (lst_mots[1].equals("K")) {
+	                    String mot = lst_mots[2].replaceAll(",", ".");
+	                    react3.setK(Double.parseDouble(mot));
+	                }
+	                if (lst_mots[1].equals("Proba")) {
+	                    String mot = lst_mots[2].replaceAll(",", ".");
+	                    react3.setProba(Double.parseDouble(mot));
 	                }
 	            }
 	        }

@@ -126,7 +126,7 @@ public class WriterNbd{
 	if((!parse.getCompartments().get(i).getName().equals("default"))&&(!parse.getCompartments().get(i).getName().equals("Cytosol"))){
 		
 			out_file.write("class NetMDyn.Entity_NetMDyn\n");
-			out_file.write("\tEtiquettes:"+"membrane_"+parse.getCompartments().get(i).getName()+"\n");
+			out_file.write("\tEtiquettes:"+"Membrane_"+parse.getCompartments().get(i).getName()+"\n");
 			out_file.write("\tvisibleDansPanel:"+visible+"\n");
 		out_file.write("\tcouleur:-"+create_color()+"\n");
 			out_file.write("\tdemie_vie:0.0\n");
@@ -446,7 +446,7 @@ public void writeTraversee(BufferedWriter out_file, SBMLDocument document) throw
 					for (int l = 0; l < 6; l++) {
 						out_file.write("\tpos:212101210\n");
 					}
-					out_file.write("\tType_Behaviour:1\n");
+					out_file.write("\tType_Behaviour:2\n");
 					out_file.write("\tK:0.0\n");
 					out_file.write("\tProba:0.5\n");
 					out_file.write("Fin\n");
@@ -481,7 +481,7 @@ public void writeTraversee(BufferedWriter out_file, SBMLDocument document) throw
 					for (int l = 0; l < 6; l++) {
 						out_file.write("\tpos:212101210\n");
 					}
-					out_file.write("\tType_Behaviour:1\n");
+					out_file.write("\tType_Behaviour:2\n");
 					out_file.write("\tK:0.0\n");
 					out_file.write("\tProba:0.5\n");
 					out_file.write("Fin\n");
@@ -520,7 +520,6 @@ public void writeTraversee(BufferedWriter out_file, SBMLDocument document) throw
 					out_file.write("\tProba:0.5\n");
 					out_file.write("Fin\n");
 					out_file.write("\n");
-					bool=true;
 					
 				}
 				else{

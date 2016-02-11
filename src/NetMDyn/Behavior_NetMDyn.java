@@ -45,9 +45,6 @@ import java.util.HashMap; // Possible creation of hashmaps
  */
 
 public class Behavior_NetMDyn extends Behavior {
-<<<<<<< HEAD
-=======
-<<<<<<< Estelle
 	private int type_behavior;
 	private double K = 0.0;
 	private double proba;
@@ -77,11 +74,6 @@ public class Behavior_NetMDyn extends Behavior {
 		this.proba = proba;
 	}
 
-	public void computeReactions(Simulator_NetMDyn s, Env_Parameters param, AllInstances_NetMDyn instances, int time) {
-        this.setParameters(param); //Put new values to parameters of Env_Parameters object linked to the Behavior one
-        _reactionsPossibles = new ArrayList<>(); //Creation of a new table which will contain all possible reactions
-=======
->>>>>>> Estelle
 	/**
 	 * 
 	 * @param s : the simulator
@@ -92,10 +84,7 @@ public class Behavior_NetMDyn extends Behavior {
     public void computeReactions(Simulator_NetMDyn s, Env_Parameters param, AllInstances_NetMDyn instances, int time) {
         this.setParameters(param); // Put new values to parameters of Env_Parameters object linked to the Behavior one
         _reactionsPossibles = new ArrayList<>(); // Creation of a new table which will contain all possible reactions
-<<<<<<< HEAD
-=======
->>>>>>> origin
->>>>>>> Estelle
+
         this.simuler_semi_situee(instances, time);
         s.decrementer_nb_processus_a_traiter();
     }
@@ -113,21 +102,11 @@ public class Behavior_NetMDyn extends Behavior {
         m._produits = (ArrayList<String>) _produits.clone();
         m._positions = (ArrayList<String>) _positions.clone();
         m._ListElementsReactions = (ArrayList<WndEditElementDeReaction>) _ListElementsReactions.clone();
-<<<<<<< HEAD
-        m.set_k(get_k());
-        return m; // Return the new Behavior object
-=======
-<<<<<<< Estelle
         m._visibleDansPanel=_visibleDansPanel;
         m.setProba(getProba());
         m.setK(getK());
         m.setType_behavior(getType_behavior());
         return m; //Return the new Behavior object
-=======
-        m.set_k(get_k());
-        return m; // Return the new Behavior object
->>>>>>> origin
->>>>>>> Estelle
     }
     
     /**

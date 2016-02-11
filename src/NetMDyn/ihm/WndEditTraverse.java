@@ -3,16 +3,10 @@ package NetMDyn.ihm;
 import java.awt.Dimension; // Width and height of a component (in integer precision) in a single object
 import java.util.ArrayList; // Possible creation of tables
 
-<<<<<<< HEAD
 import javax.swing.JOptionPane; // Possible creation of dialog windows
-=======
-<<<<<<< Estelle
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-=======
 import javax.swing.JOptionPane; // Possible creation of dialog windows
->>>>>>> origin
->>>>>>> Estelle
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Entity_NetMDyn;
@@ -121,23 +115,14 @@ public class WndEditTraverse extends javax.swing.JDialog {
          comboBox_OriginEntity.setBounds(120, 40, 150, 20);
 
          jLabelNomTarget.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-<<<<<<< HEAD
-=======
-<<<<<<< Estelle
-         jLabelNomTarget.setText("Entité à l'arrivée");
-=======
->>>>>>> Estelle
+
          if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-        	 jLabelNomTarget.setText("Entité d'origine");
+             jLabelNomTarget.setText("Entité à l'arrivée");
          }
          else{
-        	 jLabelNomTarget.setText("Origin entity");
+        	 jLabelNomTarget.setText("Target entity");
          }
          
-<<<<<<< HEAD
-=======
->>>>>>> origin
->>>>>>> Estelle
          getContentPane().add(jLabelNomTarget);
          jLabelNomTarget.setBounds(10, 80, 100, 20);
          
@@ -266,10 +251,6 @@ public class WndEditTraverse extends javax.swing.JDialog {
             }
             return;
     	}
-    	
-<<<<<<< HEAD
-=======
-<<<<<<< Estelle
     	if (getComboBox_TargetEntity().equals(getComboBox_OriginEntity())) {
     		if (Lang.getInstance().getLang().equals("FR")) {
     			JOptionPane.showMessageDialog(this, "Les deux entités ne peuvent pas être identiques", "Information", JOptionPane.INFORMATION_MESSAGE, null);
@@ -297,6 +278,7 @@ public class WndEditTraverse extends javax.swing.JDialog {
     		if (entity.getCompartment().equals(getComboBox_compartment()) && entity.getEtiquettes().equals(getComboBox_TargetEntity())){
     			entite2=true;
     		}
+    	}
     		if (entite1==false && entite2==false){
     			if (Lang.getInstance().getLang().equals("FR")) {
         			JOptionPane.showMessageDialog(this, "Au moins l'un des entités doit appartenir au compartiment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
@@ -312,7 +294,6 @@ public class WndEditTraverse extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(this, "Both entities can't be elements of the chosen compartment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }
                 return;
-    		}
     	}
     	
     	
@@ -373,11 +354,6 @@ public class WndEditTraverse extends javax.swing.JDialog {
     	_rNS.setProba(Double.parseDouble(textBoxProba.getText()));
     	_rNS._visibleDansPanel = false;
     	
-=======
->>>>>>> Estelle
-    	String origin_entity = getComboBox_OriginEntity();
-    	String target_entity = getComboBox_TargetEntity();
->>>>>>> origin
     	
     	DialogResult = "OK";
     	setVisible(false);
