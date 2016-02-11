@@ -245,8 +245,6 @@ public class WndEditTraverse extends javax.swing.JDialog {
     	_rNS.setProba(Double.parseDouble(textBoxProba.getText()));
     	_rNS._visibleDansPanel = false;
     	
-    	String origin_entity = getComboBox_OriginEntity();
-    	String target_entity = getComboBox_TargetEntity();
     	
     	DialogResult = "OK";
     	setVisible(false);

@@ -504,7 +504,6 @@ public class Model_NetMDyn {
 
     public void addMoteurReaction(Behavior_NetMDyn behaviour) {
         behaviors.add(behaviour);
-
         for (final IhmListener_NetMDyn listen : listeners.getListeners(IhmListener_NetMDyn.class)) {
             listen.moteurReactionUpdate(getCopyListManipulesReactions());
         }

@@ -387,6 +387,9 @@ public class Controller_NetMDyn{
 	            if (i >= 0) {
 	                String name = (String) env.getDataGridView_comportements().getModel().getElementAt(i);
 	                reactions.add(name);
+	                if (model.getBehaviour(name).getType_behavior() == 2){
+	                	reactions.add(name+"NS");
+	                }
 	            }
 	        }
 	        model.delMoteurReaction(reactions);
@@ -1243,6 +1246,7 @@ public class Controller_NetMDyn{
         }
         ArrayList<String> compartments = new ArrayList<>();
         ArrayList<String> entities = new ArrayList<>();
+        ArrayList<String> behaviors = new ArrayList<>();
         for (int k = tab.length - 1; k >= 0; k--) {
             int i = tab[k];
             if (i >= 0) {
@@ -1253,11 +1257,17 @@ public class Controller_NetMDyn{
                 		entities.add(ent.getEtiquettes());
                 	}
                 }
+                for (Behavior_NetMDyn bev : model.getCopyListManipulesReactions()){
+                	if(bev.getType_behavior() == 2 && (bev._reactifs.get(0).split("Membrane_")[1].equals(name) && bev._produits.get(0).split("Membrane_")[1].equals(name))){
+                		behaviors.add(bev.getEtiquettes());
+                	}
+                }
             }
         }
         
         model.delCompartment(compartments);
         model.delProtoReaxel(entities);
+        model.delMoteurReaction(behaviors);
         if (!simulator.isStopped()) {
             simulator.ProtoReaxelDeleted(entities);
         }

@@ -61,6 +61,7 @@ public class Behavior_NetMDyn extends Behavior {
         m._produits = (ArrayList<String>) _produits.clone();
         m._positions = (ArrayList<String>) _positions.clone();
         m._ListElementsReactions = (ArrayList<WndEditElementDeReaction>) _ListElementsReactions.clone();
+        m._visibleDansPanel=_visibleDansPanel;
         m.setProba(getProba());
         m.setK(getK());
         m.setType_behavior(getType_behavior());
