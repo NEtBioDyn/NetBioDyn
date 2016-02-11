@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
 import javax.xml.stream.XMLStreamException;
 
 import org.sbml.jsbml.Compartment;
@@ -16,6 +17,8 @@ import org.sbml.jsbml.Species;
 import org.sbml.jsbml.SpeciesReference;
 
 import NetMDyn.SbmlParser;
+import NetMDyn.ihm.MetaboliteVisualizer;
+import netbiodyn.util.Lang;
 
 public class WriterNbd{
 	private ArrayList<Integer>colorlist= new ArrayList();
@@ -24,6 +27,7 @@ public class WriterNbd{
 	private ArrayList<String>entityName= new ArrayList<String>();
 	private ArrayList<Species>entities=new ArrayList<Species>(); 
 	private ArrayList<Compartment>compartments=new ArrayList<Compartment>();
+	private MetaboliteVisualizer visualize;
 	
 	
 	
@@ -50,6 +54,8 @@ public class WriterNbd{
             write_compartment( out_file,  document);
             write_behaviors( out_file,  document);
             writeMovement( out_file, document);
+            writeTraversee(out_file, document);
+            
             write_environement( out_file,  document);
             out_file.write("Reaxels\n");
             out_file.write("Fin");
@@ -64,7 +70,7 @@ public class WriterNbd{
 		
 	}
 	public void setEntities(ArrayList<String>entitiesName ) {
-		System.out.println(entitiesName+"titi");	
+//		System.out.println(entitiesName+"titi");	
 
 		this.entityName=entitiesName;
 	}
@@ -88,6 +94,7 @@ public class WriterNbd{
 		boolean visible=true;
 	    parse.parseSpecies(document);
 	    parse.parse_reaction(document);
+	    parse.parse_compartment(document);
 	for (Species entity : entities) {
 
 		
@@ -112,9 +119,11 @@ public class WriterNbd{
 		out_file.write("Fin\n");
 	    out_file.newLine();
 	    }
-	visible=false;
+	visible=true;
+	System.out.println(parse.getCompartments()+"chabada");
 	for (int i = 0; i < parse.getCompartments().size(); i++) {
-	if((!parse.getCompartments().get(i).getName().equals("default"))||(!parse.getCompartments().get(i).getName().equals("Cytosol"))){
+		System.out.println(parse.getCompartments().get(i)+" han solo");
+	if((!parse.getCompartments().get(i).getName().equals("default"))&&(!parse.getCompartments().get(i).getName().equals("Cytosol"))){
 		
 			out_file.write("class NetMDyn.Entity_NetMDyn\n");
 			out_file.write("\tEtiquettes:"+"membrane_"+parse.getCompartments().get(i).getName()+"\n");
@@ -133,9 +142,10 @@ public class WriterNbd{
 	}
 	
 public void write_compartment(BufferedWriter out_file, SBMLDocument document) throws IOException{
-	 parse.parse_compartment(document);
+//	 parse.parse_compartment(document);
+	 System.out.println(parse.getCompartments()+"chabada2");
 		for (int i = 0; i < parse.getCompartments().size(); i++) {
-			if(!(parse.getCompartments().get(i).getName().equals("default"))||(parse.getCompartments().get(i).getName().equals("Cytosol"))){
+			if((!parse.getCompartments().get(i).getName().equals("default"))&&(!parse.getCompartments().get(i).getName().equals("Cytosol"))){
 				
 			out_file.write("class NetMDyn.Compartment\n");
 			out_file.write("\tEtiquettes:"+parse.getCompartments().get(i).getName()+"\n");
@@ -308,55 +318,227 @@ public void writeMovement(BufferedWriter out_file, SBMLDocument document) throws
 	}
 }
 
-public void writeTraversee(BufferedWriter out_file, SBMLDocument document) throws IOException{
+//public void writeTraversee(BufferedWriter out_file, SBMLDocument document) throws IOException{
+//	for (String entityname : entityName) {
+//		out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+//		out_file.write("\tEtiquettes:Traverse_"+entityname+"_"+"\n");
+//		out_file.write("\tvisibleDansPanel:true\n");
+//		out_file.write("\tDescription:\n");
+//		out_file.write("\treactif:"+entityname+"\n");
+//		out_file.write("\treactif:"+entityname+"\n");
+//		out_file.write("\treactif:*\n");
+//		out_file.write("\tproduit:"+entityname+"\n");
+//		out_file.write("\tproduit:0\n");
+//		out_file.write("\tproduit:"+entityname+"\n");
+//		out_file.write("\tk:"+0.75+"\n");
+//		out_file.write("\tpos:122222222\n");
+//		out_file.write("\tpos:202100210\n");
+//		out_file.write("\tpos:202100210\n");
+//		for (int l = 0; l < 6; l++) {
+//			out_file.write("\tpos:212101210\n");
+//		}
+//		out_file.write("\tType_Behaviour:1\n");
+//		out_file.write("\tK:0.0\n");
+//		out_file.write("\tProba:0.5\n");
+//		out_file.write("Fin\n");
+//		out_file.write("\n");
+//			
+//		out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+//		out_file.write("\tEtiquettes:Traverse_"+entityname+"_"+"NS\n");
+//		out_file.write("\tvisibleDansPanel:true\n");
+//		out_file.write("\tDescription:\n");
+//		out_file.write("\treactif:"+entityname+"\n");
+//		out_file.write("\treactif:"+entityname+"\n");
+//		out_file.write("\treactif:*\n");
+//		out_file.write("\tproduit:"+entityname+"\n");
+//		out_file.write("\tproduit:0\n");
+//		out_file.write("\tproduit:"+entityname+"\n");
+//		out_file.write("\tk:"+0.75+"\n");
+//		out_file.write("\tpos:122222222\n");
+//		out_file.write("\tpos:212001200\n");
+//		out_file.write("\tpos:212001200\n");
+//		for (int l = 0; l < 6; l++) {
+//			out_file.write("\tpos:212101210\n");
+//		}
+//		out_file.write("\tType_Behaviour:1\n");
+//		out_file.write("\tK:0.0\n");
+//		out_file.write("\tProba:0.5\n");
+//		out_file.write("Fin\n");
+//		out_file.write("\n");		
+//	}
+//}
+
+public void writeTraversee(BufferedWriter out_file, SBMLDocument document) throws IOException, XMLStreamException{
+//	visualize=new MetaboliteVisualizer(document);
+	//parse.parse_compartment(document);
+	boolean bool=false;
+	int i = 0;
 	for (String entityname : entityName) {
-		out_file.write("class NetMDyn.Behavior_NetMDyn\n");
-		out_file.write("\tEtiquettes:Traverse_"+entityname+"_"+"\n");
-		out_file.write("\tvisibleDansPanel:true\n");
-		out_file.write("\tDescription:\n");
-		out_file.write("\treactif:"+entityname+"\n");
-		out_file.write("\treactif:"+entityname+"\n");
-		out_file.write("\treactif:*\n");
-		out_file.write("\tproduit:"+entityname+"\n");
-		out_file.write("\tproduit:0\n");
-		out_file.write("\tproduit:"+entityname+"\n");
-		out_file.write("\tk:"+0.75+"\n");
-		out_file.write("\tpos:122222222\n");
-		out_file.write("\tpos:202100210\n");
-		out_file.write("\tpos:202100210\n");
-		for (int l = 0; l < 6; l++) {
-			out_file.write("\tpos:212101210\n");
+		i++;
+		int j=0;
+		for (String entityname2 : entityName) {
+			j++;
+			String[] tmp1 = entityname.split("_");
+			String[]tmp2 = entityname2.split("_");
+			if((tmp1[0].equals(tmp2[0]))&&(!tmp1[1].equals(tmp2[1]))&&(i<j)) {
+				if(tmp1[1].equals("Cytosol")||tmp2[1].equals("Cytosol")){
+//					System.out.println(tmp1[0]+tmp1[1]);
+//					System.out.println(tmp2[0]+tmp2[1]);
+					out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+					out_file.write("\tEtiquettes:Traverse_"+tmp1[0]+"_"+"NS\n");
+					out_file.write("\tvisibleDansPanel:false\n");
+					out_file.write("\tDescription:\n");
+					if(tmp1[1].equals("Cytosol")){
+						out_file.write("\treactif:Membrane_"+tmp2[1]+"\n");
+						}
+					else{
+						out_file.write("\treactif:Membrane_"+tmp1[1]+"\n");
+					}
+					out_file.write("\treactif:"+tmp1[0]+"_"+tmp1[1]+"\n");
+					out_file.write("\treactif:*\n");
+					if(tmp1[1].equals("Cytosol")){
+						out_file.write("\tproduit:Membrane_"+tmp2[1]+"\n");
+					}
+					else{
+						out_file.write("\tproduit:Membrane_"+tmp1[1]+"\n");
+					}
+					out_file.write("\tproduit:0\n");
+					out_file.write("\tproduit:"+tmp2[0]+"_"+tmp2[1]+"\n");
+					out_file.write("\tk:"+0.75+"\n");
+					out_file.write("\tpos:122222222\n");
+					out_file.write("\tpos:202100210\n");
+					out_file.write("\tpos:202100210\n");
+					for (int l = 0; l < 6; l++) {
+						out_file.write("\tpos:212101210\n");
+					}
+					out_file.write("\tType_Behaviour:2\n");
+					out_file.write("\tK:0.0\n");
+					out_file.write("\tProba:0.5\n");
+					out_file.write("Fin\n");
+					out_file.write("\n");
+					
+					
+					
+					out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+					out_file.write("\tEtiquettes:Traverse_"+tmp1[0]+"\n");
+					out_file.write("\tvisibleDansPanel:true\n");
+					out_file.write("\tDescription:\n");
+					if(tmp1[1].equals("Cytosol")){
+						out_file.write("\treactif:Membrane_"+tmp2[1]+"\n");
+					}
+					else{
+						out_file.write("\treactif:Membrane_"+tmp1[1]+"\n");
+					}
+					out_file.write("\treactif:"+tmp1[0]+"_"+tmp1[1]+"\n");
+					out_file.write("\treactif:*\n");
+					if(tmp1[1].equals("Cytosol")){
+						out_file.write("\tproduit:Membrane_"+tmp2[1]+"\n");
+					}
+					else{
+						out_file.write("\tproduit:Membrane_"+tmp1[1]+"\n");
+					}
+					out_file.write("\tproduit:0\n");
+					out_file.write("\tproduit:"+tmp2[0]+"_"+tmp2[1]+"\n");
+					out_file.write("\tk:"+0.75+"\n");
+					out_file.write("\tpos:122222222\n");
+					out_file.write("\tpos:212001200\n");
+					out_file.write("\tpos:212001200\n");
+					for (int l = 0; l < 6; l++) {
+						out_file.write("\tpos:212101210\n");
+					}
+					out_file.write("\tType_Behaviour:1\n");
+					out_file.write("\tK:0.0\n");
+					out_file.write("\tProba:0.5\n");
+					out_file.write("Fin\n");
+					out_file.write("\n");
+					
+					
+					
+					out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+					out_file.write("\tEtiquettes:Traverse_"+tmp1[0]+"_reverse\n");
+					out_file.write("\tvisibleDansPanel:true\n");
+					out_file.write("\tDescription:\n");
+					if(tmp1[1].equals("Cytosol")){
+						out_file.write("\treactif:Membrane_"+tmp2[1]+"\n");
+					}
+					else{
+						out_file.write("\treactif:Membrane_"+tmp1[1]+"\n");
+					}
+					out_file.write("\treactif:"+tmp2[0]+"_"+tmp2[1]+"\n");
+					out_file.write("\treactif:*\n");
+					if(tmp1[1].equals("Cytosol")){
+						out_file.write("\tproduit:Membrane_"+tmp2[1]+"\n");
+					}
+					else{
+						out_file.write("\tproduit:Membrane_"+tmp1[1]+"\n");
+					}
+					out_file.write("\tproduit:0\n");
+					out_file.write("\tproduit:"+tmp1[0]+"_"+tmp1[1]+"\n");
+					out_file.write("\tk:"+0.75+"\n");
+					out_file.write("\tpos:122222222\n");
+					out_file.write("\tpos:212001200\n");
+					out_file.write("\tpos:212001200\n");
+					for (int l = 0; l < 6; l++) {
+						out_file.write("\tpos:212101210\n");
+					}
+					out_file.write("\tType_Behaviour:1\n");
+					out_file.write("\tK:0.0\n");
+					out_file.write("\tProba:0.5\n");
+					out_file.write("Fin\n");
+					out_file.write("\n");
+					
+					
+					out_file.write("class NetMDyn.Behavior_NetMDyn\n");
+					out_file.write("\tEtiquettes:Traverse_"+tmp1[0]+"_"+"NS_reverse\n");
+					out_file.write("\tvisibleDansPanel:false\n");
+					out_file.write("\tDescription:\n");
+					if(tmp1[1].equals("Cytosol")){
+						out_file.write("\treactif:Membrane_"+tmp2[1]+"\n");
+					}
+					else{
+						out_file.write("\treactif:Membrane_"+tmp1[1]+"\n");
+					}
+					out_file.write("\treactif:"+tmp2[0]+"_"+tmp2[1]+"\n");
+					out_file.write("\treactif:*\n");
+					if(tmp1[1].equals("Cytosol")){
+						out_file.write("\tproduit:Membrane_"+tmp2[1]+"\n");
+					}
+					else{
+						out_file.write("\tproduit:Membrane_"+tmp1[1]+"\n");
+					}
+					out_file.write("\tproduit:0\n");
+					out_file.write("\tproduit:"+tmp1[0]+"_"+tmp1[1]+"\n");
+					out_file.write("\tk:"+0.75+"\n");
+					out_file.write("\tpos:122222222\n");
+					out_file.write("\tpos:202100210\n");
+					out_file.write("\tpos:202100210\n");
+					for (int l = 0; l < 6; l++) {
+						out_file.write("\tpos:212101210\n");
+					}
+					out_file.write("\tType_Behaviour:2\n");
+					out_file.write("\tK:0.0\n");
+					out_file.write("\tProba:0.5\n");
+					out_file.write("Fin\n");
+					out_file.write("\n");
+					bool=true;
+					
+				}
+				else{
+					bool=true;
+				}
+			}
 		}
-		out_file.write("\tType_Behaviour:1\n");
-		out_file.write("\tK:0.0\n");
-		out_file.write("\tProba:0.5\n");
-		out_file.write("Fin\n");
-		out_file.write("\n");
-			
-		out_file.write("class NetMDyn.Behavior_NetMDyn\n");
-		out_file.write("\tEtiquettes:Traverse_"+entityname+"_"+"NS\n");
-		out_file.write("\tvisibleDansPanel:true\n");
-		out_file.write("\tDescription:\n");
-		out_file.write("\treactif:"+entityname+"\n");
-		out_file.write("\treactif:"+entityname+"\n");
-		out_file.write("\treactif:*\n");
-		out_file.write("\tproduit:"+entityname+"\n");
-		out_file.write("\tproduit:0\n");
-		out_file.write("\tproduit:"+entityname+"\n");
-		out_file.write("\tk:"+0.75+"\n");
-		out_file.write("\tpos:122222222\n");
-		out_file.write("\tpos:212001200\n");
-		out_file.write("\tpos:212001200\n");
-		for (int l = 0; l < 6; l++) {
-			out_file.write("\tpos:212101210\n");
-		}
-		out_file.write("\tType_Behaviour:1\n");
-		out_file.write("\tK:0.0\n");
-		out_file.write("\tProba:0.5\n");
-		out_file.write("Fin\n");
-		out_file.write("\n");		
+	}
+	if (bool==true){		
+		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+		          JOptionPane.showMessageDialog(visualize, " Attention il est probablement nécessaire de créer des traversées de membrane supplémentaire" );
+		       } else {
+		           JOptionPane.showMessageDialog(visualize, " warning you probably need to create new membrane crossing !");
+		       }
 	}
 }
+
+
 
 
 	public int create_color(){

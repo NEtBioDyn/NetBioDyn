@@ -81,14 +81,14 @@ public class ControlerMetabolite {
 //					// TODO Auto-generated catch block
 //					e2.printStackTrace();
 //				}
-				model.load(env,writer.getFileName(document));
+
 				
 				
 			
 				try {
 					writer.nbdWrite();
 //				Model_NetMDyn	model; 
-					
+					model.load(env,writer.getFileName(document));
 //					 Environment_NetMDyn env;
 //					env.setNom_sauvegarde(UtilDivers.removeExtension( writer.getFileName(document)));
 			         

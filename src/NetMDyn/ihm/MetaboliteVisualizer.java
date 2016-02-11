@@ -153,7 +153,7 @@ public class MetaboliteVisualizer extends javax.swing.JFrame {
 		return (jtp.getSelectedIndex() == 0 ? -1 : jtp.getSelectedIndex() - 1);
 	}
 
-	public void alert(String msg) {
+	public  void alert(String msg) {
 		JOptionPane.showMessageDialog(this, msg, "Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
