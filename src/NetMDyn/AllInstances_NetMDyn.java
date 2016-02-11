@@ -22,7 +22,7 @@
 
 
 /**
- * Class of AllInstances gestion
+ * Class of AllInstances management
  * 
  * @author Master 2 Bioinformatique
  */
