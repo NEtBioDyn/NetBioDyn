@@ -484,13 +484,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        drawAll(0, 0, 0, 0, 0);
 	    }//GEN-LAST:event_jSliderZStateChanged
 
-	    protected void jSliderProbaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderProbaStateChanged
-	        int i = dataGridView_comportements.getSelectedIndex();
-	        if (i >= 0) {
-	            jLabelProba.setText("p=" + (jSliderProba.getValue() / 10) / 100.0);
-	        }
-	    }//GEN-LAST:event_jSliderProbaStateChanged
-
 	    protected void dataGridView_entitesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataGridView_entitesMouseClicked
 	        if (evt.getClickCount() == 2 && !evt.isConsumed() && !freezed) {
 	            evt.consume();
@@ -543,15 +536,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	    protected void checkBox_paint_randomMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_randomMousePressed
 	        releverToutesCheckBoxPaint(checkBox_paint_random);
 	    }//GEN-LAST:event_checkBox_paint_randomMousePressed
-
-	    protected void jSliderProbaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderProbaMouseReleased
-	        int i = dataGridView_comportements.getSelectedIndex();
-	        if (i >= 0) {
-	            String nom_moteur = dataGridView_comportements.getSelectedValue().toString();
-	            Double value = ((jSliderProba.getValue() / 10) / 100.0);
-	            controller.changeProba(nom_moteur, value);
-	        }
-	    }//GEN-LAST:event_jSliderProbaMouseReleased
 
 	    protected void jSliderSpeedMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jSliderSpeedMouseReleased
 	        controller.changeSpeed(jSliderSpeed.getValue());
@@ -1491,8 +1475,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jButtonDelBehav = new javax.swing.JButton();
         jScrollPaneBehaviors = new javax.swing.JScrollPane();
         dataGridView_comportements = new javax.swing.JList();
-        jSliderProba = new javax.swing.JSlider();
-        jLabelProba = new javax.swing.JLabel();
+        jButtonReaction = new javax.swing.JButton();
         
         // Envirronnement
         jPanelEnv = new javax.swing.JPanel();
@@ -1512,7 +1495,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         jLabel_t0 = new javax.swing.JLabel();
         label_courbe_x_max = new javax.swing.JLabel();
         abscissaBox = new javax.swing.JComboBox();
-        jButtonReaction = new javax.swing.JButton();
+        
         
         // Divers
         jPanelMisc = new javax.swing.JPanel();
@@ -2047,37 +2030,21 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         });
         jScrollPaneBehaviors.setViewportView(dataGridView_comportements);
 
-        jSliderProba.setBackground(new java.awt.Color(153, 153, 255));
-        jSliderProba.setMaximum(1000);
+        jButtonReaction.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
         if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-        	jSliderProba.setToolTipText("Proba des comportements sélectionnés");
+            jButtonReaction.setText("Réaction");
+            jButtonReaction.setToolTipText("Création de réaction");       	
         }
         else{
-        	jSliderProba.setToolTipText("Proba of selected behaviour");
+            jButtonReaction.setText("Reaction");
+            jButtonReaction.setToolTipText("Creation of a reaction");        	
         }
+        jButtonReaction.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            	jButtonReaction_tMouseClicked(evt);
+            }
+        });
         
-        jSliderProba.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jSliderProba.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jSliderProbaMouseReleased(evt);
-            }
-        });
-        jSliderProba.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jSliderProbaStateChanged(evt);
-            }
-        });
-
-        jLabelProba.setBackground(new java.awt.Color(153, 153, 255));
-        jLabelProba.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
-        jLabelProba.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelProba.setText("p=");
-        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-        	jLabelProba.setToolTipText("Proba des comportements sélectionnés");
-        }
-        else{
-        	jLabelProba.setToolTipText("Proba of selected behaviour");
-        }
         javax.swing.GroupLayout jPanelBehaviorsLayout = new javax.swing.GroupLayout(jPanelBehaviors);
         jPanelBehaviors.setLayout(jPanelBehaviorsLayout);
         jPanelBehaviorsLayout.setHorizontalGroup(
@@ -2085,8 +2052,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
             .addGroup(jPanelBehaviorsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelBehaviorsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSliderProba, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jLabelProba, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonReaction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addComponent(jLabelComportements, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBehaviorsLayout.createSequentialGroup()
@@ -2113,9 +2079,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneBehaviors, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSliderProba, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelProba)
+                .addComponent(jButtonReaction, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -2297,22 +2261,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 abscissaBoxActionPerformed(evt);
             }
         });
-        
-        jButtonReaction.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
-        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-            jButtonReaction.setText("Réaction");
-            jButtonReaction.setToolTipText("Création de réaction");       	
-        }
-        else{
-            jButtonReaction.setText("Reaction");
-            jButtonReaction.setToolTipText("Creation of a reaction");        	
-        }
-        jButtonReaction.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-            	jButtonReaction_tMouseClicked(evt);
-            }
-        });
-
+ 
         javax.swing.GroupLayout jPanelCurvesLayout = new javax.swing.GroupLayout(jPanelCurves);
         jPanelCurves.setLayout(jPanelCurvesLayout);
         jPanelCurvesLayout.setHorizontalGroup(
@@ -2322,8 +2271,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 .addComponent(jLabel_t0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(48, 48, 48)
                 .addComponent(abscissaBox, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonReaction, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(label_courbe_x_max, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -2351,8 +2298,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
                 .addGroup(jPanelCurvesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_t0)
                     .addComponent(label_courbe_x_max)
-                    .addComponent(abscissaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                	.addComponent(jButtonReaction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(abscissaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 

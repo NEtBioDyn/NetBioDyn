@@ -15,7 +15,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 	boolean _env_affiche3D = false;
     public Behavior_NetMDyn _r3 = null;
     public Behavior_NetMDyn _r3rev = null;
-    private String DialogResult = null;
+    private String DialogResult = "";
     private int _mouseX = 0, _mouseY = 0;
     private final ArrayList<Behavior_NetMDyn> behaviors;
     private final ArrayList<Entity_NetMDyn> entities;
@@ -276,7 +276,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     
     
 
-	private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+	public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
 //    	if (comboBoxName.getSelectedItem().equals("")) {
 //    		if (Lang.getInstance().getLang().equals("FR")) {
 //    			JOptionPane.showMessageDialog(this, "Merci de nommer l'enzyme.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
@@ -323,8 +323,6 @@ public class WndEditBehaviour extends javax.swing.JDialog{
             	_r3rev.setEtiquettes("React_"+ comboBoxName.getSelectedItem()+"_reverse");
             	_r3rev._reactifs.add((String)comboBoxName.getSelectedItem());
             	_r3rev._produits.add((String)comboBoxName.getSelectedItem());
-
-            	
             }
             else{
             	_r3rev.setEtiquettes("React_"+ comboBox_S1.getSelectedItem() + "_vers_" + comboBox_P1.getSelectedItem()+"_reverse");           	
@@ -353,8 +351,8 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	DialogResult = "OK";
     	setVisible(false);
     }
-    
-    private void button_OKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_OKMouseClicked
+
+	private void button_OKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_OKMouseClicked
 
 
     }//GEN-LAST:event_button_OKMouseClicked
@@ -392,6 +390,14 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 
 	public void setTextBoxKCst(String textBoxCoefP1) {
 		this.textBoxKCst.setText(textBoxCoefP1);
+	}
+	
+    public String getTextBoxKCst2() {
+		return textBoxKCst2.getText();
+	}
+
+	public void setTextBoxKCst2(String textBoxKCst2) {
+		this.textBoxKCst2 .setText(textBoxKCst2);
 	}
 
 	public String getComboBox_S1() {

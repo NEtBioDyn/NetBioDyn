@@ -138,7 +138,7 @@ public class WndEditMvt extends javax.swing.JDialog {
          setSize(new java.awt.Dimension(533, 300));
          setLocationRelativeTo(null);
     }
-    private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+    public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	if (getComboBox_entity().equals("-")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
     			JOptionPane.showMessageDialog(this, "Merci de choisir une entité à déplacer", "Information", JOptionPane.INFORMATION_MESSAGE, null);
