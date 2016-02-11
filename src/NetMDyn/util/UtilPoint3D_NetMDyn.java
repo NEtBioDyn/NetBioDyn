@@ -1,25 +1,24 @@
 package NetMDyn.util;
 
-import java.util.ArrayList;
+import java.util.ArrayList; //Possible creation of tables
 
 import NetMDyn.InstanceReaxel_NetMDyn;
 import netbiodyn.util.UtilPoint3D;
 
 public class UtilPoint3D_NetMDyn extends UtilPoint3D{
 	
+	//Initialization of UtilPoint3D object from scratch
 	 public UtilPoint3D_NetMDyn() {
 	        x = 0;
 	        y = 0;
 	        z = 0;
 	    }
-
+	 //Initialization of UtilPoint3D object with coordinates as parameters
 	    public UtilPoint3D_NetMDyn(int i, int j, int k) {
 	        x = i;
 	        y = j;
 	        z = k;
 	    }
-
-
 	  
 	    public static ArrayList<UtilPoint3D> BresenhamRond3D(int x1, int y1, int z1, int r, int zMax) {
 	        ArrayList<UtilPoint3D> lst_pts = new ArrayList<>();
