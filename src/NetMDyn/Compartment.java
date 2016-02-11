@@ -48,16 +48,34 @@ public class Compartment extends ProtoBioDyn{
 	public boolean Vidable = true;
 	protected JTextPane _description = new JTextPane();
 	
+<<<<<<< HEAD
 	/**
 	 * Initialization of the Compartment object
 	 */
+=======
+<<<<<<< Estelle
+=======
+	/**
+	 * Initialization of the Compartment object
+	 */
+>>>>>>> origin
+>>>>>>> Estelle
 	public Compartment(){
 		initComponents();
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Clone of this object into a new one
 	 */
+=======
+<<<<<<< Estelle
+=======
+	/**
+	 * Clone of this object into a new one
+	 */
+>>>>>>> origin
+>>>>>>> Estelle
     public Compartment clone() {
         Compartment comp = new Compartment();
         comp.center = center;
@@ -69,22 +87,49 @@ public class Compartment extends ProtoBioDyn{
         return comp;
     }	
 	
+<<<<<<< HEAD
+=======
+<<<<<<< Estelle
+=======
+>>>>>>> Estelle
   /**
    * Return the description of the Compartment
    * @return this description
    */
+<<<<<<< HEAD
+=======
+>>>>>>> origin
+>>>>>>> Estelle
 	public JTextPane getDescription() {
 		return _description;
 	}
 
+<<<<<<< HEAD
+=======
+<<<<<<< Estelle
+=======
+>>>>>>> Estelle
 	/**
 	 * Put a new value to the description of the Compartment
 	 * @param _description : the description to replace
 	 */
+<<<<<<< HEAD
+=======
+>>>>>>> origin
+>>>>>>> Estelle
 	public void setDescription( JTextPane _description) {
 		this._description = _description;
 	}
 
+<<<<<<< HEAD
+=======
+<<<<<<< Estelle
+	public UtilPoint3D getCenter() {
+		return center;
+	}
+
+=======
+>>>>>>> Estelle
 	/**
 	 * Return the center of the Compartment
 	 * @return the point representing the center
@@ -97,11 +142,22 @@ public class Compartment extends ProtoBioDyn{
 	 * Put a new value to the center of the Compartment
 	 * @param center : the point representing the center
 	 */
+<<<<<<< HEAD
+=======
+>>>>>>> origin
+>>>>>>> Estelle
 	public void setCenter(UtilPoint3D center) {
 		this.center.x = center.x;
 		this.center.y = center.y;
 		
 	}
+<<<<<<< Estelle
+
+	public int getRadius() {
+		return radius;
+	}
+
+=======
 	
 	/**
 	 * Return the radius of the Compartment
@@ -114,14 +170,31 @@ public class Compartment extends ProtoBioDyn{
 	 * Put a new value to the radius of the Compartment
 	 * @param radius : the radius to replace
 	 */
+<<<<<<< HEAD
+=======
+>>>>>>> origin
+>>>>>>> Estelle
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
 
+<<<<<<< HEAD
+=======
+<<<<<<< Estelle
+	public void setEnt(Entity ent) {
+		this.ent = ent;
+	}
+*/	
+=======
+>>>>>>> Estelle
 	/**
 	 *  Save the object with all its parameters
 	 *  @return all saved parameters 
 	 */
+<<<<<<< HEAD
+=======
+>>>>>>> origin
+>>>>>>> Estelle
     public ArrayList<String> toSave() {
         ArrayList<String> toSave = new ArrayList<String>();
         String classe = this.getClass().toString();
@@ -135,9 +208,18 @@ public class Compartment extends ProtoBioDyn{
         return toSave;
     }
     
+<<<<<<< HEAD
     /**
      * Initialization of the components of the Compartment
      */
+=======
+<<<<<<< Estelle
+=======
+    /**
+     * Initialization of the components of the Compartment
+     */
+>>>>>>> origin
+>>>>>>> Estelle
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();

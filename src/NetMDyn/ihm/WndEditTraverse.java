@@ -3,7 +3,16 @@ package NetMDyn.ihm;
 import java.awt.Dimension; // Width and height of a component (in integer precision) in a single object
 import java.util.ArrayList; // Possible creation of tables
 
+<<<<<<< HEAD
 import javax.swing.JOptionPane; // Possible creation of dialog windows
+=======
+<<<<<<< Estelle
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+=======
+import javax.swing.JOptionPane; // Possible creation of dialog windows
+>>>>>>> origin
+>>>>>>> Estelle
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Entity_NetMDyn;
@@ -14,6 +23,7 @@ import netbiodyn.util.UtilPointF;
 public class WndEditTraverse extends javax.swing.JDialog {
 	boolean _env_affiche3D = false;
     public Behavior_NetMDyn _r3 = null;
+    public Behavior_NetMDyn _rNS = null;
     private String DialogResult = null;
     private int _mouseX = 0, _mouseY = 0;
     private final ArrayList<Behavior_NetMDyn> behaviors;
@@ -34,14 +44,21 @@ public class WndEditTraverse extends javax.swing.JDialog {
     public void WndEditTraverse_load(Behavior_NetMDyn behavior){
     	if (behavior == null){
     		_r3 = new Behavior_NetMDyn();
+    		_rNS = new Behavior_NetMDyn();
+
     	}else{
     		_r3 = behavior;
+    		for(Behavior_NetMDyn bev : behaviors){
+    			if (bev.getEtiquettes().equals(_r3.getEtiquettes()+"NS")){
+    				_rNS = bev;
+    			}
+    		}
+    		comboBox_compartment.setSelectedItem(_r3._reactifs.get(0).split("Membrane_")[1]);
+        	comboBox_OriginEntity.setSelectedItem(_r3._reactifs.get(1));
+        	comboBox_TargetEntity.setSelectedItem(_r3._produits.get(2));
+        	
+        	textBoxProba.setText(((Double) _r3.getProba()).toString());
     	}
-    	comboBox_compartment.setSelectedItem(_r3._reactifs.get(0).split("_")[1]);
-    	comboBox_OriginEntity.setSelectedItem(_r3._produits.get(1));
-    	comboBox_TargetEntity.setSelectedItem(_r3._reactifs.get(1));
-    	
-    	textBoxProba.setText(((Double) _r3.get_k()).toString());
     }
     
     //Initialization of parameters
@@ -81,10 +98,21 @@ public class WndEditTraverse extends javax.swing.JDialog {
          getContentPane().add(jLabelNomOrigine);
          jLabelNomOrigine.setBounds(10, 40, 100, 20);
          
-         String[] ent = new String[entities.size()+1];
-         ent[0] = "-";
+        
+         ArrayList<String> comps = new ArrayList<String>();
+         comps.add("-");
+         
          for(int i = 1; i< entities.size()+1; i++){
-         	ent[i] = entities.get(i-1).getEtiquettes();
+        	 boolean present = false;
+        	 if (entities.get(i-1).getEtiquettes().contains("Membrane_")){
+        		 continue;
+        	 }        	
+        	 comps.add(entities.get(i-1).getEtiquettes());        	 
+         }
+         
+         String[] ent = new String[comps.size()];
+         for (int i =0; i<comps.size();i++){
+        	 ent[i]=comps.get(i);
          }
          
          comboBox_OriginEntity.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
@@ -93,6 +121,12 @@ public class WndEditTraverse extends javax.swing.JDialog {
          comboBox_OriginEntity.setBounds(120, 40, 150, 20);
 
          jLabelNomTarget.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+<<<<<<< HEAD
+=======
+<<<<<<< Estelle
+         jLabelNomTarget.setText("Entité à l'arrivée");
+=======
+>>>>>>> Estelle
          if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
         	 jLabelNomTarget.setText("Entité d'origine");
          }
@@ -100,6 +134,10 @@ public class WndEditTraverse extends javax.swing.JDialog {
         	 jLabelNomTarget.setText("Origin entity");
          }
          
+<<<<<<< HEAD
+=======
+>>>>>>> origin
+>>>>>>> Estelle
          getContentPane().add(jLabelNomTarget);
          jLabelNomTarget.setBounds(10, 80, 100, 20);
          
@@ -119,7 +157,7 @@ public class WndEditTraverse extends javax.swing.JDialog {
          jLabelCompartment.setBounds(10, 120, 100, 20);
          
          String[] compart = new String[compartment.size()+1];
-         compart[0] = "Cytosol";
+         compart[0] = "-";
          for(int i = 1; i< compartment.size()+1; i++){
          	compart[i] = compartment.get(i-1).getEtiquettes();
          }
@@ -229,14 +267,125 @@ public class WndEditTraverse extends javax.swing.JDialog {
             return;
     	}
     	
+<<<<<<< HEAD
+=======
+<<<<<<< Estelle
+    	if (getComboBox_TargetEntity().equals(getComboBox_OriginEntity())) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Les deux entités ne peuvent pas être identiques", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "Both entities can't be identical", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}
+    	
+    	if (getComboBox_compartment().equals("-")) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Merci de choisir un compartiment", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "Please choose a compartment.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}
+    	
+    	boolean entite1=false;
+    	boolean entite2=false;
+    	for (Entity_NetMDyn entity : entities){
+    		if (entity.getCompartment().equals(getComboBox_compartment()) && entity.getEtiquettes().equals(getComboBox_OriginEntity())){
+    			entite1=true;
+    		}
+    		if (entity.getCompartment().equals(getComboBox_compartment()) && entity.getEtiquettes().equals(getComboBox_TargetEntity())){
+    			entite2=true;
+    		}
+    		if (entite1==false && entite2==false){
+    			if (Lang.getInstance().getLang().equals("FR")) {
+        			JOptionPane.showMessageDialog(this, "Au moins l'un des entités doit appartenir au compartiment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }else {
+                    JOptionPane.showMessageDialog(this, "At least one entity must be an element of the chosen compartment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+    		}
+    		if (entite1==true && entite2==true){
+    			if (Lang.getInstance().getLang().equals("FR")) {
+        			JOptionPane.showMessageDialog(this, "Les deux entités ne peuvent pas appartenir au compartiment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }else {
+                    JOptionPane.showMessageDialog(this, "Both entities can't be elements of the chosen compartment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+    		}
+    	}
+    	
+    	
+    	try{
+        	Double.parseDouble(textBoxProba.getText());
+        }catch(Exception e){
+        		if (Lang.getInstance().getLang().equals("FR")) {
+                    JOptionPane.showMessageDialog(this, "La probabilité de traverser la membrane doit être un nombre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }else {
+                    JOptionPane.showMessageDialog(this, "The probability to cross the membrane must be a number.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+        	}        
+        
+        _r3._reactifs.clear();
+        _r3._produits.clear();
+        _r3._positions.clear();
+    	_r3.setEtiquettes("Traverse_"+ comboBox_OriginEntity.getSelectedItem() + "_"+ comboBox_compartment.getSelectedItem());
+    	_r3._reactifs.add("Membrane_" + (String) comboBox_compartment.getSelectedItem());
+    	_r3._reactifs.add((String) comboBox_OriginEntity.getSelectedItem());
+    	_r3._reactifs.add("0");
+    	_r3._produits.add("Membrane_" + (String) comboBox_compartment.getSelectedItem());
+    	_r3._produits.add("0");
+    	_r3._produits.add((String) comboBox_TargetEntity.getSelectedItem());
+    	_r3._positions.add("122222222");
+    	_r3._positions.add("202100210");
+    	_r3._positions.add("202100210");
+    	_r3._positions.add("212101210");
+    	_r3._positions.add("212101210");
+    	_r3._positions.add("212101210");
+    	_r3._positions.add("212101210");
+    	_r3._positions.add("212101210");
+    	_r3._positions.add("212101210");
+    	_r3.setType_behavior(2);
+    	_r3.setProba(Double.parseDouble(textBoxProba.getText()));
+    	
+    	
+        _rNS._reactifs.clear();
+        _rNS._produits.clear();
+        _rNS._positions.clear();
+    	_rNS.setEtiquettes("Traverse_"+ comboBox_OriginEntity.getSelectedItem() + "_"+ comboBox_compartment.getSelectedItem()+"NS");
+    	_rNS._reactifs.add("Membrane_" + (String) comboBox_compartment.getSelectedItem());
+    	_rNS._reactifs.add((String) comboBox_OriginEntity.getSelectedItem());
+    	_rNS._reactifs.add("0");
+    	_rNS._produits.add("Membrane_" + (String) comboBox_compartment.getSelectedItem());
+    	_rNS._produits.add("0");
+    	_rNS._produits.add((String) comboBox_TargetEntity.getSelectedItem());
+    	_rNS._positions.add("122222222");
+    	_rNS._positions.add("212001200");
+    	_rNS._positions.add("212001200");
+    	_rNS._positions.add("212101210");
+    	_rNS._positions.add("212101210");
+    	_rNS._positions.add("212101210");
+    	_rNS._positions.add("212101210");
+    	_rNS._positions.add("212101210");
+    	_rNS._positions.add("212101210");
+    	_rNS.setType_behavior(2);
+    	_rNS.setProba(Double.parseDouble(textBoxProba.getText()));
+    	_rNS._visibleDansPanel = false;
+    	
+=======
+>>>>>>> Estelle
     	String origin_entity = getComboBox_OriginEntity();
     	String target_entity = getComboBox_TargetEntity();
+>>>>>>> origin
     	
     	DialogResult = "OK";
     	setVisible(false);
     }
     
-    private void button_OKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_OKMouseClicked
+   
+
+	private void button_OKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_OKMouseClicked
 
 
     }//GEN-LAST:event_button_OKMouseClicked
@@ -274,6 +423,22 @@ public class WndEditTraverse extends javax.swing.JDialog {
 		this.comboBox_TargetEntity.setSelectedItem(comboBox_mvt);
 	}
 	
+	 public String getComboBox_compartment() {
+			return (String) comboBox_compartment.getSelectedItem();
+		}
+
+		public void setComboBox_compartment(String comboBox_compartment) {
+			this.comboBox_compartment.setSelectedItem(comboBox_compartment);
+		}
+
+	 public String getDialogResult() {
+			return DialogResult;
+		}
+
+		public void setDialogResult(String dialogResult) {
+			DialogResult = dialogResult;
+		}
+	
 	// Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelNomOrigine;
     private javax.swing.JLabel jLabelNomTarget;
@@ -282,7 +447,8 @@ public class WndEditTraverse extends javax.swing.JDialog {
     private javax.swing.JComboBox comboBox_OriginEntity;
     private javax.swing.JComboBox comboBox_TargetEntity;
     private javax.swing.JComboBox comboBox_compartment;
-    private javax.swing.JTextField textBoxProba;
+   
+	private javax.swing.JTextField textBoxProba;
     
     private javax.swing.JLabel jLabelPlaceDuTitre;
     private javax.swing.JLabel jLabelTitre;
@@ -290,6 +456,14 @@ public class WndEditTraverse extends javax.swing.JDialog {
     private javax.swing.JButton button_OK;
     private javax.swing.JButton button_CANCEL;
     // End of variables declaration//GEN-END:variables
+
+	public Double getTextBoxProba() {
+		return Double.parseDouble(textBoxProba.getText());
+	}
+
+	public void setTextBoxProba(Double textBoxProba) {
+		this.textBoxProba.setText(textBoxProba.toString());;
+	}
     
 }
 

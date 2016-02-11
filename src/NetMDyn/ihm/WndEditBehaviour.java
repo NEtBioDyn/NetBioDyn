@@ -15,7 +15,8 @@ import netbiodyn.util.UtilPointF;
 public class WndEditBehaviour extends javax.swing.JDialog{
 	boolean _env_affiche3D = false;
     public Behavior_NetMDyn _r3 = null;
-    private String DialogResult = null;
+    public Behavior_NetMDyn _r3rev = null;
+    private String DialogResult = "";
     private int _mouseX = 0, _mouseY = 0;
     private final ArrayList<Behavior_NetMDyn> behaviors;
     private final ArrayList<Entity_NetMDyn> entities;
@@ -31,18 +32,63 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         initComponents();
     }
     
+<<<<<<< HEAD
+=======
+<<<<<<< Estelle
+    public void WndEditBehaviour_load(Behavior_NetMDyn behavior, Behavior_NetMDyn behavior2){
+    	if (behavior == null && behavior2 == null){
+=======
+>>>>>>> Estelle
     //Load of a behavior
     public void WndEditBehaviour_load(Behavior_NetMDyn behavior){
     	if (behavior == null){
+>>>>>>> origin
     		_r3 = new Behavior_NetMDyn();
-    	}else{
-    		_r3 = behavior;
+    		_r3rev = new Behavior_NetMDyn();
     	}
-    	textBoxName.setText(_r3.getEtiquettes());
-    	comboBox_S1.setSelectedItem(_r3._produits.get(0));
-    	comboBox_S2.setSelectedItem(_r3._produits.get(1));
-    	comboBox_P1.setSelectedItem(_r3._reactifs.get(0));
-    	comboBox_P2.setSelectedItem(_r3._reactifs.get(1));
+    	else if (behavior2 == null){
+    		_r3 = behavior;
+    		_r3rev = new Behavior_NetMDyn();
+    		comboBox_reaction.setSelectedItem("Irreversible");
+    		if (_r3.getEtiquettes().contains("_vers_")){
+    			comboBoxName.setSelectedItem("*");
+    			comboBox_S1.setSelectedItem(_r3._reactifs.get(0));
+            	comboBox_S2.setSelectedItem(_r3._reactifs.get(1));
+            	comboBox_P1.setSelectedItem(_r3._produits.get(0));
+            	comboBox_P2.setSelectedItem(_r3._produits.get(1));
+    		}
+    		else{
+    			comboBoxName.setSelectedItem(_r3.getEtiquettes().split("React_")[1]);
+    			comboBox_S1.setSelectedItem(_r3._reactifs.get(1));
+            	comboBox_S2.setSelectedItem(_r3._reactifs.get(2));
+            	comboBox_P1.setSelectedItem(_r3._produits.get(1));
+            	comboBox_P2.setSelectedItem(_r3._produits.get(2));
+    		}
+        	
+        	textBoxKCst.setText(((Double) _r3.getK()).toString());
+    	}
+    	else{
+    		_r3 = behavior;
+    		_r3rev = behavior2;
+    		comboBox_reaction.setSelectedItem("Reversible");
+    		if (_r3.getEtiquettes().contains("_vers_")){
+    			comboBoxName.setSelectedItem("*");
+    			comboBox_S1.setSelectedItem(_r3._reactifs.get(0));
+            	comboBox_S2.setSelectedItem(_r3._reactifs.get(1));
+            	comboBox_P1.setSelectedItem(_r3._produits.get(0));
+            	comboBox_P2.setSelectedItem(_r3._produits.get(1));
+    		}
+    		else{
+    			comboBoxName.setSelectedItem(_r3.getEtiquettes().split("React_")[1]);
+    			comboBox_S1.setSelectedItem(_r3._reactifs.get(1));
+            	comboBox_S2.setSelectedItem(_r3._reactifs.get(2));
+            	comboBox_P1.setSelectedItem(_r3._produits.get(1));
+            	comboBox_P2.setSelectedItem(_r3._produits.get(2));
+    		}    		
+        	textBoxKCst.setText(((Double) _r3.getK()).toString());
+        	textBoxKCst2.setText(((Double) _r3rev.getK()).toString());
+    	}
+    	
     	
     }
     
@@ -52,13 +98,15 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         jLabelNom = new javax.swing.JLabel();
         jLabelReaction = new javax.swing.JLabel();
         jLabelKCst = new javax.swing.JLabel();
+        jLabelKCst2 = new javax.swing.JLabel();
         jLabelS1 = new javax.swing.JLabel();
         jLabelS2 = new javax.swing.JLabel();
         jLabelP1 = new javax.swing.JLabel();
         jLabelP2 = new javax.swing.JLabel();
        
-        textBoxName = new javax.swing.JTextField();
+        comboBoxName = new javax.swing.JComboBox();
         textBoxKCst = new javax.swing.JTextField();
+        textBoxKCst2 = new javax.swing.JTextField();
         
         comboBox_S1 = new javax.swing.JComboBox();
         comboBox_S2 = new javax.swing.JComboBox();
@@ -86,16 +134,16 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         getContentPane().add(jLabelNom);
         jLabelNom.setBounds(10, 40, 60, 20);
         
+        String[] ents = new String[entities.size()+1];
+        ents[0] = "*";
+        for(int i = 1; i< entities.size()+1; i++){
+        	ents[i] = entities.get(i-1).getEtiquettes();
+        }
 
-        textBoxName.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        textBoxName.setText("nom");
-        textBoxName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                //textBoxNameKeyTyped(evt);
-            }
-        });
-        getContentPane().add(textBoxName);
-        textBoxName.setBounds(80, 40, 150, 20);
+        comboBoxName.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        comboBoxName.setModel(new javax.swing.DefaultComboBoxModel(ents));
+        getContentPane().add(comboBoxName);
+        comboBoxName.setBounds(80, 40, 150, 20);
         
         jLabelReaction.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         jLabelReaction.setText("Reaction");
@@ -107,18 +155,42 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         comboBox_reaction.setModel(new javax.swing.DefaultComboBoxModel(type));
         getContentPane().add(comboBox_reaction);
         comboBox_reaction.setBounds(80, 70, 150, 20);
+        
+        jLabelKCst.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        jLabelKCst.setText("Kcat");
+        getContentPane().add(jLabelKCst);
+        jLabelKCst.setBounds(290, 40, 60, 20);
+        
+        textBoxKCst.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        textBoxKCst.setText("0.0");
+        textBoxKCst.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                //textBoxNameKeyTyped(evt);
+            }
+        });
+        getContentPane().add(textBoxKCst);
+        textBoxKCst.setBounds(360, 40, 150, 20);
+        
+        jLabelKCst2.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        jLabelKCst2.setText("Kcat");
+        getContentPane().add(jLabelKCst2);
+        jLabelKCst2.setBounds(290, 70, 60, 20);
+        
+        textBoxKCst2.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        textBoxKCst2.setText("0.0");
+        textBoxKCst2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                //textBoxNameKeyTyped(evt);
+            }
+        });
+        getContentPane().add(textBoxKCst2);
+        textBoxKCst2.setBounds(360, 70, 150, 20);
       
         jLabelS1.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         jLabelS1.setText("Substrat 1");
         getContentPane().add(jLabelS1);
         jLabelS1.setBounds(10, 100, 60, 20);
-        
-        String[] ents = new String[entities.size()+1];
-        ents[0] = "-";
-        for(int i = 1; i< entities.size()+1; i++){
-        	ents[i] = entities.get(i-1).getEtiquettes();
-        }
-        
+
         comboBox_S1.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         comboBox_S1.setModel(new javax.swing.DefaultComboBoxModel(ents));
         getContentPane().add(comboBox_S1);
@@ -135,7 +207,11 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         getContentPane().add(comboBox_S2);
         comboBox_S2.setBounds(80, 130, 150, 20);
         
-                
+        String[] entp = new String[entities.size()+1];
+        entp[0] = "-";
+        for(int i = 1; i< entities.size()+1; i++){
+        	entp[i] = entities.get(i-1).getEtiquettes();
+        }        
         
         jLabelP1.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         jLabelP1.setText("Produit 1");
@@ -143,7 +219,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         jLabelP1.setBounds(290, 100, 60, 20);
         
         comboBox_P1.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        comboBox_P1.setModel(new javax.swing.DefaultComboBoxModel(ents));
+        comboBox_P1.setModel(new javax.swing.DefaultComboBoxModel(entp));
         getContentPane().add(comboBox_P1);
         comboBox_P1.setBounds(360, 100, 150, 20);
         
@@ -154,7 +230,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         jLabelP2.setBounds(290, 130, 60, 20);
         
         comboBox_P2.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        comboBox_P2.setModel(new javax.swing.DefaultComboBoxModel(ents));
+        comboBox_P2.setModel(new javax.swing.DefaultComboBoxModel(entp));
         getContentPane().add(comboBox_P2);
         comboBox_P2.setBounds(360, 130, 150, 20);
 
@@ -209,6 +285,22 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+<<<<<<< HEAD
+=======
+<<<<<<< Estelle
+    
+
+	public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+//    	if (comboBoxName.getSelectedItem().equals("")) {
+//    		if (Lang.getInstance().getLang().equals("FR")) {
+//    			JOptionPane.showMessageDialog(this, "Merci de nommer l'enzyme.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+//            }else {
+//                JOptionPane.showMessageDialog(this, "Please name the enzyme.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+//            }
+//            return;
+//    	}
+=======
+>>>>>>> Estelle
     //Action when OK button is used
     private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	if (textBoxName.getText().equals("")) {
@@ -219,6 +311,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
             }
             return;
     	}
+>>>>>>> origin
     
     	if (getComboBox_S1().equals(getComboBox_P1()) || getComboBox_S1().equals(getComboBox_P2())|| getComboBox_S2().equals(getComboBox_P1()) || getComboBox_S2().equals(getComboBox_P2()) ) {
     		if (Lang.getInstance().getLang().equals("FR")) {
@@ -229,11 +322,112 @@ public class WndEditBehaviour extends javax.swing.JDialog{
             return;
     	}
     	
+    	try{
+        	Double.parseDouble(textBoxKCst.getText());
+        	Double.parseDouble(textBoxKCst2.getText());
+        }catch(Exception e){
+        		if (Lang.getInstance().getLang().equals("FR")) {
+                    JOptionPane.showMessageDialog(this, "Les constantes catalytiques doivent etre de type 0.0", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }else {
+                    JOptionPane.showMessageDialog(this, "Catalytic constant must be numbers only.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;        	
+        }
+    	
+    	ArrayList<String> compartment = new ArrayList<String>();
+    	for (Entity_NetMDyn entity : entities){
+    		if (entity.getEtiquettes().equals(getComboBox_S1()) && !getComboBox_S1().equals("*")){
+    			compartment.add(entity.getCompartment());
+    		}
+    		else if (entity.getEtiquettes().equals(getComboBox_S2()) && !getComboBox_S2().equals("*")){
+    			compartment.add(entity.getCompartment());
+    		}
+    		else if (entity.getEtiquettes().equals(getComboBox_P1()) && !getComboBox_P1().equals("-")){
+    			compartment.add(entity.getCompartment());
+    		}
+    		else if (entity.getEtiquettes().equals(getComboBox_P2()) && !getComboBox_P2().equals("-")){
+    			compartment.add(entity.getCompartment());
+    		}
+    		else if (entity.getEtiquettes().equals((String) comboBoxName.getSelectedItem()) && !comboBoxName.getSelectedItem().equals("*")){
+    			compartment.add(entity.getCompartment());
+    		}
+    	}
+    	System.out.println(compartment);
+    	boolean erreur=false;
+    	for (int i=1; i<compartment.size();i++){
+    		if (compartment.get(0)!=compartment.get(i)){
+    			erreur=true;
+    			continue;
+    		}
+    	}
+		if (erreur==true){
+			if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Les entités doivent toutes appartenir au même compartiment", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "All entities must be elements of the same compartment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}	
+		
+    	
+        _r3._reactifs.clear();
+        _r3._produits.clear();
+        _r3._positions.clear();
+        if (comboBoxName.getSelectedItem().equals("*")){
+        	_r3.setEtiquettes("React_"+ comboBox_S1.getSelectedItem() + "_vers_" + comboBox_P1.getSelectedItem());
+        }
+        else{
+    	_r3.setEtiquettes("React_"+ comboBoxName.getSelectedItem());
+    	_r3._reactifs.add((String)comboBoxName.getSelectedItem());
+    	_r3._produits.add((String)comboBoxName.getSelectedItem());
+        }
+    	_r3._reactifs.add((String) comboBox_S1.getSelectedItem());
+    	_r3._reactifs.add((String) comboBox_S2.getSelectedItem());    	
+    	_r3._produits.add((String) comboBox_P1.getSelectedItem());
+    	_r3._produits.add((String) comboBox_P2.getSelectedItem());
+    	_r3._positions.add("122222222");
+    	_r3._positions.add("212111211");
+    	_r3._positions.add("212111211");
+    	_r3.setType_behavior(3);
+    	_r3.setK(Double.parseDouble(textBoxKCst.getText()));
+    	if (comboBox_reaction.getSelectedItem()=="Reversible"){
+            _r3rev._reactifs.clear();
+            _r3rev._produits.clear();
+            _r3rev._positions.clear();
+            if (!comboBoxName.getSelectedItem().equals("*")){
+            	_r3rev.setEtiquettes("React_"+ comboBoxName.getSelectedItem()+"_reverse");
+            	_r3rev._reactifs.add((String)comboBoxName.getSelectedItem());
+            	_r3rev._produits.add((String)comboBoxName.getSelectedItem());
+            }
+            else{
+            	_r3rev.setEtiquettes("React_"+ comboBox_S1.getSelectedItem() + "_vers_" + comboBox_P1.getSelectedItem()+"_reverse");           	
+            }
+             
+        	_r3rev._reactifs.add((String) comboBox_P1.getSelectedItem());
+        	if (comboBox_P2.getSelectedItem().equals("-")){
+        		_r3rev._reactifs.add("*");
+        	}
+        	else{
+        		_r3rev._reactifs.add((String) comboBox_P2.getSelectedItem());
+        	}
+        	_r3rev._produits.add((String) comboBox_S1.getSelectedItem());
+        	if (comboBox_S2.getSelectedItem().equals("*")){
+        		_r3rev._produits.add("-");
+        	}
+        	else{
+        	_r3rev._produits.add((String) comboBox_S2.getSelectedItem());
+        	}
+        	_r3rev._positions.add("122222222");
+        	_r3rev._positions.add("212111211");
+        	_r3rev._positions.add("212111211");
+        	_r3rev.setType_behavior(3);
+        	_r3rev.setK(Double.parseDouble(textBoxKCst2.getText()));
+    	}
     	DialogResult = "OK";
     	setVisible(false);
     }
-    
-    private void button_OKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_OKMouseClicked
+
+	private void button_OKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_OKMouseClicked
 
 
     }//GEN-LAST:event_button_OKMouseClicked
@@ -258,12 +452,12 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     
     // Return the text inside this JField
     public String getTextBoxName() {
-		return textBoxName.getText();
+		return (String) comboBoxName.getSelectedItem();
 	}
 
     // Put a new value inside this JField
 	public void setTextBoxName(String textBoxName) {
-		this.textBoxName.setText(textBoxName);
+		this.comboBoxName.setSelectedItem(textBoxName);
 	}
 
 	// Return the text inside this JField
@@ -275,7 +469,23 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 	public void setTextBoxKCst(String textBoxCoefP1) {
 		this.textBoxKCst.setText(textBoxCoefP1);
 	}
+<<<<<<< HEAD
 	// Return the text inside this ComboBox
+=======
+<<<<<<< Estelle
+	
+    public String getTextBoxKCst2() {
+		return textBoxKCst2.getText();
+	}
+
+	public void setTextBoxKCst2(String textBoxKCst2) {
+		this.textBoxKCst2 .setText(textBoxKCst2);
+	}
+
+=======
+	// Return the text inside this ComboBox
+>>>>>>> origin
+>>>>>>> Estelle
 	public String getComboBox_S1() {
 		return (String) comboBox_S1.getSelectedItem();
 	}
@@ -315,7 +525,22 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 		this.comboBox_P2.setSelectedItem(comboBox_P2);
 	}
 
+<<<<<<< HEAD
 	// Return this DialogResult
+=======
+<<<<<<< Estelle
+	public String getComboBox_reaction() {
+		return (String) comboBox_reaction.getSelectedItem();
+	}
+
+	public void setComboBox_reaction(String comboBox_reaction) {
+		this.comboBox_reaction.setSelectedItem(comboBox_reaction);
+	}
+	
+=======
+	// Return this DialogResult
+>>>>>>> origin
+>>>>>>> Estelle
 	public String getDialogResult() {
 		return DialogResult;
 	}
@@ -329,6 +554,8 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     private javax.swing.JLabel jLabelNom;
     private javax.swing.JLabel jLabelReaction;
     private javax.swing.JLabel jLabelKCst;
+    private javax.swing.JLabel jLabelKCst2;
+    
     private javax.swing.JLabel jLabelS1;
     private javax.swing.JLabel jLabelS2;
     private javax.swing.JLabel jLabelP1;
@@ -336,8 +563,9 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     
     private javax.swing.JLabel jLabelReaction2;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JTextField textBoxName;
+    private javax.swing.JComboBox comboBoxName;
     private javax.swing.JTextField textBoxKCst;
+    private javax.swing.JTextField textBoxKCst2;
     
     private javax.swing.JComboBox comboBox_S1;
     private javax.swing.JComboBox comboBox_S2;

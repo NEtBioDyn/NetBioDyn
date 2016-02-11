@@ -9,13 +9,12 @@ public class Entity_NetMDyn extends Entity{
 	
 	public String _compartment = "Cytosol";
 	
-	//Initialization of the Entity object
     public Entity_NetMDyn() {
         super();
     }
 
-  //Clone of this object into a new one
-	public Entity_NetMDyn clone() {
+	
+	public Entity_NetMDyn  clone() {
         Entity_NetMDyn  reaxel = new Entity_NetMDyn (); // Creation of a new Entity
         //Retrieval of object parameters
         reaxel.setEtiquettes(getEtiquettes());
@@ -38,12 +37,10 @@ public class Entity_NetMDyn extends Entity{
         return toSave; //return the table containing all the informations
     }
     
-    //Return the Compartment
 	public String getCompartment() {
 		return _compartment;
 	}
 
-	//Put a new value to the Compartment
 	public void setCompartment(String compartment) {
 		_compartment = compartment;
 	}
