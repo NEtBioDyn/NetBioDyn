@@ -115,11 +115,11 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 				// System.out.println(toSave.getListManipulesReactions().get(i)._reactifs.get(j));
 				for (int v = 0; v < model.getListOfSpecies().size(); v++) {
 					// System.out.println(model.getListOfSpecies().get(v).getId());
-					if (model.getListOfSpecies().get(v).getId()
-							.equals(toSave.getListManipulesReactions().get(i)._reactifs.get(j))) {
+					if (model.getListOfSpecies().get(v).getId().equals(toSave.getListManipulesReactions().get(i)._reactifs.get(j))) {
 						System.out.println("enregistre reactif");
 						org.sbml.jsbml.Species spec = model.getListOfSpecies().get(v);
 						org.sbml.jsbml.SpeciesReference subs = sbReaction.createReactant(spec);
+						sbReaction.setCompartment(spec.getCompartment());
 						subs.setName(subs.getId());
 						subs.setSBOTerm(15);
 					}
@@ -139,7 +139,6 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 						subs.setSBOTerm(11);
 					}
 				}
-
 			}
 		}
 //		new JSBMLvisualizer(doc);
