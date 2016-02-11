@@ -1,9 +1,10 @@
 package NetMDyn.ihm;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
+import java.awt.Dimension;// Encapsulate the width and height of a component (in integer precision) in a single object.
+import java.awt.FlowLayout; // A flow layout arranges components in a directional flow, much like lines of text in a paragraph
+import java.util.ArrayList; // Possible creation of tables
+
+import javax.swing.JOptionPane; // Possible creation of dialog windows
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Entity_NetMDyn;
@@ -20,7 +21,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     private final ArrayList<Entity_NetMDyn> entities;
     private final ArrayList<Compartment> compartment;
 
-    
+    //Initialization of WndEditBehavior object
     public WndEditBehaviour(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -30,6 +31,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         initComponents();
     }
     
+    //Load of a behavior
     public void WndEditBehaviour_load(Behavior_NetMDyn behavior){
     	if (behavior == null){
     		_r3 = new Behavior_NetMDyn();
@@ -44,6 +46,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	
     }
     
+    //Initialization of the parameters of WndEditBehavior 
     private void initComponents() {
 
         jLabelNom = new javax.swing.JLabel();
@@ -206,6 +209,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+    //Action when OK button is used
     private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	if (textBoxName.getText().equals("")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
@@ -238,6 +242,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	
     }
     
+  //Action when Cancel button is used
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         // TODO add your handling code here:
         this.DialogResult = new String("CANCEL");
@@ -251,61 +256,71 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     }//GEN-LAST:event_formKeyPressed
 
     
-    
+    // Return the text inside this JField
     public String getTextBoxName() {
 		return textBoxName.getText();
 	}
 
+    // Put a new value inside this JField
 	public void setTextBoxName(String textBoxName) {
 		this.textBoxName.setText(textBoxName);
 	}
 
-	
+	// Return the text inside this JField
 	public String getTextBoxKCst() {
 		return textBoxKCst.getText();
 	}
 
+	// Put a new value inside this JField
 	public void setTextBoxKCst(String textBoxCoefP1) {
 		this.textBoxKCst.setText(textBoxCoefP1);
 	}
-
+	// Return the text inside this ComboBox
 	public String getComboBox_S1() {
 		return (String) comboBox_S1.getSelectedItem();
 	}
 
+	// Put a new value inside this ComboBox
 	public void setComboBox_S1(String comboBox_S1) {
 		this.comboBox_S1.setSelectedItem(comboBox_S1);
 	}
-
+	
+	// Return the text inside this ComboBox
 	public String getComboBox_S2() {
 		return (String) comboBox_S2.getSelectedItem();
 	}
-
+	
+	// Put a new value inside this ComboBox
 	public void setComboBox_S2(String comboBox_S2) {
 		this.comboBox_S2.setSelectedItem(comboBox_S2);
 	}
 
-	
+	// Return the text inside this ComboBox
 	public String getComboBox_P1() {
 		return (String) comboBox_P1.getSelectedItem();
 	}
 
+	// Put a new value inside this ComboBox
 	public void setComboBox_P1(String comboBox_P1) {
 		this.comboBox_P1.setSelectedItem(comboBox_P1);
 	}
-
+	
+	// Return the text inside this ComboBox
 	public String getComboBox_P2() {
 		return (String) comboBox_P2.getSelectedItem();
 	}
 
+	// Put a new value inside this ComboBox
 	public void setComboBox_P2(String comboBox_P2) {
 		this.comboBox_P2.setSelectedItem(comboBox_P2);
 	}
 
+	// Return this DialogResult
 	public String getDialogResult() {
 		return DialogResult;
 	}
 
+	// Put a new value to this DialogResult
 	public void setDialogResult(String dialogResult) {
 		DialogResult = dialogResult;
 	}

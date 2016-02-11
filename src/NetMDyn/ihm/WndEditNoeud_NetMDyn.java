@@ -1,16 +1,16 @@
 package NetMDyn.ihm;
 
 import netbiodyn.util.UtilFileFilter;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import javax.imageio.ImageIO;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JColorChooser;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import java.awt.Color; // Encapsulate colors in the default sRGB color space or colors in arbitrary color spaces identified by a ColorSpace
+import java.awt.image.BufferedImage; // Possible creation of an Image with an accessible buffer of image data
+import java.io.File; // An abstract representation of file and directory pathnames.
+import java.net.URL; // A Uniform Resource Locator, a pointer to a "resource" on the World Wide Web
+import java.util.ArrayList; // Possible creation of tables
+import javax.imageio.ImageIO;// Static convenience methods for locating ImageReaders and ImageWriters, and performing simple encoding and decoding
+import javax.swing.DefaultComboBoxModel; // The default model for combo boxes.
+import javax.swing.JColorChooser; // Allow a user to manipulate and select a color
+import javax.swing.JFileChooser; //  Allow a user to choose a file
+import javax.swing.JOptionPane; // A standard dialog box that prompts users for a value or informs them of something.
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Compartment;
@@ -46,7 +46,7 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         initComponents();
     }
     
-
+    //Load a new Reaxel
     public void WndCliValue_Load(Entity_NetMDyn reaxel) {
     	
         String[] comps = new String[compartment.size()+1];
@@ -106,7 +106,7 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         textBox1.setText(_cli._etiquettes);
         textBox_demie_vie.setText(((Double) _cli.DemieVie).toString());
 
-        // Apparence
+        // Appearence
         buttonCouleur.setBackground(_cli.Couleur);
         comboBox_formes.setSelectedIndex(_cli._forme);
         comboBox_compartment.setSelectedItem(_cli._compartment);
@@ -167,27 +167,53 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         getContentPane().setLayout(null);
 
         jLabelNom.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        jLabelNom.setText("Nom");
+        if (Lang.getInstance().getLang().equals("FR")) {
+        	jLabelNom.setText("Nom");
+        }
+        else{
+        	jLabelNom.setText("Name");
+        }
         getContentPane().add(jLabelNom);
         jLabelNom.setBounds(10, 40, 50, 15);
         
         jLabelComp.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        jLabelComp.setText("Compartiment");
+        if (Lang.getInstance().getLang().equals("FR")) {
+        	jLabelComp.setText("Compartiment");
+        }
+        else{
+        	jLabelComp.setText("Compartment");
+        }
         getContentPane().add(jLabelComp);
         jLabelComp.setBounds(10, 70, 80, 15);
         
         jLabelVie.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        jLabelVie.setText("Demi-vie (0=infinie)");
+        if (Lang.getInstance().getLang().equals("FR")) {
+        	jLabelVie.setText("Demi-vie (0=infinie)");
+        }
+        else{
+        	jLabelVie.setText("Half life (0=infinite)");
+        }
         getContentPane().add(jLabelVie);
         jLabelVie.setBounds(10, 100, 92, 15);
 
         jLabelApp.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        jLabelApp.setText("Apparence");
+        if (Lang.getInstance().getLang().equals("FR")) {
+            jLabelApp.setText("Apparence");       	
+        }
+        else{
+            jLabelApp.setText("Appearance");        	
+        }
         getContentPane().add(jLabelApp);
         jLabelApp.setBounds(10, 130, 70, 15);
 
         textBox1.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        textBox1.setText("nom");
+        if (Lang.getInstance().getLang().equals("FR")) {
+            textBox1.setText("Nom");        	
+        }
+        else{
+            textBox1.setText("Name");        	
+        }
+
         textBox1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 textBox1KeyTyped(evt);
@@ -202,7 +228,26 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         textBox_demie_vie.setBounds(150, 100, 130, 20);
 
         comboBox_formes.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        comboBox_formes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disque", "Carre", "Triangle", "Losange", "Etoile", "Pois", "Bruit" }));
+        String textcombobox1, textcombobox2, textcombobox3,textcombobox4,textcombobox5,textcombobox6,textcombobox7;
+        if (Lang.getInstance().getLang().equals("FR")) {
+        	textcombobox1="Disque";
+        	textcombobox2="Carré";
+        	textcombobox3="Triangle";
+        	textcombobox4="Losange";
+        	textcombobox5="Etoile";
+        	textcombobox6="Pois";
+        	textcombobox7="Bruit";
+        }
+        else{
+        	textcombobox1="Disc";
+        	textcombobox2="Square";
+        	textcombobox3="Triangle";
+        	textcombobox4="Diamond";
+        	textcombobox5="Star";
+        	textcombobox6="Pea";
+        	textcombobox7="Noise";
+        }
+        comboBox_formes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { textcombobox1, textcombobox2, textcombobox3,textcombobox4,textcombobox5,textcombobox6,textcombobox7}));
         getContentPane().add(comboBox_formes);
         comboBox_formes.setBounds(160, 130, 120, 21);
         
@@ -218,7 +263,12 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         comboBox_compartment.setBounds(120, 70, 120, 21);
 
         buttonCouleur.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        buttonCouleur.setText("Couleur");
+        if (Lang.getInstance().getLang().equals("FR")) {
+            buttonCouleur.setText("Couleur");        	
+        }
+        else{
+            buttonCouleur.setText("Color");        	
+        }
         buttonCouleur.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonCouleurMouseClicked(evt);
@@ -248,7 +298,13 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         button_img.setBounds(80, 160, 80, 23);
 
         button_pas_image.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        button_pas_image.setText("Sans image");
+        if (Lang.getInstance().getLang().equals("FR")) {
+            button_pas_image.setText("Sans image");
+        }
+        else{
+            button_pas_image.setText("No image");        	
+        }
+
         button_pas_image.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 button_pas_imageMouseClicked(evt);
@@ -275,7 +331,12 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
         button_CANCEL.setBackground(new java.awt.Color(255, 153, 153));
         button_CANCEL.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        button_CANCEL.setText("Annuler");
+        if (Lang.getInstance().getLang().equals("FR")) {
+            button_CANCEL.setText("Annuler");        	
+        }
+        else{
+            button_CANCEL.setText("Cancel");       	
+        }
         button_CANCEL.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 button_CANCELMouseClicked(evt);
@@ -290,7 +351,12 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         button_CANCEL.setBounds(293, 220, 210, 23);
 
         jLabelDescr.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        jLabelDescr.setText("Description de l'entite");
+        if (Lang.getInstance().getLang().equals("FR")) {
+            jLabelDescr.setText("Description de l'entité");        	
+        }
+        else{
+            jLabelDescr.setText("Description of the entity");        	
+        }
         getContentPane().add(jLabelDescr);
         jLabelDescr.setBounds(300, 40, 141, 15);
 
@@ -307,7 +373,12 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         jLabelEntite.setBackground(new java.awt.Color(153, 153, 255));
         jLabelEntite.setFont(new java.awt.Font("DejaVu Sans", 1, 24)); // NOI18N
         jLabelEntite.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelEntite.setText("Entite");
+        if (Lang.getInstance().getLang().equals("FR")) {
+        	jLabelEntite.setText("Entite");
+        }
+        else{
+        	jLabelEntite.setText("Entity");
+        }
         getContentPane().add(jLabelEntite);
         jLabelEntite.setBounds(0, 0, 533, 28);
 
@@ -335,6 +406,7 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_CANCELMouseClicked
 
+    //Action when user wants help
     private void button_aide_descriptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_aide_descriptionMouseClicked
         // TODO add your handling code here:
         if (Lang.getInstance().getLang().equals("FR")) {
@@ -345,15 +417,14 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_aide_descriptionMouseClicked
 
+    //Action when we want no image in the background of the box
     private void button_pas_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_pas_imageMouseClicked
-        // TODO add your handling code here:
         _cli.BackgroundImage = null;
         _cli._str_image_deco = "";
     }//GEN-LAST:event_button_pas_imageMouseClicked
 
+    //Action when we want an image in the background of the box
     private void button_imgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_imgMouseClicked
-        // TODO add your handling code here:
-        // Placement de l'image dans le fond de la pictbox
         JFileChooser openFileDialog1 = new JFileChooser();
         UtilFileFilter filtre = new UtilFileFilter("Images", "bmp", "gif", "jpeg", "jpg", "png");
         openFileDialog1.setFileFilter(filtre);
@@ -364,9 +435,9 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
             String fileName = openFileDialog1.getCurrentDirectory().getAbsolutePath() + File.separatorChar + openFileDialog1.getSelectedFile().getName();
             if (!fileName.startsWith("http") && !fileName.startsWith("file")) {
                 if (fileName.startsWith("/")) {
-                    fileName = "file://" + fileName; // sous linux
+                    fileName = "file://" + fileName; // Under Linux
                 } else {
-                    fileName = "file:///" + fileName; // sous windows
+                    fileName = "file:///" + fileName; // Uner Windows
                 }
             }
             try {
@@ -379,10 +450,9 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_button_imgMouseClicked
 
+    //Change of color
     private void buttonCouleurMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonCouleurMouseClicked
-        // TODO add your handling code here:
-        
-        // List des couleurs deja existantes
+        // List of already-existing colors
         ArrayList<Color> lst_col = new ArrayList<Color>();
         for (int ii = 0; ii < entities.size(); ii++) {
             lst_col.add((entities.get(ii)).Couleur);
@@ -395,21 +465,21 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
             lst_col.remove(_old_color);
 
             if (lst_col.contains(returnColor) == true) {
-                // Cas ou la couleur existe deja
+                // Case where the color already exists
                 if (Lang.getInstance().getLang().equals("FR")) {
-                    JOptionPane.showMessageDialog(this, "Cette couleur d'entite existe deja. Changement non effectue.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(this, "Cette couleur d'entité existe déjà. Changement non effectué.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 } else {
-                    JOptionPane.showMessageDialog(this, "This color is already in use", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(this, "This color is already in use, no change done", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }
 
             } else {
                 if (returnColor != null) {
                     if (returnColor.equals(Color.WHITE)) {
-                        // Cas ou la couleur est blanche
+                        // Case where the color is white
                         if (Lang.getInstance().getLang().equals("FR")) {
-                            JOptionPane.showMessageDialog(this, "La couleur blanche est reservee pour les emplacements vides de l'environnement. Changement non effectue.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                            JOptionPane.showMessageDialog(this, "La couleur blanche est reservée pour les emplacements vides de l'environnement. Changement non effectue.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                         } else {
-                            JOptionPane.showMessageDialog(this, "The white color is not usable.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                            JOptionPane.showMessageDialog(this, "The white color is not usable because of its use for empty spaces in the environment. No change done.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                         }
 
                     } else {
@@ -427,15 +497,15 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_OKMouseClicked
 
+    //Check if one forbidden character is typed
     private void textBox1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBox1KeyTyped
-        // TODO add your handling code here:
         char c = evt.getKeyChar();
         if (c == '\\' || c == '/' || c == ',' || c == ':' || c == ' ' || c == '*' || c == '?' || c == '\"' || c == '<' || c == '>' || c == '|') {
             evt.consume();
             if (Lang.getInstance().getLang().equals("FR")) {
-                JOptionPane.showMessageDialog(this, "Les caracteres \\ / , : ESPACE * ? \" < > , et | sont interdits. Merci de votre comprehension", "ATTENTION", JOptionPane.INFORMATION_MESSAGE, null);
+                JOptionPane.showMessageDialog(this, "Les caractères \\ / , : ESPACE * ? \" < > , et | sont interdits. Merci de votre compréhension", "ATTENTION", JOptionPane.INFORMATION_MESSAGE, null);
             } else {
-                JOptionPane.showMessageDialog(this, "Characteres \\ / : SPACE * ? \" < > , and | are forbiden.", "ATTENTION", JOptionPane.INFORMATION_MESSAGE, null);
+                JOptionPane.showMessageDialog(this, "Characters \\ / : SPACE * ? \" < > , and | are forbidden.", "ATTENTION", JOptionPane.INFORMATION_MESSAGE, null);
             }
         }
         if (c == '\n') {
@@ -443,6 +513,7 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_textBox1KeyTyped
 
+    //Errors when OK button is pushed
     public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
         if (textBox1.getText().equals("")) {
             if (Lang.getInstance().getLang().equals("FR")) {
@@ -453,7 +524,7 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
             return;
         }
 
-        // List des noms deja existants
+        // List of already-existing names
         ArrayList<String> lst_str = new ArrayList<>();        
         for (Entity_NetMDyn entity : entities) {
             lst_str.add(entity._etiquettes);       
@@ -461,38 +532,38 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
         lst_str.remove(_old_name);
 
-        // Verif que le nom n'est pas deja attribue a un comportement
+        // Check if the name is not already attributed to a behavior
         for (int n = 0; n < behaviours.size(); n++) {
             if (behaviours.get(n).TrouveEtiquette(textBox1.getText()) >= 0) {
-                // Cas ou le nom existe deja
+                // Case where the name already exists
                 if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 } else {
-                    JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(this, "This name already exists, please change it.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }
                 return;
             }
         }
         
-        // Verif que le nom n'est pas deja attribue a une compartment
+        // Check if the name is not already attributed to a compartment
         for (int n = 0; n < compartment.size(); n++) {
             if (compartment.get(n).getEtiquettes().equals(textBox1.getText())) {
-                // Cas ou le nom existe deja
+                // Case where the name already exists
                 if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 } else {
-                    JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(this, "This name already exists, please change it.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }
                 return;
             }
         }
 
         if (lst_str.contains(textBox1.getText()) == true) {
-            // Cas ou le nom existe deja
+            // Case where the name already exists
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "Ce nom existe déjà. Veuillez en changer svp.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             } else {
-                JOptionPane.showMessageDialog(this, "This name already exists.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                JOptionPane.showMessageDialog(this, "This name already exists, please change it.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }
             return;
         }
@@ -502,7 +573,7 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
         }
-        // Apparence
+        // Appearance
         _cli.Couleur = buttonCouleur.getBackground();
         _cli._forme = comboBox_formes.getSelectedIndex();
         _cli._compartment = (String) comboBox_compartment.getSelectedItem();
@@ -562,7 +633,6 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
 
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
-        // TODO add your handling code here:
         this.DialogResult = new String("CANCEL");
         setVisible(false);
     }//GEN-LAST:event_button_CANCELActionPerformed

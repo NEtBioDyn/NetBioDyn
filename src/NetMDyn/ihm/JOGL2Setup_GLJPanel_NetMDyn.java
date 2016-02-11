@@ -33,20 +33,20 @@ import NetMDyn.Entity_NetMDyn;
 import NetMDyn.InstanceReaxel_NetMDyn;
 import NetMDyn.util.Serialized_NetMDyn;
 
-import java.awt.event.ActionEvent;
-	import java.awt.event.ActionListener;
-	import java.awt.event.KeyEvent;
-	import java.awt.event.KeyListener;
-	import java.awt.event.MouseEvent;
-	import java.awt.event.MouseListener;
-	import java.awt.event.MouseMotionListener;
-	import java.awt.event.MouseWheelEvent;
-	import java.awt.event.MouseWheelListener;
-	import java.io.IOException;
-	import java.net.URL;
-	import java.nio.FloatBuffer;
-	import java.util.ArrayList;
-	import java.util.HashMap;
+import java.awt.event.ActionEvent;  // A semantic event which indicates that a component-defined action occurred
+	import java.awt.event.ActionListener; // The listener interface for receiving action events
+	import java.awt.event.KeyEvent; // An event which indicates that a keystroke occurred in a component
+	import java.awt.event.KeyListener; //The listener interface for receiving keyboard events 
+	import java.awt.event.MouseEvent; // Indicate that a mouse action occurred in a component
+	import java.awt.event.MouseListener; // The listener interface for receiving "interesting" mouse events on a component
+	import java.awt.event.MouseMotionListener; // The listener interface for receiving mouse motion events on a component
+	import java.awt.event.MouseWheelEvent; // An event which indicates that the mouse wheel was rotated in a component
+	import java.awt.event.MouseWheelListener; // The listener interface for receiving mouse wheel events on a component
+	import java.io.IOException; // Signals that an I/O exception of some sort has occurred
+	import java.net.URL; // Represent a Uniform Resource Locator, a pointer to a "resource" on the World Wide Web
+	import java.nio.FloatBuffer; // A float buffer
+	import java.util.ArrayList; // Possible creation of tables
+	import java.util.HashMap; // Possible creation of hashmaps
 	import netbiodyn.AllInstances;
 	import netbiodyn.util.Serialized;
 	import netbiodyn.InstanceReaxel;
@@ -496,15 +496,17 @@ import java.awt.event.ActionEvent;
 	            }
 	        }
 	    }
-
+	    
+	    // Called when the mouse is moved
 	    @Override
 	    public void mouseMoved(MouseEvent evt) {
 	    }
 
+	    // Called when the user uses the mouse click
 	    @Override
 	    public void mouseClicked(MouseEvent evt) {
 	    }
-
+	    
 	    @Override
 	    public void mouseEntered(MouseEvent evt) {
 	    }
@@ -513,6 +515,7 @@ import java.awt.event.ActionEvent;
 	    public void mouseExited(MouseEvent evt) {
 	    }
 
+	    // Methods used when the user uses the keyboard
 	    @Override
 	    public void keyTyped(KeyEvent e) {
 	        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -533,6 +536,7 @@ import java.awt.event.ActionEvent;
 	        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	    }
 
+	    // Called when the user uses the mouse wheel
 	    @Override
 	    public void mouseWheelMoved(MouseWheelEvent e) {
 	        int val = e.getScrollAmount();
