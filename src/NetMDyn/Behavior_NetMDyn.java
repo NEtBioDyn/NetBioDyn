@@ -1,3 +1,27 @@
+/* This file is part of NetMDyn.
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * Behavior_NetMDyn.java
+ *
+ * Created on February 11 2016, 19:04
+ */
+
+
+
 package NetMDyn;
 
 import netbiodyn.AllInstances;
@@ -10,12 +34,18 @@ import netbiodyn.util.Lang;
 import netbiodyn.util.RandomGen;
 import netbiodyn.util.UtilPoint3D;
 
-import java.awt.Point;
+import java.awt.Point; // A point representing a location in (x,y) coordinate space
 import java.util.ArrayList; // Possible creation of tables
-import java.util.HashMap;
+import java.util.HashMap; // Possible creation of hashmaps
 
+/**
+ * Class of Behavior management
+ * 
+ * @author Master 2 Bioinformatique
+ */
 
 public class Behavior_NetMDyn extends Behavior {
+<<<<<<< Estelle
 	private int type_behavior;
 	private double K = 0.0;
 	private double proba;
@@ -48,40 +78,67 @@ public class Behavior_NetMDyn extends Behavior {
 	public void computeReactions(Simulator_NetMDyn s, Env_Parameters param, AllInstances_NetMDyn instances, int time) {
         this.setParameters(param); //Put new values to parameters of Env_Parameters object linked to the Behavior one
         _reactionsPossibles = new ArrayList<>(); //Creation of a new table which will contain all possible reactions
+=======
+	/**
+	 * 
+	 * @param s : the simulator
+	 * @param param : the environment parameters
+	 * @param instances : instances
+	 * @param time
+	 */
+    public void computeReactions(Simulator_NetMDyn s, Env_Parameters param, AllInstances_NetMDyn instances, int time) {
+        this.setParameters(param); // Put new values to parameters of Env_Parameters object linked to the Behavior one
+        _reactionsPossibles = new ArrayList<>(); // Creation of a new table which will contain all possible reactions
+>>>>>>> origin
         this.simuler_semi_situee(instances, time);
         s.decrementer_nb_processus_a_traiter();
     }
     
+    /**
+     * Clone of this object into a new one
+     * @return the new behavior
+     */
     public Behavior_NetMDyn clone() {
-        Behavior_NetMDyn  m = new Behavior_NetMDyn (); //Creation of a new Behavior object
-        //Get all the parameters of the old Behavior object to put them into the new one
+        Behavior_NetMDyn  m = new Behavior_NetMDyn (); // Creation of a new Behavior object
+        // Get all the parameters of the old Behavior object to put them into the new one
         m.setEtiquettes(getEtiquettes());
         m._description.setText(_description.getText().replace('\n', '§'));
         m._reactifs = (ArrayList<String>) _reactifs.clone();
         m._produits = (ArrayList<String>) _produits.clone();
         m._positions = (ArrayList<String>) _positions.clone();
         m._ListElementsReactions = (ArrayList<WndEditElementDeReaction>) _ListElementsReactions.clone();
+<<<<<<< Estelle
         m._visibleDansPanel=_visibleDansPanel;
         m.setProba(getProba());
         m.setK(getK());
         m.setType_behavior(getType_behavior());
         return m; //Return the new Behavior object
+=======
+        m.set_k(get_k());
+        return m; // Return the new Behavior object
+>>>>>>> origin
     }
+    
+    /**
+     * 
+     * @param instances
+     * @param time
+     */
     public void simuler_semi_situee(AllInstances_NetMDyn instances, int time) {
         HashMap<String, Point> dico_rea = new HashMap<>();
 
         if (_reactifs.size() <= 0) {
-            return; //End of the function if there is no reagent
+            return; // End of the function if there is no reagent
         }
-        //For all the manipulated elements (compartment,...), 
-        //Search of the "clinamon" 'molecule C' to obtain its pseudoforme thereafter
-        //If control atom
+        // For all the manipulated elements (compartment,...), 
+        // Search of the "clinamon" 'molecule C' to obtain its pseudoforme thereafter
+        // If control atom
         InstanceReaxel c_a; 
         int xb, yb, zb, x, y, z;
 
-        for (int j = instances.getSize() - 1; j >= 0; j--) { //Path of AllInstances object
-            c_a = instances.getInList(j); //The InstanceReaxel is the one at the position j in AllInstances object
-            //Search of a molecule A into the list
+        for (int j = instances.getSize() - 1; j >= 0; j--) { // Path of AllInstances object
+            c_a = instances.getInList(j); // The InstanceReaxel is the one at the position j in AllInstances object
+            // Search of a molecule A into the list
             if (c_a.getNom().equals(_reactifs.get(0)) && c_a.isSelectionne() == false) {
                 x = c_a.getX();
                 y = c_a.getY();
@@ -128,7 +185,7 @@ public class Behavior_NetMDyn extends Behavior {
                                             xb = xx;
                                             yb = yy;
                                             zb = zz;
-                                            //Manage the "edges" of the "torus"
+                                            // Manage the "edges" of the "torus"
 
                                             if (hors_cube == false) {
                                                 InstanceReaxel rea = instances.getFast(xb, yb, zb);
@@ -201,7 +258,7 @@ public class Behavior_NetMDyn extends Behavior {
                             for (int yy = y_min; yy <= y_max; yy++) {
                                 for (int zz = z_min; zz <= z_max; zz++) {
                                     int ddd = (x - xx) * (x - xx) + (y - yy) * (y - yy) + (z - zz) * (z - zz);
-                                    if (ddd <= 1 || ddd >= 4) { // Remove diagonals (d=2 ou d=3)
+                                    if (ddd <= 1 || ddd >= 4) { // Remove diagonals (d=2 or d=3)
                                         xb = xx;
                                         yb = yy;
                                         zb = zz;
@@ -271,7 +328,7 @@ public class Behavior_NetMDyn extends Behavior {
                             }
                         }
 
-                        //J decrement de j according to the list position
+                        //J decrement of j according to the list position
                         int deltaReactifs = listReactifs.size() - 1;
                         // Count of those which are * before * c_a
                         for (InstanceReaxel listReactif : listReactifs) {

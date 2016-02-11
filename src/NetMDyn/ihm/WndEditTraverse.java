@@ -1,10 +1,14 @@
 package NetMDyn.ihm;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
+import java.awt.Dimension; // Width and height of a component (in integer precision) in a single object
+import java.util.ArrayList; // Possible creation of tables
 
+<<<<<<< Estelle
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+=======
+import javax.swing.JOptionPane; // Possible creation of dialog windows
+>>>>>>> origin
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Entity_NetMDyn;
@@ -22,6 +26,7 @@ public class WndEditTraverse extends javax.swing.JDialog {
     private final ArrayList<Entity_NetMDyn> entities;
     private final ArrayList<Compartment> compartment;
     
+    //Initialization of a WndEditTraverse object
     public WndEditTraverse(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -31,6 +36,7 @@ public class WndEditTraverse extends javax.swing.JDialog {
         initComponents();
     }
     
+    //Load a new traverse reaction
     public void WndEditTraverse_load(Behavior_NetMDyn behavior){
     	if (behavior == null){
     		_r3 = new Behavior_NetMDyn();
@@ -51,6 +57,7 @@ public class WndEditTraverse extends javax.swing.JDialog {
     	}
     }
     
+    //Initialization of parameters
     private void initComponents() {
     	 jLabelNomOrigine = new javax.swing.JLabel();
     	 jLabelNomTarget = new javax.swing.JLabel();
@@ -78,7 +85,12 @@ public class WndEditTraverse extends javax.swing.JDialog {
          getContentPane().setLayout(null);
 
          jLabelNomOrigine.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-         jLabelNomOrigine.setText("Entité d'origine");
+         if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	 jLabelNomOrigine.setText("Entité d'origine");
+         }
+         else{
+        	 jLabelNomOrigine.setText("Origin entity");
+         }
          getContentPane().add(jLabelNomOrigine);
          jLabelNomOrigine.setBounds(10, 40, 100, 20);
          
@@ -105,7 +117,17 @@ public class WndEditTraverse extends javax.swing.JDialog {
          comboBox_OriginEntity.setBounds(120, 40, 150, 20);
 
          jLabelNomTarget.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+<<<<<<< Estelle
          jLabelNomTarget.setText("Entité à l'arrivée");
+=======
+         if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	 jLabelNomTarget.setText("Entité d'origine");
+         }
+         else{
+        	 jLabelNomTarget.setText("Origin entity");
+         }
+         
+>>>>>>> origin
          getContentPane().add(jLabelNomTarget);
          jLabelNomTarget.setBounds(10, 80, 100, 20);
          
@@ -115,7 +137,12 @@ public class WndEditTraverse extends javax.swing.JDialog {
          comboBox_TargetEntity.setBounds(120, 80, 150, 20);
          
          jLabelCompartment.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-         jLabelCompartment.setText("Compartment");
+         if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	 jLabelCompartment.setText("Compartiment");
+         }
+         else{
+        	 jLabelCompartment.setText("Compartment");
+         }
          getContentPane().add(jLabelCompartment);
          jLabelCompartment.setBounds(10, 120, 100, 20);
          
@@ -131,7 +158,12 @@ public class WndEditTraverse extends javax.swing.JDialog {
          comboBox_compartment.setBounds(120, 120, 150, 20);
          
          jLabelProba.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-         jLabelProba.setText("Probability");
+         if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+             jLabelProba.setText("Probabilité");        	 
+         }
+         else{
+             jLabelProba.setText("Probability");        	 
+         }
          getContentPane().add(jLabelProba);
          jLabelProba.setBounds(10, 160, 60, 20);
          
@@ -163,7 +195,12 @@ public class WndEditTraverse extends javax.swing.JDialog {
 
          button_CANCEL.setBackground(new java.awt.Color(255, 153, 153));
          button_CANCEL.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-         button_CANCEL.setText("Annuler");
+         if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	 button_CANCEL.setText("Annuler");
+         }
+         else{
+        	 button_CANCEL.setText("Cancel");
+         }
          button_CANCEL.addMouseListener(new java.awt.event.MouseAdapter() {
              public void mouseClicked(java.awt.event.MouseEvent evt) {
                  button_CANCELMouseClicked(evt);
@@ -180,7 +217,13 @@ public class WndEditTraverse extends javax.swing.JDialog {
          jLabelTitre.setBackground(new java.awt.Color(153, 153, 255));
          jLabelTitre.setFont(new java.awt.Font("DejaVu Sans", 1, 24)); // NOI18N
          jLabelTitre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-         jLabelTitre.setText("Traversée de membrane");
+         if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+        	 jLabelTitre.setText("Traversée de membrane");
+         }
+         else{
+        	 jLabelTitre.setText("Membrane crossing");
+         }
+         
          getContentPane().add(jLabelTitre);
          jLabelTitre.setBounds(0, 0, 533, 28);
          
@@ -193,6 +236,8 @@ public class WndEditTraverse extends javax.swing.JDialog {
          setSize(new java.awt.Dimension(533, 300));
          setLocationRelativeTo(null);
     }
+    
+    //Action when OK button is pushed
     private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	if (getComboBox_OriginEntity().equals("-")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
@@ -212,6 +257,7 @@ public class WndEditTraverse extends javax.swing.JDialog {
             return;
     	}
     	
+<<<<<<< Estelle
     	if (getComboBox_TargetEntity().equals(getComboBox_OriginEntity())) {
     		if (Lang.getInstance().getLang().equals("FR")) {
     			JOptionPane.showMessageDialog(this, "Les deux entités ne peuvent pas être identiques", "Information", JOptionPane.INFORMATION_MESSAGE, null);
@@ -315,6 +361,10 @@ public class WndEditTraverse extends javax.swing.JDialog {
     	_rNS.setProba(Double.parseDouble(textBoxProba.getText()));
     	_rNS._visibleDansPanel = false;
     	
+=======
+    	String origin_entity = getComboBox_OriginEntity();
+    	String target_entity = getComboBox_TargetEntity();
+>>>>>>> origin
     	
     	DialogResult = "OK";
     	setVisible(false);
@@ -331,6 +381,7 @@ public class WndEditTraverse extends javax.swing.JDialog {
     	
     }
     
+    //Action when Cancel button is pushed
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         // TODO add your handling code here:
         this.DialogResult = new String("CANCEL");
@@ -342,6 +393,7 @@ public class WndEditTraverse extends javax.swing.JDialog {
 
         //if()
     }//GEN-LAST:event_formKeyPressed
+    
     public String getComboBox_OriginEntity() {
 		return (String) comboBox_OriginEntity.getSelectedItem();
 	}

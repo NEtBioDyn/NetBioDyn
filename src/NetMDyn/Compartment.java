@@ -1,30 +1,69 @@
+/* This file is part of NetMDyn.
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * Compartment.java
+ *
+ * Created on February 11 2016, 20:05
+ */
+
 package NetMDyn;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.Color; // Encapsulate colors in the default sRGB color space or colors in arbitrary color spaces identified by a ColorSpace
+import java.awt.image.BufferedImage; // An Image with an accessible buffer of image data
+import java.util.ArrayList; // Possible creation of tables
+import java.util.HashMap; // Possible creation of hashmaps
 
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
+import javax.swing.JTextArea; // A multi-line area that displays plain text
+import javax.swing.JTextPane; //A text component that can be marked up with attributes that are represented graphically
 
 import netbiodyn.ProtoBioDyn;
 import netbiodyn.util.RandomGen;
 import netbiodyn.util.UtilPoint3D;
 
+/**
+ * Class of Compartment management
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
 public class Compartment extends ProtoBioDyn{
 	private UtilPoint3D center = new UtilPoint3D();
 	private int radius;
-	//private Entity ent= new Entity();
 	public Color Couleur = Color.RED;
 	public boolean _visibleDansPanel = true;
 	public boolean Vidable = true;
 	protected JTextPane _description = new JTextPane();
 	
+<<<<<<< Estelle
+=======
+	/**
+	 * Initialization of the Compartment object
+	 */
+>>>>>>> origin
 	public Compartment(){
 		initComponents();
 	}
 	
+<<<<<<< Estelle
+=======
+	/**
+	 * Clone of this object into a new one
+	 */
+>>>>>>> origin
     public Compartment clone() {
         Compartment comp = new Compartment();
         comp.center = center;
@@ -36,40 +75,87 @@ public class Compartment extends ProtoBioDyn{
         return comp;
     }	
 	
+<<<<<<< Estelle
+=======
+  /**
+   * Return the description of the Compartment
+   * @return this description
+   */
+>>>>>>> origin
 	public JTextPane getDescription() {
 		return _description;
 	}
 
+<<<<<<< Estelle
+=======
+	/**
+	 * Put a new value to the description of the Compartment
+	 * @param _description : the description to replace
+	 */
+>>>>>>> origin
 	public void setDescription( JTextPane _description) {
 		this._description = _description;
 	}
 
+<<<<<<< Estelle
 	public UtilPoint3D getCenter() {
 		return center;
 	}
 
+=======
+	/**
+	 * Return the center of the Compartment
+	 * @return the point representing the center
+	 */
+	public UtilPoint3D getCenter() {
+		return center;
+	}
+	
+	/**
+	 * Put a new value to the center of the Compartment
+	 * @param center : the point representing the center
+	 */
+>>>>>>> origin
 	public void setCenter(UtilPoint3D center) {
 		this.center.x = center.x;
 		this.center.y = center.y;
 		
 	}
+<<<<<<< Estelle
 
 	public int getRadius() {
 		return radius;
 	}
 
+=======
+	
+	/**
+	 * Return the radius of the Compartment
+	 * @return this radius
+	 */
+	public int getRadius() {
+		return radius;
+	}
+	/**
+	 * Put a new value to the radius of the Compartment
+	 * @param radius : the radius to replace
+	 */
+>>>>>>> origin
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
-/*
-	public Entity getEnt() {
-		return ent;
-	}
 
+<<<<<<< Estelle
 	public void setEnt(Entity ent) {
 		this.ent = ent;
 	}
 */	
+=======
+	/**
+	 *  Save the object with all its parameters
+	 *  @return all saved parameters 
+	 */
+>>>>>>> origin
     public ArrayList<String> toSave() {
         ArrayList<String> toSave = new ArrayList<String>();
         String classe = this.getClass().toString();
@@ -80,10 +166,15 @@ public class Compartment extends ProtoBioDyn{
         toSave.add(new String("\tcenterY:").concat(Integer.toString(this.getCenter().y)) + "\n");
         toSave.add(new String("\tcenterZ:").concat(Integer.toString(this.getCenter().z)) + "\n");
         toSave.add(new String("\tradius:").concat(Integer.toString(this.getRadius())) + "\n");
-        //toSave.add(new String("\tmenbrane:").concat(getEnt().getEtiquettes()) + "\n");
         return toSave;
     }
     
+<<<<<<< Estelle
+=======
+    /**
+     * Initialization of the components of the Compartment
+     */
+>>>>>>> origin
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -92,31 +183,9 @@ public class Compartment extends ProtoBioDyn{
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
-    }// </editor-fold>//GEN-END:initComponents
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    }
+    
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    // End of variables declaration//GEN-END:variables
-	
-//    public ArrayList<String> toSave() {
-//        ArrayList<String> toSave = super.toSave();
-//        toSave.add(new String("\tcouleur:").concat(((Integer) this.Couleur.getRGB()).toString()) + "\n");
-//        toSave.add(new String("\tdemie_vie:").concat(((Double) this.DemieVie).toString()) + "\n");
-//        toSave.add(new String("\tvidable:").concat(((Boolean) this.Vidable).toString()) + "\n");
-//        toSave.add(new String("\tcompartment:").concat(((String) this.Compartment).toString()) + "\n");
-//        return toSave;
-//    }
-	
-//	public ArrayList<String> toSave() {
-//  ArrayList<String> toSave = super.toSave();
-//  toSave.add(new String("\tforme:").concat(((Integer) this._forme).toString()) + "\n");
-//  toSave.add(new String("\ttaille:").concat(((Integer) this._taille).toString()) + "\n");
-//
-//  if (BackgroundImage != null) {
-//      toSave.add("\tImage:" + _str_image_deco + "\n");
-//  }
-//  return toSave;
-//}
+    
 }

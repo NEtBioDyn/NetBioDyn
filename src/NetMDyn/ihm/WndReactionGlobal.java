@@ -2,15 +2,16 @@ package NetMDyn.ihm;
 
 import netbiodyn.util.UtilPointF;
 import netbiodyn.util.UtilDivers;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+
+import java.awt.Color;// Encapsulate colors in the default sRGB color space or colors in arbitrary color spaces identified by a ColorSpace
+import java.awt.Dimension; // Encapsulate the width and height of a component (in integer precision) in a single object.
+import java.awt.Graphics; // The abstract base class for all graphics contexts that allow an application to draw onto components that are realized on various devices, as well as onto off-screen images. 
+import java.util.ArrayList; // Possible creation for tables
+import javax.swing.DefaultCellEditor; // The default editor for table and tree cells
+import javax.swing.JComboBox; //Combine a button or editable field and a drop-down list
+import javax.swing.JOptionPane; // A standard dialog box that prompts users for a value or informs them of something.
+import javax.swing.table.DefaultTableModel; //An implementation of TableModel that uses a Vector of Vectors to store the cell value objects. 
+import javax.swing.table.TableColumn; // All the attributes of a column in a JTable
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Compartment;
@@ -28,8 +29,13 @@ public class WndReactionGlobal extends javax.swing.JDialog {
     private final ArrayList<Behavior_NetMDyn> behaviors;
     private final ArrayList<Entity_NetMDyn> entities;
     private final ArrayList<Compartment> compartment;
+<<<<<<< Estelle
     
     
+=======
+
+    //Initialization of WndReactionGlobal object
+>>>>>>> origin
     public WndReactionGlobal(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -39,6 +45,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         initComponents();
     }
     
+    //Initialization of the parameters
     private void initComponents() {
         
         jLabelNom = new javax.swing.JLabel();
@@ -218,7 +225,12 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         
         button_CANCEL.setBackground(new java.awt.Color(255, 153, 153));
         button_CANCEL.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        button_CANCEL.setText("Annuler");
+        if (Lang.getInstance().getLang().equals("FR")) {
+        	button_CANCEL.setText("Annuler");
+        }
+        else{
+        	button_CANCEL.setText("Cancel");
+        }
         button_CANCEL.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 button_CANCELMouseClicked(evt);
@@ -249,21 +261,39 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         setSize(new java.awt.Dimension(530, 300));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+<<<<<<< Estelle
 
 	private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
         if (textBoxName.getText().equals("")) {
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "Merci de nommer la reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+=======
+    
+    //Errors when OK button is pushed
+    private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+    	if (textBoxName.getText().equals("")) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Merci de nommer la réaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+>>>>>>> origin
             }else {
                 JOptionPane.showMessageDialog(this, "Please name the reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }
             return;
+<<<<<<< Estelle
         }
         if (textBoxReaction.getText().equals("")) {
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "Merci d'ecrire une réaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }else {
                 JOptionPane.showMessageDialog(this, "Please write a reaction equation.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+=======
+    	}
+    	if (textBoxReaction.getText().equals("")) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Merci d'écrire une réaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "Please name the reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+>>>>>>> origin
             }
             return;
         }
@@ -394,8 +424,13 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         setVisible(false);
     }
     
+<<<<<<< Estelle
     private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         // TODO add your handling code here:
+=======
+  //Errors when Cancel button is pushed
+	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
+>>>>>>> origin
         this.DialogResult = new String("CANCEL");
         setVisible(false);
     }//GEN-LAST:event_button_CANCELActionPerformed
@@ -414,7 +449,12 @@ public class WndReactionGlobal extends javax.swing.JDialog {
     }//GEN-LAST:event_textBox1KeyTyped
     
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+<<<<<<< Estelle
         // TODO add your handling code here:
+=======
+
+        //if()
+>>>>>>> origin
     }//GEN-LAST:event_formKeyPressed
     
     

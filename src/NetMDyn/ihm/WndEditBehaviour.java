@@ -1,9 +1,10 @@
 package NetMDyn.ihm;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
+import java.awt.Dimension;// Encapsulate the width and height of a component (in integer precision) in a single object.
+import java.awt.FlowLayout; // A flow layout arranges components in a directional flow, much like lines of text in a paragraph
+import java.util.ArrayList; // Possible creation of tables
+
+import javax.swing.JOptionPane; // Possible creation of dialog windows
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Entity_NetMDyn;
@@ -21,7 +22,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     private final ArrayList<Entity_NetMDyn> entities;
     private final ArrayList<Compartment> compartment;
 
-    
+    //Initialization of WndEditBehavior object
     public WndEditBehaviour(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -31,8 +32,14 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         initComponents();
     }
     
+<<<<<<< Estelle
     public void WndEditBehaviour_load(Behavior_NetMDyn behavior, Behavior_NetMDyn behavior2){
     	if (behavior == null && behavior2 == null){
+=======
+    //Load of a behavior
+    public void WndEditBehaviour_load(Behavior_NetMDyn behavior){
+    	if (behavior == null){
+>>>>>>> origin
     		_r3 = new Behavior_NetMDyn();
     		_r3rev = new Behavior_NetMDyn();
     	}
@@ -82,6 +89,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	
     }
     
+    //Initialization of the parameters of WndEditBehavior 
     private void initComponents() {
 
         jLabelNom = new javax.swing.JLabel();
@@ -274,6 +282,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
+<<<<<<< Estelle
     
 
 	public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
@@ -285,6 +294,18 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 //            }
 //            return;
 //    	}
+=======
+    //Action when OK button is used
+    private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+    	if (textBoxName.getText().equals("")) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Merci de nommer l'enzyme.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "Please name the enzyme.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}
+>>>>>>> origin
     
     	if (getComboBox_S1().equals(getComboBox_P1()) || getComboBox_S1().equals(getComboBox_P2())|| getComboBox_S2().equals(getComboBox_P1()) || getComboBox_S2().equals(getComboBox_P2()) ) {
     		if (Lang.getInstance().getLang().equals("FR")) {
@@ -409,6 +430,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	
     }
     
+  //Action when Cancel button is used
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         // TODO add your handling code here:
         this.DialogResult = new String("CANCEL");
@@ -422,23 +444,26 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     }//GEN-LAST:event_formKeyPressed
 
     
-    
+    // Return the text inside this JField
     public String getTextBoxName() {
 		return (String) comboBoxName.getSelectedItem();
 	}
 
+    // Put a new value inside this JField
 	public void setTextBoxName(String textBoxName) {
 		this.comboBoxName.setSelectedItem(textBoxName);
 	}
 
-	
+	// Return the text inside this JField
 	public String getTextBoxKCst() {
 		return textBoxKCst.getText();
 	}
 
+	// Put a new value inside this JField
 	public void setTextBoxKCst(String textBoxCoefP1) {
 		this.textBoxKCst.setText(textBoxCoefP1);
 	}
+<<<<<<< Estelle
 	
     public String getTextBoxKCst2() {
 		return textBoxKCst2.getText();
@@ -448,39 +473,49 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 		this.textBoxKCst2 .setText(textBoxKCst2);
 	}
 
+=======
+	// Return the text inside this ComboBox
+>>>>>>> origin
 	public String getComboBox_S1() {
 		return (String) comboBox_S1.getSelectedItem();
 	}
 
+	// Put a new value inside this ComboBox
 	public void setComboBox_S1(String comboBox_S1) {
 		this.comboBox_S1.setSelectedItem(comboBox_S1);
 	}
-
+	
+	// Return the text inside this ComboBox
 	public String getComboBox_S2() {
 		return (String) comboBox_S2.getSelectedItem();
 	}
-
+	
+	// Put a new value inside this ComboBox
 	public void setComboBox_S2(String comboBox_S2) {
 		this.comboBox_S2.setSelectedItem(comboBox_S2);
 	}
 
-	
+	// Return the text inside this ComboBox
 	public String getComboBox_P1() {
 		return (String) comboBox_P1.getSelectedItem();
 	}
 
+	// Put a new value inside this ComboBox
 	public void setComboBox_P1(String comboBox_P1) {
 		this.comboBox_P1.setSelectedItem(comboBox_P1);
 	}
-
+	
+	// Return the text inside this ComboBox
 	public String getComboBox_P2() {
 		return (String) comboBox_P2.getSelectedItem();
 	}
 
+	// Put a new value inside this ComboBox
 	public void setComboBox_P2(String comboBox_P2) {
 		this.comboBox_P2.setSelectedItem(comboBox_P2);
 	}
 
+<<<<<<< Estelle
 	public String getComboBox_reaction() {
 		return (String) comboBox_reaction.getSelectedItem();
 	}
@@ -489,10 +524,14 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 		this.comboBox_reaction.setSelectedItem(comboBox_reaction);
 	}
 	
+=======
+	// Return this DialogResult
+>>>>>>> origin
 	public String getDialogResult() {
 		return DialogResult;
 	}
 
+	// Put a new value to this DialogResult
 	public void setDialogResult(String dialogResult) {
 		DialogResult = dialogResult;
 	}

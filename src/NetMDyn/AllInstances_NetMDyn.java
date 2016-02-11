@@ -1,3 +1,31 @@
+/* This file is part of NetMDyn.
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * AllInstances_NetMDyn.java
+ *
+ * Created on February 11 2016, 17:46
+ */
+
+
+/**
+ * Class of AllInstances management
+ * 
+ * @author Master 2 Bioinformatique
+ */
 package NetMDyn;
 
 import java.util.ArrayList; //Possible creation of tables
@@ -14,8 +42,14 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	    private int X;
 	    private int Y;
 	    private int Z;
-
-	    //Creation of an AllInstances object, with coordinates as parameters
+	    
+	    /**
+	    *
+	    *Creation of an AllInstances object
+	    * @param x : coordinate
+	    * @param y : coordinate 
+	    * @param z : coordinate
+	    */
 	    public AllInstances_NetMDyn(int x, int y, int z) {
 	        super(); //Creation of an InstanceReaxel which will have more parameters after
 	        X = x;
@@ -25,7 +59,14 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	        entitiesBook = new HashMap<>(); //Creation of an empty Hashmap
 	    }
 
-	    //Creation of an AllInstances object, with all possible parameters 
+	    /**
+	     * Creation of an AllInstances object, with all possible parameters 
+	     * @param l : table of InstanceReaxels
+	     * @param m : InstanceReaxel_NetMDyn[][][]
+	    * @param x : coordinate
+	    * @param y : coordinate 
+	    * @param z : coordinate
+	     */
 	    public AllInstances_NetMDyn(ArrayList<InstanceReaxel_NetMDyn> l, InstanceReaxel_NetMDyn[][][] m, int x, int y, int z) {
 	        super(l); //Creation from an ArrayList<InstanceReaxel>
 	        //Put all parameters to values given into parameters
@@ -35,8 +76,11 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	        Z = z;
 	        this.updateBook();
 	    }
-
-	    //Creation of an AllInstances object, with an other one in parameter
+	    
+	    /**
+	     * Creation of an AllInstances object, based on an other one
+	     * @param other : a AllInstances object
+	     */
 	    public AllInstances_NetMDyn(AllInstances_NetMDyn other) {
 	        super(other.getList()); //Creation of the list of all InstanceReaxel
 	        //Put all parameters to good values
@@ -46,8 +90,10 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	        matrix = other.getMatrix();
 	        updateBook();
 	    }
-
-	    //Update of the hashmap
+	    
+	    /**
+	     * Update of the hashmap
+	     */
 	    private void updateBook() {
 	        entitiesBook = new HashMap<>(); //Creation of a new hashmap
 	        for (InstanceReaxel_NetMDyn c : this) { //Path of all InstanceReaxel into the AllInstance object 
@@ -62,7 +108,10 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	        }
 	    }
 
-	    //Add an InstanceReaxel into the hashmap
+	    /**
+	     * Add a reaxel into the hashmap
+	     * @param type : name of the InstanceReaxel
+	     */
 	    private void addInBook(String type) {
 	        if (!entitiesBook.containsKey(type)) {
 	            entitiesBook.put(type, 1); //if this InstanceReaxel isn't contained into the hashmap, add it with the number 1
@@ -73,7 +122,10 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	        }
 	    }
 	    
-	    //Remove an InstanceReaxel into the hashmap ?
+	    /**
+	     * Remove a reaxel into the hashmap
+	     * @param reaxel : the reaxel to remove
+	     */
 	    private void removeInBook(InstanceReaxel_NetMDyn reaxel) {
 	        String type = reaxel.getNom(); //Get the name of the InstanceReaxel
 	        if (entitiesBook.containsKey(type)) { //Know if this is already into the hashmap
@@ -85,21 +137,32 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	        }
 	    }
 
-	    //Get the hashmap
+	    /**
+	     * Get the hashmap
+	     * @return a clone of the hashmap
+	     */
 	    public HashMap<String, Integer> getBook() {
-	        return (HashMap<String, Integer>) entitiesBook.clone(); //return a clone of the hashmap
+	        return (HashMap<String, Integer>) entitiesBook.clone();
 	    }
 
-	    //return the "position" of the InstanceReaxel contained into the hashmap
+	    /**
+	     * Return the "position" of the InstanceReaxel contained into the hashmap
+	     * @param name : Reaxel name 
+	     * @return the position into the hashmap
+	     */
 	    public int getInstancesNbr(String name) {
 	        if (entitiesBook.get(name) == null) {
-	            return 0; //if the name of this InstanceReaxel is not into the hashmap, it returns 0
+	            return 0; //If the name of this InstanceReaxel is not into the hashmap, it returns 0
 	        } else {
-	            return entitiesBook.get(name); // if the name of this InstanceReaxel is into the hashmap, it return the position
+	            return entitiesBook.get(name); // If the name of this InstanceReaxel is into the hashmap, it return the position
 	        }
 	    }
 	    
-	    //Get all the InstanceReaxel which have a same name as in parameter
+	    /**
+	     * Get all the reaxels which have a same name as in parameter
+	     * @param name : name of the wanted reaxels 
+	     * @return the table of all the wanted reaxels
+	     */
 	    public ArrayList<InstanceReaxel_NetMDyn> getByName(String name){
 	         ArrayList<InstanceReaxel_NetMDyn> entities = new ArrayList<>(); //Creation of a table which will contain InstanceReaxel with the same name as in parameter
 	        for (InstanceReaxel_NetMDyn r : this) { //Path of all InstanceReaxel into the AllInstance object 
@@ -110,12 +173,19 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	            return entities; //Return all the InstanceReaxel which have a same name as in parameter
 	    }
 
-	    //Get the size of the AllInstance object ("this" as parameter)
+	    /**
+	     * Get the size of the AllInstance object ("this" as parameter)
+	     * @return the size of the object
+	     */
 	    public int getSize() {
 	        return this.size();
 	    }
 
-	    //Get the InstanceReaxel in a certain position given in parameter
+	    /**
+	     * Get the reaxel in a certain position 
+	     * @param pos : the wanted position into the hashmap
+	     * @return the reaxel at this position
+	     */
 	    public InstanceReaxel_NetMDyn getInList(int pos) {
 	        if (pos < getSize()) { 
 	            return this.get(pos); //If the position exists, it returns the InstanceReaxel at this position
@@ -124,80 +194,117 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	        }
 	    }
 
-	    //Return the coordinates into the matrix ?
+	    /**
+	     * Return the reaxel at these coordinates into the matrix
+	     	    * @param x : coordinate
+	    * @param y : coordinate 
+	    * @param z : coordinate
+	     * @return the reaxel at this matrix position
+	     */
 	    public InstanceReaxel_NetMDyn getFast(int x, int y, int z) {
 	        return matrix[x][y][z];
 	    }
 
-	    //Add an InstanceReaxel into the hashmap
+	    /**
+	     * Add an reaxel into the hashmap
+	     * @param reaxel : the reaxel to add
+	     * @return the fact that the reaxel has been added or not
+	     */
 	    public boolean addReaxel(InstanceReaxel_NetMDyn reaxel) {
-	    	//get the coordinates of the InstanceReaxel
+	    	// Get the coordinates of the InstanceReaxel
 	        int x = reaxel.getX();
 	        int y = reaxel.getY();
 	        int z = reaxel.getZ();
 	        if (matrix[x][y][z] == null) {
-	            this.add(reaxel); //if the matrix is empty, it adds the InstanceReaxel into the AllInstances
-	            matrix[x][y][z] = reaxel; //the InstanceReaxel is added into the matrix by its coordinates
-	            addInBook(reaxel.getNom()); //Add the InstanceReaxel into the hashmap 
-	            return true; //Return true if the InstanceReaxel has been added
+	            this.add(reaxel); // If the matrix is empty, it adds the InstanceReaxel into the AllInstances
+	            matrix[x][y][z] = reaxel; // The InstanceReaxel is added into the matrix by its coordinates
+	            addInBook(reaxel.getNom()); // Add the InstanceReaxel into the hashmap 
+	            return true; // Return true if the InstanceReaxel has been added
 	        }
-	        return false; //Return false if the InstanceReaxel can't be added because of the presence of these coordinates into the matrix
+	        return false; // Return false if the InstanceReaxel can't be added because of the presence of these coordinates into the matrix
 	    }
 
-	    //Creation of a new InstanceReaxel instead of an old one
+	    /**
+	     * Creation of a new reaxel instead of an old one
+	     * @param entity : the entity to edit
+	     * @param old_name : the name of the reaxels to change
+	     */
 	    public void editReaxels(Entity_NetMDyn entity, String old_name) {
-	        ArrayList<InstanceReaxel_NetMDyn> copy = getList(); //Clone of the AllInstances object
-	        for (InstanceReaxel_NetMDyn reaxel : copy) { //Path of all InstanceReaxel into the copy of AllInstances object 
-	            if (reaxel.getNom().equals(old_name)) { //Comparison between the name of the InstanceReaxel and the name in parameter
-	                removeReaxel(reaxel); //Suppression of this InstanceReaxel
-	                InstanceReaxel_NetMDyn newReaxel = InstanceReaxel_NetMDyn.CreerReaxel(entity);//Creation of a new InstanceReaxel based on the Entity given
-	                //Put the coordinates into the new InstanceReaxel
+	        ArrayList<InstanceReaxel_NetMDyn> copy = getList(); // Clone of the AllInstances object
+	        for (InstanceReaxel_NetMDyn reaxel : copy) { // Path of all InstanceReaxel into the copy of AllInstances object 
+	            if (reaxel.getNom().equals(old_name)) { // Comparison between the name of the InstanceReaxel and the name in parameter
+	                removeReaxel(reaxel); // Deletion of this InstanceReaxel
+	                InstanceReaxel_NetMDyn newReaxel = InstanceReaxel_NetMDyn.CreerReaxel(entity);// Creation of a new InstanceReaxel based on the Entity given
+	                // Put the coordinates into the new InstanceReaxel
 	                newReaxel.setX(reaxel.getX());
 	                newReaxel.setY(reaxel.getY());
 	                newReaxel.setZ(reaxel.getZ());
-	                addReaxel(newReaxel); //Add the new InstanceReaxel
+	                addReaxel(newReaxel); // Add the new InstanceReaxel
 	            }
 	        }
 	    }
 
-	    //Select the InstanceReaxel with coordinates in parameters
+	    /**
+	     * Select the reaxel having these coordinates
+	     	    * @param x : coordinate
+	    * @param y : coordinate 
+	    * @param z : coordinate
+	     */
 	    public void select(int x, int y, int z) {
 	        matrix[x][y][z].setSelectionne(true);
 	    }
 
-	    //Unselect the InstanceReaxel with coordinates in parameters
+	    /**
+	     * Unselect the reaxel having these coordinates 
+	     	    * @param x : coordinate
+	    * @param y : coordinate 
+	    * @param z : coordinate
+	     */
 	    public void unselect(int x, int y, int z) {
 	        matrix[x][y][z].setSelectionne(false);
 	    }
 
-	    //Remove an InstanceReaxel into the hashmap by its name
+	    /**
+	     * Remove a reaxel into the hashmap by its name
+	     * @param reaxel : the reaxel to remove
+	     * @return the fact that the reaxel has been removed or not
+	     */
 	    public boolean removeReaxel(InstanceReaxel_NetMDyn reaxel) {
-	    	//Get the coordinates of this InstanceReaxel
+	    	// Get the coordinates of this InstanceReaxel
 	        int x = reaxel.getX();
 	        int y = reaxel.getY();
 	        int z = reaxel.getZ();
 	        if (matrix[x][y][z] != null) {
-	            this.remove(reaxel); //Remove the InstanceReaxel if the matrix is not empty
-	            matrix[x][y][z] = null; //Remove the correspondence between coordinates and the InstanceReaxel
+	            this.remove(reaxel); // Remove the InstanceReaxel if the matrix is not empty
+	            matrix[x][y][z] = null; // Remove the correspondence between coordinates and the InstanceReaxel
 	            removeInBook(reaxel);
-	            return true; //Return that the InstanceReaxel has been removed
+	            return true; // Return that the InstanceReaxel has been removed
 	        }
-	        return false; //Return that the InstanceReaxel hasn't been removed
+	        return false; // Return that the InstanceReaxel hasn't been removed
 	    }
 
-	    //Remove an InstanceReaxel into the hashmap by its coordinates
+	    /**
+	     * Remove a reaxel into the hashmap by its coordinates
+	     	    * @param x : coordinate
+	    * @param y : coordinate 
+	    * @param z : coordinate
+	     * @return the fact that the reaxel has been removed or not
+	     */
 	    public boolean removeReaxel(int x, int y, int z) {
-	        InstanceReaxel_NetMDyn reaxel = matrix[x][y][z]; //Get the InstanceReaxel by its coordinates into the matrix
+	        InstanceReaxel_NetMDyn reaxel = matrix[x][y][z]; // Get the InstanceReaxel by its coordinates into the matrix
 	        if (reaxel != null) {
-	            this.remove(reaxel); //Remove the InstanceReaxel if the matrix is not empty
-	            matrix[x][y][z] = null; //Remove the correspondence between coordinates and the InstanceReaxel
+	            this.remove(reaxel); // Remove the InstanceReaxel if the matrix is not empty
+	            matrix[x][y][z] = null; // Remove the correspondence between coordinates and the InstanceReaxel
 	            removeInBook(reaxel);
-	            return true; //Return that the InstanceReaxel has been removed
+	            return true; // Return that the InstanceReaxel has been removed
 	        }
-	        return false; //Return that the InstanceReaxel hasn't been removed
+	        return false; // Return that the InstanceReaxel hasn't been removed
 	    }
 	    
-	    //Remove all InstanceReaxel using this name/tags
+	    /**
+	     * Remove all reaxels using this name/tags
+	     * @param etiquettes : name of the reaxels to remove
+	     */
 	    public void removeEntityType(String etiquettes) {
 	        removeByName(etiquettes); // Remove all InstanceReaxel using this tag into the AllInstances object
 	        if(entitiesBook.containsKey(etiquettes)){ 
@@ -205,60 +312,78 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	        }
 	    }
 
-	    //Remove all InstanceReaxel using this name into the AllInstances object
+	    /**
+	     * Remove all reaxels using this name into the AllInstances object
+	     * @param nom : name of the reaxels to remove
+	     */
 	    public void removeByName(String nom) {
-	        ArrayList<InstanceReaxel_NetMDyn> copy = getList(); //Clone of the AllInstances object
-	        for (InstanceReaxel_NetMDyn reaxel : copy) { //Path of all InstanceReaxel into the copy of AllInstances object 
+	        ArrayList<InstanceReaxel_NetMDyn> copy = getList(); // Clone of the AllInstances object
+	        for (InstanceReaxel_NetMDyn reaxel : copy) { // Path of all InstanceReaxel into the copy of AllInstances object 
 	            if (reaxel.getNom().equals(nom)) { 
-	                removeReaxel(reaxel); //If the required name is the same as the InstanceReaxel, remove this InstanceReaxel
+	                removeReaxel(reaxel); // If the required name is the same as the InstanceReaxel, remove this InstanceReaxel
 	            }
 	        }
 	    }
 
-	    //Remove the InstanceReaxel by its coordinates, but only if it's possible
+	    /**
+	     * Remove the InstanceReaxel by its coordinates, but only if it's possible
+	     * @param x : coordinate
+	     * @param y : coordinate
+	     * @param z : coordinate
+	     */
 	    public void removeOnlyCleanable(int x, int y, int z) {
-	        InstanceReaxel_NetMDyn c = matrix[x][y][z]; //Get the InstanceReaxel by its coordinates into the matrix
+	        InstanceReaxel_NetMDyn c = matrix[x][y][z]; // Get the InstanceReaxel by its coordinates into the matrix
 	        if (c != null) { 
 	            if ((this.contains(c)) && (c.isVidable())) {
-	                removeReaxel(c); //if c has entries and can be vidable, and if the AllInstances object contains it, remove this InstanceReaxel
+	                removeReaxel(c); // If c has entries and can be vidable, and if the AllInstances object contains it, remove this InstanceReaxel
 	            }
 	        }
 	    }
 
-	    
+	    /**
+	     * Creation of a matrix and a table from reaxels
+	     * @param l : a table of reaxels
+	     */
 	    public void setMatrixAndList(ArrayList<InstanceReaxel_NetMDyn> l) {
 	        for (InstanceReaxel_NetMDyn rea : l) {
-	            addReaxel(rea.clone()); //Add every InstanceReaxel putted into the AllInstance object put in parameter, into the hashmap
+	            addReaxel(rea.clone()); // Add every InstanceReaxel putted into the AllInstance object put in parameter, into the hashmap
 	        }
-	        this.updateBook(); //Update the hashmap
+	        this.updateBook(); // Update the hashmap
 	    }
 
-	    //Get the matrix
+	    /**
+	     * Get the matrix
+	     * @return the matrix of reaxels
+	     */
 	    public InstanceReaxel_NetMDyn[][][] getMatrix() {
-	        InstanceReaxel_NetMDyn[][][] copy = new InstanceReaxel_NetMDyn[getX()][getY()][getZ()]; //Clone of the matrix
-	        for (InstanceReaxel_NetMDyn r : this) { //Path of all InstanceReaxel into the AllInstances object 
-	            copy[r.getX()][r.getY()][r.getZ()] = r.clone(); //Link the coordinates of the InstanceReaxel into the cloned matrix and a clone of the InstanceReaxel
+	        InstanceReaxel_NetMDyn[][][] copy = new InstanceReaxel_NetMDyn[getX()][getY()][getZ()]; // Clone of the matrix
+	        for (InstanceReaxel_NetMDyn r : this) { // Path of all InstanceReaxel into the AllInstances object 
+	            copy[r.getX()][r.getY()][r.getZ()] = r.clone(); // Link the coordinates of the InstanceReaxel into the cloned matrix and a clone of the InstanceReaxel
 	        }
-	        return copy; //return the copy of the matrix
+	        return copy; // Return the copy of the matrix
 	    }
 
-	    //Get the ArrayList
+	    /**
+	     * Get the ArrayList
+	     * @return the table of reaxels
+	     */
 	    public ArrayList<InstanceReaxel_NetMDyn> getList() {
-	        ArrayList<InstanceReaxel_NetMDyn> copy = new ArrayList<>(); //Clone of the ArrayList
-	        for (InstanceReaxel_NetMDyn r : this) { //Path of all InstanceReaxel into the AllInstances object 
-	            copy.add(r.clone()); //Add a copy of the InstanceReaxel into the new ArrayList
+	        ArrayList<InstanceReaxel_NetMDyn> copy = new ArrayList<>(); // Clone of the ArrayList
+	        for (InstanceReaxel_NetMDyn r : this) { // Path of all InstanceReaxel into the AllInstances object 
+	            copy.add(r.clone()); // Add a copy of the InstanceReaxel into the new ArrayList
 	        }
-	        return copy; //return the copy of the ArrayList
+	        return copy; // Return the copy of the ArrayList
 	    }
 
-	    //Get all the values into the AllInstances object (matrix, ArrayList and coordinates)
+	    /**
+	     * Get all the values into the AllInstances object (matrix, ArrayList and coordinates)
+	     */
 	    public AllInstances_NetMDyn clone() {
 	        return new AllInstances_NetMDyn(getList(), getMatrix(), getX(), getY(), getZ());
 	    }
 
-	    
 	    public void test(String name) {
-	        for (InstanceReaxel_NetMDyn r : this) { //Path of all InstanceReaxel into the AllInstances object 
+	        for (InstanceReaxel_NetMDyn r : this) { // Path of all InstanceReaxel into the AllInstances object 
 	            if (matrix[r.getX()][r.getY()][r.getZ()] == null) { 
 	                if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
 		                System.err.println(name + " ECHEC DU TEST !!!! " + r.getX() + "*" + r.getY() + "*" + r.getZ()); //if the InstanceReaxel hasn't its coordinates into the matrix, return an error
@@ -270,31 +395,50 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	        }
 	    }
 	    
-	    //Return the coordinate X of the AllInstances object
+	    /**
+	     * Return the coordinate X of the AllInstances object
+	     * @return X value 
+	     */
 	    public int getX() {
 	        return X;
 	    }
 
-	    //Put a new value to the coordinate X of the AllInstances object
+	    /**
+	     * Put a new value to the coordinate X of the AllInstances object
+	     * @param X value
+	     */
 	    public void setX(int X) {
 	        this.X = X;
 	    }
 
-	    //Return the coordinate Y of the AllInstances object
+	    /**
+	     * Return the coordinate Y of the AllInstances object
+	     * @return Y value
+	     */
 	    public int getY() {
 	        return Y;
 	    }
 	    
-	    //Put a new value to the coordinate Y of the AllInstances object
+	    /**
+	     * Put a new value to the coordinate Y of the AllInstances object
+	     * @param Y value
+	     */
 	    public void setY(int Y) {
 	        this.Y = Y;
 	    }
-	    //Return the coordinate Z of the AllInstances object
+	    
+	    /**
+	     * Return the coordinate Z of the AllInstances object
+	     * @return Z value
+	     */
 	    public int getZ() {
 	        return Z;
 	    }
 
-	    //Put a new value to the coordinate Z of the AllInstances object
+	    /**
+	     * Put a new value to the coordinate Z of the AllInstances object
+	     * @param Z value
+	     */
 	    public void setZ(int Z) {
 	        this.Z = Z;
 	    }
