@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Entity_NetMDyn;
@@ -81,10 +82,21 @@ public class WndEditTraverse extends javax.swing.JDialog {
          getContentPane().add(jLabelNomOrigine);
          jLabelNomOrigine.setBounds(10, 40, 100, 20);
          
-         String[] ent = new String[entities.size()+1];
-         ent[0] = "-";
+        
+         ArrayList<String> comps = new ArrayList<String>();
+         comps.add("-");
+         
          for(int i = 1; i< entities.size()+1; i++){
-         	ent[i] = entities.get(i-1).getEtiquettes();
+        	 boolean present = false;
+        	 if (entities.get(i-1).getEtiquettes().contains("Membrane_")){
+        		 continue;
+        	 }        	
+        	 comps.add(entities.get(i-1).getEtiquettes());        	 
+         }
+         
+         String[] ent = new String[comps.size()];
+         for (int i =0; i<comps.size();i++){
+        	 ent[i]=comps.get(i);
          }
          
          comboBox_OriginEntity.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
@@ -108,7 +120,7 @@ public class WndEditTraverse extends javax.swing.JDialog {
          jLabelCompartment.setBounds(10, 120, 100, 20);
          
          String[] compart = new String[compartment.size()+1];
-         compart[0] = "Cytosol";
+         compart[0] = "-";
          for(int i = 1; i< compartment.size()+1; i++){
          	compart[i] = compartment.get(i-1).getEtiquettes();
          }
@@ -199,6 +211,54 @@ public class WndEditTraverse extends javax.swing.JDialog {
             }
             return;
     	}
+    	if (getComboBox_compartment().equals("-")) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Merci de choisir un compartiment", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "Please choose a compartment.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}
+    	
+    	boolean entite1=false;
+    	boolean entite2=false;
+    	for (Entity_NetMDyn entity : entities){
+    		if (entity.getCompartment().equals(getComboBox_compartment()) && entity.getEtiquettes().equals(getComboBox_OriginEntity())){
+    			entite1=true;
+    		}
+    		if (entity.getCompartment().equals(getComboBox_compartment()) && entity.getEtiquettes().equals(getComboBox_TargetEntity())){
+    			entite2=true;
+    		}
+    		if (entite1==false && entite2==false){
+    			if (Lang.getInstance().getLang().equals("FR")) {
+        			JOptionPane.showMessageDialog(this, "Au moins l'un des entités doit appartenir au compartiment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }else {
+                    JOptionPane.showMessageDialog(this, "At least one entity must be an element of the chosen compartment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+    		}
+    		if (entite1==true && entite2==true){
+    			if (Lang.getInstance().getLang().equals("FR")) {
+        			JOptionPane.showMessageDialog(this, "Les deux entités ne peuvent pas appartenir au compartiment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }else {
+                    JOptionPane.showMessageDialog(this, "Both entities can't be elements of the chosen compartment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+    		}
+    	}
+    	
+    	
+    	try{
+        	Double.parseDouble(textBoxProba.getText());
+        }catch(Exception e){
+        		if (Lang.getInstance().getLang().equals("FR")) {
+                    JOptionPane.showMessageDialog(this, "La probabilité de traverser la membrane doit être un nombre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }else {
+                    JOptionPane.showMessageDialog(this, "The probability to cross the membrane must be a number.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;
+        	}        
+        
         _r3._reactifs.clear();
         _r3._produits.clear();
         _r3._positions.clear();
@@ -288,6 +348,14 @@ public class WndEditTraverse extends javax.swing.JDialog {
 		this.comboBox_TargetEntity.setSelectedItem(comboBox_mvt);
 	}
 	
+	 public String getComboBox_compartment() {
+			return (String) comboBox_compartment.getSelectedItem();
+		}
+
+		public void setComboBox_compartment(String comboBox_compartment) {
+			this.comboBox_compartment.setSelectedItem(comboBox_compartment);
+		}
+
 	 public String getDialogResult() {
 			return DialogResult;
 		}
@@ -304,7 +372,8 @@ public class WndEditTraverse extends javax.swing.JDialog {
     private javax.swing.JComboBox comboBox_OriginEntity;
     private javax.swing.JComboBox comboBox_TargetEntity;
     private javax.swing.JComboBox comboBox_compartment;
-    private javax.swing.JTextField textBoxProba;
+   
+	private javax.swing.JTextField textBoxProba;
     
     private javax.swing.JLabel jLabelPlaceDuTitre;
     private javax.swing.JLabel jLabelTitre;
@@ -312,6 +381,14 @@ public class WndEditTraverse extends javax.swing.JDialog {
     private javax.swing.JButton button_OK;
     private javax.swing.JButton button_CANCEL;
     // End of variables declaration//GEN-END:variables
+
+	public Double getTextBoxProba() {
+		return Double.parseDouble(textBoxProba.getText());
+	}
+
+	public void setTextBoxProba(Double textBoxProba) {
+		this.textBoxProba.setText(textBoxProba.toString());;
+	}
     
 }
 

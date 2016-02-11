@@ -263,7 +263,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "Merci d'ecrire une réaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }else {
-                JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                JOptionPane.showMessageDialog(this, "Please write a reaction equation.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }
             return;
         }
@@ -274,7 +274,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         			if (Lang.getInstance().getLang().equals("FR")) {
         				JOptionPane.showMessageDialog(this, "Cette enzyme est deja engagé dans une reaction", "Information", JOptionPane.INFORMATION_MESSAGE, null);
         			}else {
-        				JOptionPane.showMessageDialog(this, "Please name the reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+        				JOptionPane.showMessageDialog(this, "This enzyme is already used in a reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
         			}
         			return;
         		}
@@ -291,7 +291,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         	if (Lang.getInstance().getLang().equals("FR")) {
         		JOptionPane.showMessageDialog(this, "L'équation doit s'écrire de la facon suivante A+B=C+D.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
         	}else {
-        		JOptionPane.showMessageDialog(this, "Please name the reaction.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+        		JOptionPane.showMessageDialog(this, "Equation must be written with the shape A+B=C+D.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }
             return;
         }
@@ -322,7 +322,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "L'équation ne peut contenir que deux susbstrats et deux produits.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }else {
-                JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                JOptionPane.showMessageDialog(this, "Equation can contain only two substrates and two products.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
             }
             return;
         }
@@ -331,7 +331,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         		if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Donnez la catégories des deux susbstrats", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }else {
-                    JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(this, "Please choose a type for all the substrates.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }
                 return;
         	}
@@ -340,7 +340,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         		if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Ne donne la catégorie qu'au premier substrats", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }else {
-                    JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(this, "Please choose a type for all the substrates.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }
                 return;
         	}
@@ -350,7 +350,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         		if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Donnez la catégories des deux produits", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }else {
-                    JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(this, "Please choose a type for all the products.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }
                 return;
         	}
@@ -359,7 +359,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         		if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Ne donne la catégorie qu'au premier produit", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }else {
-                    JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(this, "Please choose a type for all the products.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }
                 return;
         	}
@@ -373,7 +373,7 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         		if (Lang.getInstance().getLang().equals("FR")) {
                     JOptionPane.showMessageDialog(this, "Les constantes catalytiques doivent etre de type 0.0", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }else {
-                    JOptionPane.showMessageDialog(this, "Please name the behaviour.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(this, "Catalytic constant must be numbers only.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
                 }
                 return;
         	}

@@ -295,6 +295,54 @@ public class WndEditBehaviour extends javax.swing.JDialog{
             return;
     	}
     	
+    	try{
+        	Double.parseDouble(textBoxKCst.getText());
+        	Double.parseDouble(textBoxKCst2.getText());
+        }catch(Exception e){
+        		if (Lang.getInstance().getLang().equals("FR")) {
+                    JOptionPane.showMessageDialog(this, "Les constantes catalytiques doivent etre de type 0.0", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }else {
+                    JOptionPane.showMessageDialog(this, "Catalytic constant must be numbers only.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                }
+                return;        	
+        }
+    	
+    	ArrayList<String> compartment = new ArrayList<String>();
+    	for (Entity_NetMDyn entity : entities){
+    		if (entity.getEtiquettes().equals(getComboBox_S1()) && !getComboBox_S1().equals("*")){
+    			compartment.add(entity.getCompartment());
+    		}
+    		else if (entity.getEtiquettes().equals(getComboBox_S2()) && !getComboBox_S2().equals("*")){
+    			compartment.add(entity.getCompartment());
+    		}
+    		else if (entity.getEtiquettes().equals(getComboBox_P1()) && !getComboBox_P1().equals("-")){
+    			compartment.add(entity.getCompartment());
+    		}
+    		else if (entity.getEtiquettes().equals(getComboBox_P2()) && !getComboBox_P2().equals("-")){
+    			compartment.add(entity.getCompartment());
+    		}
+    		else if (entity.getEtiquettes().equals((String) comboBoxName.getSelectedItem()) && !comboBoxName.getSelectedItem().equals("*")){
+    			compartment.add(entity.getCompartment());
+    		}
+    	}
+    	System.out.println(compartment);
+    	boolean erreur=false;
+    	for (int i=1; i<compartment.size();i++){
+    		if (compartment.get(0)!=compartment.get(i)){
+    			erreur=true;
+    			continue;
+    		}
+    	}
+		if (erreur==true){
+			if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Les entités doivent toutes appartenir au même compartiment", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "All entities must be elements of the same compartment!", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}	
+		
+    	
         _r3._reactifs.clear();
         _r3._produits.clear();
         _r3._positions.clear();

@@ -72,14 +72,32 @@ public class WndEditMvt extends javax.swing.JDialog {
          getContentPane().add(jLabelNom);
          jLabelNom.setBounds(80, 100, 30, 20);
          
-         String[] comps = new String[entities.size()+1];
-         comps[0] = "-";
+         ArrayList<String> comps = new ArrayList<String>();
+         comps.add("-");
+         
          for(int i = 1; i< entities.size()+1; i++){
-         	comps[i] = entities.get(i-1).getEtiquettes();
+        	 boolean present = false;
+        	 if (entities.get(i-1).getEtiquettes().contains("Membrane_")){
+        		 continue;
+        	 }
+        	 for (int j = 0; j<behaviors.size();j++){
+        		 if (behaviors.get(j).getEtiquettes().equals("Move_"+ entities.get(i-1).getEtiquettes())){
+        			 present= true;
+        			 break;
+        		 }
+        	 }
+        	 if (present == false){
+         	comps.add(entities.get(i-1).getEtiquettes());
+        	 }
+         }
+         
+         String[] remain_entity = new String[comps.size()];
+         for (int i =0; i<comps.size();i++){
+        	 remain_entity[i]=comps.get(i);
          }
          
          comboBox_entity.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-         comboBox_entity.setModel(new javax.swing.DefaultComboBoxModel(comps));
+         comboBox_entity.setModel(new javax.swing.DefaultComboBoxModel(remain_entity));
          getContentPane().add(comboBox_entity);
          comboBox_entity.setBounds(120, 100, 150, 20);
 
