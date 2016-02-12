@@ -1,5 +1,27 @@
-package NetMDyn.ihm;
+/* This file is part of NetMDyn.ihm
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * MetaboliteVisualizer.java
+ *
+ * Created on February 12 2016, 15:36
+ */
 
+
+package NetMDyn.ihm;
 
 import java.awt.BorderLayout; // Arrange and resize the container components to fit in five regions: north, south, east, west, and center
 import java.awt.Checkbox; // Graphical component that can be in either an "on" (true) or "off" (false) state
@@ -39,6 +61,12 @@ import javax.swing.JTextField; //Lightweight component that allows the editing o
 import javax.swing.JTree; // A control that displays a set of hierarchical data as an outline
 import javax.xml.stream.XMLStreamException; // The base exception for unexpected processing errors
 
+/**
+ * Visualization of the metabolites in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
 public class MetaboliteVisualizer extends javax.swing.JFrame {
 	private SBMLDocument document;
 	private JList<String> list;
@@ -54,12 +82,14 @@ public class MetaboliteVisualizer extends javax.swing.JFrame {
 	private ControlerMetabolite c;
 	private static final long serialVersionUID = 6864318867423022411L;
 
-	//Initialization of MetaboliteVisualizer object
-	public MetaboliteVisualizer(SBMLDocument document)
-			throws XMLStreamException, IOException {
-		// this.setModal(true);
+	/**
+	 * Initialization of MetaboliteVisualizer object
+	 * @param document : SBML document
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 */
+	public MetaboliteVisualizer(SBMLDocument document) throws XMLStreamException, IOException {
 		this.document = document;
-		// parse.parse_species(document);
 
 		bt2 = new JButton("Ok");
 		jtp = new JTabbedPane();
@@ -99,7 +129,10 @@ public class MetaboliteVisualizer extends javax.swing.JFrame {
 
 	}
 
-	//Retrieve selected metabolites and put them into left list
+	/**
+	 * Retrieve selected metabolites and put them into left list
+	 * @param title : list of metabolites
+	 */
 	public void renderSelection(ArrayList<String> title) {
 		metabList.removeAll();
 		metabList.setLayout(new BoxLayout(metabList, BoxLayout.Y_AXIS));
@@ -130,7 +163,12 @@ public class MetaboliteVisualizer extends javax.swing.JFrame {
 		this.pack();
 	}
 
-	//Put a new Controller to the MetaboliteVisualizer
+	/**
+	 * Put a new Controller to the MetaboliteVisualizer
+	 * @param c : ControlerMetabolite
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 */
 	public void setController(ControlerMetabolite c) throws XMLStreamException, IOException {
 		this.c = c;
 		bt2AL = this.c.addMetaboliteinSelection();
@@ -139,29 +177,42 @@ public class MetaboliteVisualizer extends javax.swing.JFrame {
 		bt2.addActionListener(bt2AL);
 	}
 
-	//Initialization of the elements into the window of MetaboliteVisualizer
+	/**
+	 * Initialization of the elements into the window of MetaboliteVisualizer
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 */
 	public void initComponents() throws XMLStreamException, IOException {
 		parse.parseSpeciesName(document);
 		DefaultListModel<String> lm = new DefaultListModel<String>();
 		for (String entity : parse.getEntitiesName()) {
 			lm.addElement(entity);
 		}
-		System.out.println(lm);
 		list.setModel(lm);
 		list.setPreferredSize(new Dimension(550, 700));
 
 	}
 
-	//Return a table of indices of selected metabolites
+	/**
+	 * Return a table of indices of selected metabolites
+	 * @return the list of indices
+	 */
 	public int[] getselectedmetabolitesIndices() {
 		return list.getSelectedIndices();
 	}
 
+	/**
+	 * 
+	 * @return the list of indices of the selection
+	 */
 	public int getSelectedselectionId() {
 		return (jtp.getSelectedIndex() == 0 ? -1 : jtp.getSelectedIndex() - 1);
 	}
 
-	//Error message
+	/**
+	 * Error message
+	 * @param msg
+	 */
 	public void alert(String msg) {
 		if (Lang.getInstance().getLang().equals("FR")) {
 			JOptionPane.showMessageDialog(this, msg, "Erreur",JOptionPane.ERROR_MESSAGE);
