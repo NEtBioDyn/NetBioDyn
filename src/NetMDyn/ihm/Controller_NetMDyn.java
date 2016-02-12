@@ -1,3 +1,25 @@
+/* This file is part of NetMDyn.
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * Controller_NetMDyn.java
+ *
+ * Created on February 12 2016, 14:01
+ */
+
 package NetMDyn.ihm;
 
 import NetMDyn.AllInstances_NetMDyn;
@@ -33,10 +55,10 @@ import javax.swing.JComponent; // The base class for all Swing components except
 import javax.swing.JFrame; // Possible creation of windows
 import javax.swing.JOptionPane; //Possible creation of dialog windows
 import javax.swing.KeyStroke; // Key action on the keyboard, or equivalent input device
-import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamException; // The base exception for unexpected processing errors
 
-import org.sbml.jsbml.SBMLDocument;
-import org.sbml.jsbml.SBMLReader;
+import org.sbml.jsbml.SBMLDocument; // Represent the 'sbml' root node of a SBML file.
+import org.sbml.jsbml.SBMLReader; // Provide methods for reading SBML from files, text strings or streams. 
 
 import com.jogamp.opengl.awt.GLJPanel; // Provides OpenGL rendering support.
 import com.jogamp.opengl.util.FPSAnimator; // Attempt to achieve a target frames-per-second rate to avoid using all CPU time
@@ -66,6 +88,12 @@ import netbiodyn.util.UtilDivers;
 import netbiodyn.util.UtilFileFilter;
 import netbiodyn.util.UtilPoint3D;
 
+/**
+ * Controller in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
 public class Controller_NetMDyn{
 	
 	protected final static int FRAME_WIDTH = 1220;
@@ -80,7 +108,9 @@ public class Controller_NetMDyn{
     protected final ArrayList<Command> lastCommand; 
     protected final int maxMemory = 20;
     
-    //Initialization of the Controller
+    /**
+     * Initialization of the Controller
+     */
 	public Controller_NetMDyn(){
 		 	this.lastCommand = new ArrayList<>();
 	        frame = new JFrame();
@@ -124,7 +154,9 @@ public class Controller_NetMDyn{
 	        frame.setVisible(true);
 	}
 	
-		//Initialization of the 3DView
+		/**
+		 * Initialization of the 3DView
+		 */
 	   protected void init3D() {
 		   if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
 			   frame3D = new JFrame("3D View");
@@ -156,7 +188,10 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	   
-	   //Remove he 3D view
+	   /**
+	    * Remove the 3D view
+	    * @param message
+	    */
 	    protected void disable3D(String message) {
 	        env.disabled3D();
 	        File file = new File("./log_netbiodyn.txt");
@@ -181,7 +216,9 @@ public class Controller_NetMDyn{
 	        frame3D.setVisible(!frame3D.isVisible());
 	    }
 	
-	 //Add an Entity into the Controller
+	 /**
+	  * Add an Entity into the Controller
+	  */
 	 public void addEntity() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -244,7 +281,9 @@ public class Controller_NetMDyn{
 			 }
 		 }
 	 }
-	 //Edition of an Entity into the Controller
+	 /**
+	  * Edition of an Entity into the Controller
+	  */
 	    public void editEntity() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -267,18 +306,27 @@ public class Controller_NetMDyn{
 	        }
 	    }
 
-	    //Edition of the probabilities of a Behavior
+	    /**
+	     * Edition of the probabilities of a Behavior
+	     * @param name : the name of the Behavior
+	     * @param value : new probability of the Behavior
+	     */
 	    public void changeProba(String name, double value) {
 	        model.editBehaviourProba(name, value);
 	    }
 	    
-	    //Edition of parameters of the Controller
+	    /**
+	     * Edition of parameters of the Controller
+	     * @param param : new parameters
+	     */
 
 	    public void changeParameters(HashMap<String, ArrayList<Parameter>> param) {
 	        model.changeParameters(param, env.getPictureBoxDimensions());
 	    }
 	 
-	 //Edition of a Behavior
+	 /**
+	  * Edition of a Behavior
+	  */
 	    public void editBehaviour() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -379,7 +427,10 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	 
-	 	// Remove a Behavior
+	 	/**
+	 	 * Remove a Behavior
+	 	 * @param tab 
+	 	 */
 	    public void delBehaviour(int[] tab) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -399,7 +450,10 @@ public class Controller_NetMDyn{
 	        model.delMoteurReaction(reactions);
 	    }
 
-	   //Remove an Entity
+	   /**
+	    * Remove an Entity
+	    * @param tab
+	    */
 	    public void delEntity(int[] tab) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -418,7 +472,14 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
-	    
+	    /**
+	     * Add the Reaxels of an Entity randomly into a zone
+	     * @param bottom_rightX : coordinate
+	     * @param bottom_rightY : coordinate
+	     * @param top_leftX : coordinate
+	     * @param top_leftY : coordinate
+	     * @param z : depth
+	     */
 	    public void randomlyPopulate(int bottom_rightX, int bottom_rightY, int top_leftX, int top_leftY, int z) {
 	        int num_col = env.getDataGridView_entites().getSelectedIndex();
 	        if (num_col >= 0) {
@@ -458,7 +519,15 @@ public class Controller_NetMDyn{
 	        }
 	    }
 
-	    
+	    /**
+	     * Select Reaxels into a zone
+	     * @param top_leftX : coordinate
+	     * @param top_leftY : coordinate
+	     * @param bottom_rightX : coordinate
+	     * @param bottom_rightY : coordinate
+	     * @param z : depth
+	     * @return the list of Reaxels
+	     */
 	    protected ArrayList<UtilPoint3D> instancesInSelection(int top_leftX, int top_leftY, int bottom_rightX, int bottom_rightY, int z) {
 	        ArrayList<UtilPoint3D> points = new ArrayList<>();
 	        AllInstances_NetMDyn instances;
@@ -479,7 +548,17 @@ public class Controller_NetMDyn{
 	        return points;
 	    }
 
-	    
+	    /**
+	     * Populate the zone with Reaxels
+	     * @param top_leftX : coordinate
+	     * @param top_leftY : coordinate
+	     * @param bottom_rightX : coordinate
+	     * @param bottom_rightY : coordinate
+	     * @param z : depth
+	     * @param nbr : number of Reaxels
+	     * @param existing : number of present Reaxels
+	     * @return the list of Reaxels
+	     */
 	    protected ArrayList<UtilPoint3D> populate(int top_leftX, int top_leftY, int bottom_rightX, int bottom_rightY, int z, int nbr, ArrayList<UtilPoint3D> existing) {
 	        ArrayList<UtilPoint3D> points = new ArrayList<>();
 	        int maxX = Math.max(top_leftX, bottom_rightX);
@@ -499,6 +578,12 @@ public class Controller_NetMDyn{
 	        return points;
 	    }
 
+	    /**
+	     * Delete the Reaxel at these coordinates
+	     * @param x : coordinate
+	     * @param y : coordinate
+	     * @param z : coordinate
+	     */
 	    public void removeEntityInstance(int x, int y, int z) {
 	        ArrayList<UtilPoint3D> points = new ArrayList<>();
 	        UtilPoint3D point = new UtilPoint3D(x, y, z);
@@ -513,6 +598,9 @@ public class Controller_NetMDyn{
 	        command.execute();
 	    }
 	    
+	    /**
+	     * Clear the Reaxels and the Compartments of the Environment
+	     */
 	    public void clearEnvironment() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -531,6 +619,12 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
+	    /**
+	     * Load a Model
+	     * @param nameSaved : name of the file
+	     * @throws XMLStreamException
+	     * @throws IOException
+	     */
 	    public void loadModel(String nameSaved) throws XMLStreamException, IOException {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -539,7 +633,6 @@ public class Controller_NetMDyn{
 	        UtilFileFilter filtre = new UtilFileFilter("NetMDyn", "nbd");
 	        UtilFileFilter filtre2 = new UtilFileFilter("sbml", "xml");
 	        File file = FileSaverLoader_NetMDyn.chooseFileToLoad(nameSaved, filtre,filtre2);
-//	        File file2 = FileSaverLoader.chooseFileToLoad(nameSaved, filtre2);
 	        String extensionFile=file.getPath().substring( file.getPath().indexOf('.'));
 	        System.out.println(extensionFile);
 	        if ((file != null)&&(extensionFile.equals(".nbd"))) {
@@ -556,25 +649,20 @@ public class Controller_NetMDyn{
 	    		SbmlParser parser=new SbmlParser();
 	    		ControlerMetabolite c =new ControlerMetabolite(visualize, parser, document,env,model) ;
 	    		visualize.setController(c);
-//	    		WriterNbd writer= c.getWriter();
-//	    		 env.setNom_sauvegarde(UtilDivers.removeExtension( writer.getFileName(document)));
-//		            this.stopWithoutAsking();
-//	    		model.load(env, writer.getFileName(document) );
 	        }
 	    }
 
 	    /**
 	     * Export the recorded curves of the simulation. Called by Environment.
 	     *
-	     * @param nameSaved name of the simulation
-	     * @param curves recorded from the Environment
+	     * @param nameSaved : name of the simulation
+	     * @param curves : curves recorded from the Environment
 	     */
 	    public void exportCurves(String nameSaved, SimulationCurves curves) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
 
-//	        nameSaved = nameSaved.substring(0, nameSaved.length() - 4) + ".r";
 	        File file = FileSaverLoader.chooseFileToSave(nameSaved, "R files, CSV (Excel) files - .r by default", new String[]{"r", "csv"});
 
 	        if (file != null) {
@@ -582,7 +670,11 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
-	    //Save the Model
+	    /**
+	     * Save the Model
+	     * @param nameSaved : name of the saved file
+	     * @return if the file has been saved (0 if success, -1 if not)
+	     */
 	    public int saveModel(String nameSaved) {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -600,8 +692,7 @@ public class Controller_NetMDyn{
 	    }
 
 	    /**
-	     * Change the environment parameters (size, image ...). Called by
-	     * Environment
+	     * Change the environment parameters (size, image ...). Called by Environment
 	     */
 	    public void updateEnvParameters() {
 	        if (simulator.isRunning()) {
@@ -618,6 +709,9 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
+	    /**
+	     * Play the Simulation
+	     */
 	    public void play() {
 	        if (simulator.isRunning() && !simulator.isPause()) { // Pause of the simulation
 	            this.pauseSimulation();
@@ -639,6 +733,9 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
+	    /**
+	     * Stop the Simulation
+	     */
 	    public void stop() {
 	        if (env.isFreezed()) {
 	            adjustmentStopped(false);
@@ -661,25 +758,21 @@ public class Controller_NetMDyn{
 	        }
 	    }
 	    
+	    /**
+	     * Stop the adjustment
+	     */
 	    public void adjustmentStopped(boolean finished) {
 	        env.freeze(false);
 	        stopWithoutAsking();
 	        if (!finished) {
-	            // Reload initial model
 	        } else {
 	            int res;
-	            System.out.println("Ajustement terminé avec succès !");
-//	            if (Lang.getInstance().getLang().equals("FR")) {
-//	                res = JOptionPane.showConfirmDialog(env, "Ajustement terminé avec succès ! Voulez-vous conserver ces paramètres ?", "Question", JOptionPane.INFORMATION_MESSAGE);
-//	            } else {
-//	                res = JOptionPane.showConfirmDialog(env, "Adjustment successfully done ! Do you want to keep these parameters ?", "Question", JOptionPane.INFORMATION_MESSAGE);
-//	            }
-//	            if (res != 0) {
-//	                // recharger le modèle initial
-//	            }
 	        }
 	    }
 	    
+	    /**
+	     * Stop automatically the simulation
+	     */
 	    public void stopWithoutAsking() {
 	        if (simulator.getTime() != 0) {
 	            env.stopSimulation();
@@ -695,6 +788,9 @@ public class Controller_NetMDyn{
 	        simulator.setPause(true);
 	    }
 	    
+	    /**
+	     * Export all
+	     */
 	    public void export() {
 	        String str_model = "\\fs32 \\b Entites:\n\\par\n\\b0";
 
@@ -758,11 +854,17 @@ public class Controller_NetMDyn{
 	        w.setVisible(true);
 	    }
 
+	    /**
+	     * Explanations
+	     */
 	    public void about() {
 	        WndAbout wnd = new WndAbout();
 	        wnd.setVisible(true);
 	    }
 
+	    /**
+	     * Record an animation
+	     */
 	    public void record_animation() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
@@ -797,11 +899,10 @@ public class Controller_NetMDyn{
 	        }
 	    }
 
-	    public void launchSelfAdjustment() {  
-	        // Work in progress
-	    }
-
-
+	    /**
+	     * Change the speed of the simulation
+	     * @param value : the speed of the simulation
+	     */
 	    public void changeSpeed(int value) {
 	        int v;
 	        switch (value) {
@@ -821,13 +922,16 @@ public class Controller_NetMDyn{
 	        simulator.setSpeed(v);
 	    }
 
+	    /**
+	     * Create a new Model
+	     */
 	    public void newModel() {
 	        if (simulator.isRunning()) {
 	            this.pauseSimulation();
 	        }
 	        int res = 0;
 	        if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
-	            res = JOptionPane.showConfirmDialog(env, "Voulez-vous vraiment creer une nouvelle simulation ?", "Question", JOptionPane.INFORMATION_MESSAGE);
+	            res = JOptionPane.showConfirmDialog(env, "Voulez-vous vraiment créer une nouvelle simulation ?", "Question", JOptionPane.INFORMATION_MESSAGE);
 	        } else {
 	            res = JOptionPane.showConfirmDialog(env, "Do you really want to create a new simulation ?", "Question", JOptionPane.INFORMATION_MESSAGE);
 	        }
@@ -838,6 +942,12 @@ public class Controller_NetMDyn{
 	        }
 	    }
 
+	    /**
+	     * Select Reaxels at these coordinates
+	     * @param x : coordinate
+	     * @param y : coordinate
+	     * @param z : coordinate
+	     */
 	    public void select(int x, int y, int z) {
 	        if (simulator.isStopped()) {
 	            InstanceReaxel_NetMDyn r = model.getInstances().getFast(x, y, z);
@@ -854,11 +964,22 @@ public class Controller_NetMDyn{
 	        }
 	    }
 
+	    /**
+	     * Move the selected Reaxels at these coordinates
+	     * @param _cubes_selectionnes : selected Reaxels
+	     * @param new_x : new coordinate
+	     * @param new_y : new coordinate
+	     * @param new_z : new coordinate
+	     */
 	    public void deplacer(ArrayList<InstanceReaxel_NetMDyn> _cubes_selectionnes, int new_x, int new_y, int new_z) {
 	        model.deplacer(_cubes_selectionnes, new_x, new_y, new_z);
 	        env.setCubes_selectionnes(new ArrayList<InstanceReaxel_NetMDyn>());
 	    }
 
+	    /**
+	     * Add a listener based on the keyboard
+	     * @param f
+	     */
 	    protected void addKeyListener(JFrame f) {
 	        final Controller_NetMDyn controller = this;
 	        final String space = "Space";
@@ -894,14 +1015,25 @@ public class Controller_NetMDyn{
 	        );
 	    }
 
+	    /**
+	     * Get the Model linked to this Controller
+	     * @return the Model
+	     */
 	    public Model_NetMDyn getModel() {
 	        return model;
 	    }
 
+	    /**
+	     * Get the Simulator linked to this Controller
+	     * @return the Simulator
+	     */
 	    public Simulator_NetMDyn getSimulator() {
 	        return simulator;
 	    }
 
+	    /**
+	     * Undo a Command
+	     */
 	    protected void undo() {
 	        if (lastCommand.size() > 0) {
 	            lastCommand.get(lastCommand.size() - 1).undo();
@@ -909,6 +1041,10 @@ public class Controller_NetMDyn{
 	        }
 	    }
 
+	    /**
+	     * Memorize a Command
+	     * @param command
+	     */
 	    protected void memorizeCommand(Command command) {
 	        lastCommand.add(command);
 	        if (lastCommand.size() > maxMemory) {
@@ -916,11 +1052,20 @@ public class Controller_NetMDyn{
 	        }
 	    }
 
+	    /**
+	     * Get the Environment linked to the Controller
+	     * @return the Environment
+	     */
 	    public Environment_NetMDyn getEnv() {
 	        return env;
 	    }
 
-	
+	/**
+	 * Remove an Entity
+	 * @param name : name of the Entity
+	 * @param center : center of the Reaxel
+	 * @param radius 
+	 */
     public void enleverMauvaisEntite(String name, UtilPoint3D center, int radius){
     	ArrayList<UtilPoint3D> listAEnlever= new ArrayList<UtilPoint3D>();
 		AllInstances_NetMDyn allInstances = model.getInstances();
@@ -940,6 +1085,12 @@ public class Controller_NetMDyn{
 		}
     }
     
+    /**
+     * Remove an old Entity
+     * @param name : name of the Entity
+     * @param new_center : center of the new thing
+     * @param new_radius : radius of the new thing
+     */
     public void enleverAncienneEntite(String name, UtilPoint3D new_center, int new_radius){
     	ArrayList<UtilPoint3D> listAEnlever= new ArrayList<UtilPoint3D>();
 		AllInstances_NetMDyn allInstances = model.getInstances();
@@ -959,6 +1110,10 @@ public class Controller_NetMDyn{
 		}
     }
     
+    /**
+     * Remove a Compartment
+     * @param name : name of the compartment
+     */
     public void enleverEntiteCompartment(String name){
     	ArrayList<UtilPoint3D> listAEnlever= new ArrayList<UtilPoint3D>();
 		AllInstances_NetMDyn allInstances = model.getInstances();
@@ -971,7 +1126,9 @@ public class Controller_NetMDyn{
 			removeEntityInstance(point.x, point.y,point.z);
 		}
     }
-    
+    /**
+     * Add a reaction
+     */
  public void addReaction(){
         WndReactionGlobal wC = new WndReactionGlobal(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wC.setVisible(true);
@@ -1041,6 +1198,12 @@ public class Controller_NetMDyn{
             }
         }	
     }
+ /**
+  * Add an Entity in the Reaction
+  * @param entName : name of the Entity
+  * @param comp : name of the Compartment
+  * @param visible 
+  */
     public void addEntityReaction(String entName, String comp, boolean visible){
         WndEditNoeud_NetMDyn wN = new WndEditNoeud_NetMDyn(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wN.setVisible(false);
@@ -1055,6 +1218,11 @@ public class Controller_NetMDyn{
         model.addProtoReaxel(wN._cli);
     }
     
+    /**
+     * Add a move reaction
+     * @param entName : name of the Entity
+     * @param type : type of the Behavior
+     */
     public void addBehaviorMoveReaction(String entName, String type){
         WndEditMvt wR = new WndEditMvt(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wR.WndEditMvt_load(null);
@@ -1067,6 +1235,15 @@ public class Controller_NetMDyn{
         model.addMoteurReaction(wR._r3);
     }
     
+    /**
+     * Add a Behavior Reaction
+     * @param name : name of the Behavior
+     * @param reverse : is the reaction reversible or not
+     * @param listSubstrats : list of the reagents of the reaction
+     * @param listProduits : list of the products of the reaction
+     * @param kcat : Kinetic Law
+     * @param kcat_1 : Kinetic Law
+     */
     public void addBehaviorReaction(String name, String reverse, ArrayList<String> listSubstrats, ArrayList<String> listProduits, Double kcat, Double kcat_1){
     	WndEditBehaviour wR = new WndEditBehaviour(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wR.WndEditBehaviour_load(null, null);
@@ -1088,7 +1265,9 @@ public class Controller_NetMDyn{
         }
     }
     
-    
+    /**
+     * Add a compartment
+     */
     public void addCompartment() {
         if (simulator.isRunning()) {
             this.pauseSimulation();
@@ -1114,7 +1293,13 @@ public class Controller_NetMDyn{
                         wC.setTextBoxRadius("0");
                         wC.button_OKActionPerformed(null);
                 		JOptionPane jop = new JOptionPane();
-                		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		if (Lang.getInstance().getLang().equals("FR")) {
+                			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en-dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		}
+                		else{
+                			jop.showMessageDialog(null, "You can't create a compartment outside the Envionment", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		}
+                		
             		}
             	}else{
             		wC.setTextBoxCenterX("0");
@@ -1122,13 +1307,23 @@ public class Controller_NetMDyn{
                     wC.setTextBoxRadius("0");
                     wC.button_OKActionPerformed(null);
             		JOptionPane jop = new JOptionPane();
-            		jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            		if (Lang.getInstance().getLang().equals("FR")) {
+            			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            		}
+            		else{
+            			jop.showMessageDialog(null, "You can't create a compartment on an other one", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            		}
+            		
             	}
            	}   
         	model.addCompartment(wC._cli);
         }
     }
     
+    /**
+     * Add the membrane of a compartment
+     * @param comp : the name of the compartment
+     */
     public void addCompartmentMembrane(Compartment comp){
         WndEditNoeud_NetMDyn wN = new WndEditNoeud_NetMDyn(model.getListManipulesNoeuds(), model.getListManipulesReactions(),model.getListManipulesCompartment());
         wN.WndCliValue_Load(null);
@@ -1141,7 +1336,13 @@ public class Controller_NetMDyn{
         wN.button_OKActionPerformed(null);
         model.addProtoReaxel(wN._cli);
     }
-    
+   
+    /**
+     * Edit the grapgic of a compartment
+     * @param index
+     * @param center
+     * @param radius
+     */
     public void editCompartmentGraphique(int index, UtilPoint3D center, int radius){
     	String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
         Compartment cpt = model.getCompartment(name);
@@ -1197,17 +1398,12 @@ public class Controller_NetMDyn{
     	model.editCompartment(wC._cli, name);
         editCompartmentMembrane(wC._cli, name);
     }
-/*    
-    public void addMembrane(int index, UtilPoint3D center,int radius, ArrayList<UtilPoint3D> lst_pts){
-        String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
-        Compartment comp = model.getCompartment(name);
-        comp.entity_property();
-        comp.setCenter(center);
-        comp.setRadius(radius);
-        model.addProtoReaxel(comp.getEnt());
-        addEntityInstances2(comp, lst_pts);
-    }
-  */  
+    
+    /**
+     * Check the membrane
+     * @param index
+     * @return true or false
+     */
     public boolean verificationPourMembrane(int index){
         String name = (String) env.getDataGridView_Compartment().getModel().getElementAt(index);
         Compartment comp = model.getCompartment(name);
@@ -1220,12 +1416,20 @@ public class Controller_NetMDyn{
         }
     }
     
+    /**
+     * Delete the membrane
+     * @param lst_pts : lists of the Reaxels of the membrane
+     */
     public void delMembrane(ArrayList<UtilPoint3D> lst_pts){
     	for (UtilPoint3D point: lst_pts){
     		removeEntityInstance(point.x, point.y,point.z);
     	}
     }
     
+    /**
+     * Delete the compartment
+     * @param tab
+     */
     public void delCompartment(int[] tab) {
         if (simulator.isRunning()) {
             this.pauseSimulation();
@@ -1259,6 +1463,10 @@ public class Controller_NetMDyn{
         }
     }
     
+    /**
+     * Add reaxels of the Entity
+     * @param points : lists of the Reaxels to add
+     */
     public void addEntityInstances(ArrayList<UtilPoint3D> points) {
         int num_col = env.getDataGridView_entites().getSelectedIndex();
         if (num_col >= 0) {
@@ -1361,16 +1569,24 @@ public class Controller_NetMDyn{
                             wc.setTextBoxRadius(Integer.toString(old_radius));
                             wc.button_OKActionPerformed(null);
                     		JOptionPane jop = new JOptionPane();
-                    		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment en dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                		}
+                    		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+                    			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment en-dehors de l'environnement", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
+                    		}
+                    		else{
+                    			jop.showMessageDialog(null, "You can't create a compartment outside the environment", "Information", JOptionPane.INFORMATION_MESSAGE, null);	
+                    		}                		}
                 	}else{
                 		wc.setTextBoxCenterX(Integer.toString(old_centerX));
                         wc.setTextBoxCenterY(Integer.toString(old_centerY));
                         wc.setTextBoxRadius(Integer.toString(old_radius));
                         wc.button_OKActionPerformed(null);
                 		JOptionPane jop = new JOptionPane();
-                		jop.showMessageDialog(null, "Vous ne pouvez creer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-                	}
+                		if (Lang.getInstance().getLang().equalsIgnoreCase("FR")) {
+                			jop.showMessageDialog(null, "Vous ne pouvez créer un compartiment sur un autre", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		}
+                		else{
+                			jop.showMessageDialog(null, "You can't create a compartment on an other one", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+                		}                	}
                 }
                 
                 model.editCompartment(wc._cli, name);
@@ -1387,6 +1603,11 @@ public class Controller_NetMDyn{
         
     }
   
+    /**
+     * Edit the membrane of a compartment
+     * @param comp : the wanted compartment
+     * @param name : the name of the Entity
+     */
     public void editCompartmentMembrane(Compartment comp, String name){
     	Entity_NetMDyn p = model.getProtoReaxel("Membrane_"+name);
     	
@@ -1404,5 +1625,11 @@ public class Controller_NetMDyn{
         }
         
     }
+
+    /**
+     * 
+     */
+	public void launchSelfAdjustment() {
+	}
 	
 }
