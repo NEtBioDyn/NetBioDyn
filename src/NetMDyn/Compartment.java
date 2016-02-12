@@ -101,8 +101,6 @@ public class Compartment extends ProtoBioDyn{
 		this.center.x = center.x;
 		this.center.y = center.y;
 	}
-
-
 	
 	/**
 	 * Return the radius of the Compartment
@@ -136,8 +134,6 @@ public class Compartment extends ProtoBioDyn{
         return toSave;
     }
     
-
-
     /**
      * Initialization of the components of the Compartment
      */
