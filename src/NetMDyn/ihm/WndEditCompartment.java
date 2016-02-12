@@ -1,11 +1,11 @@
-/* This file is part of NetBioDyn.
+/* This file is part of NetMDyn.ihm
  *
- *   NetBioDyn is free software; you can redistribute it and/or modify
+ *   NetMDyn is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation; either version 3 of the License, or
  *   any later version.
  *
- *   NetBioDyn is distributed in the hope that it will be useful,
+ *   NetMDyn is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
@@ -15,10 +15,11 @@
  *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 /*
- * WndGererEntites.java
+ * WndEditCompartment.java
  *
- * Created on 1 novembre 2007, 09:40
+ * Created on February 12 2016, 16:00
  */
+
 package NetMDyn.ihm;
 
 import netbiodyn.util.UtilFileFilter;
@@ -45,9 +46,11 @@ import netbiodyn.util.Lang;
 import netbiodyn.util.RandomGen;
 
 /**
- *
- * @author ballet
+ * Edit of the Compartment in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
  */
+
 public class WndEditCompartment extends javax.swing.JDialog {
 
     private final ArrayList<Entity_NetMDyn> entities;
@@ -72,7 +75,10 @@ public class WndEditCompartment extends javax.swing.JDialog {
         initComponents();
     }
     
-    //Load of a compartment
+    /**
+     * Load of a compartment
+     * @param comp
+     */
     public void WndCliValue_Load(Compartment comp) {
         // Set language
         if (Lang.getInstance().getLang().equals("FR")) {
@@ -115,26 +121,36 @@ public class WndEditCompartment extends javax.swing.JDialog {
         
         richTextBox_description.setText(_cli.getDescription().getText());
         jCheckBox_vidable.setSelected(_cli.Vidable);
-            //this.setSize(new Dimension(WndEditEntite.WIDTH,WndEditEntite.HEIGHT+320));
         
     }
 
-    //Get the name of the compartment
+    /**
+     * Get the name of the compartment
+     * @return
+     */
     public Compartment getCli() {
         return _cli;
     }
     
-    //Put a new value to the name of the compartment
+    /**
+     * Put a new value to the name of the compartment
+     * @param _cli
+     */
     public void setCli(Compartment _cli) {
         this._cli = _cli;
     }
 
-  //Get the content of DialogResult
+  /**
+   * Get the content of DialogResult
+   * @return
+   */
     public String getDialogResult() {
         return DialogResult;
     }
 
-    //Initialization of the parameters 
+    /**
+     * Initialization of the parameters 
+     */
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -364,6 +380,10 @@ public class WndEditCompartment extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_CANCELMouseClicked
 
+    /**
+     * Description of the Entity
+     * @param evt
+     */
     private void button_aide_descriptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_aide_descriptionMouseClicked
         if (Lang.getInstance().getLang().equals("FR")) {
             JOptionPane.showMessageDialog(this, "Placer ici la description de cette entité. L'accès à cette description se fera aussi par un clic-droit sur une entité dans le simulateur.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
@@ -373,7 +393,10 @@ public class WndEditCompartment extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_aide_descriptionMouseClicked
 
-
+    /**
+     * Choose a color
+     * @param evt
+     */
     private void buttonCouleurMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonCouleurMouseClicked
         //List of colors already existing
         ArrayList<Color> lst_col = new ArrayList<Color>();
@@ -423,7 +446,10 @@ public class WndEditCompartment extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_OKMouseClicked
 
-    //Error method, when a wrong character is put
+    /**
+     * Error method, when a wrong character is put
+     * @param evt
+     */
     private void textBox1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBox1KeyTyped
         char c = evt.getKeyChar();
         if (c == '\\' || c == '/' || c == ':' || c == ' ' || c == '*' || c == '?' || c == '\"' || c == '<' || c == '>' || c == '|') {
@@ -440,7 +466,10 @@ public class WndEditCompartment extends javax.swing.JDialog {
     }//GEN-LAST:event_textBox1KeyTyped
 
     
-    //Errors when the OK button is clicked
+    /**
+     * Errors when the OK button is clicked
+     * @param evt
+     */
     public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	try{
     		Integer.decode(textBoxCenterX.getText());
@@ -528,7 +557,10 @@ public class WndEditCompartment extends javax.swing.JDialog {
     }//GEN-LAST:event_button_OKActionPerformed
     
     
-    //Action when cliked on Cancel Button
+    /**
+     * Action when cliked on Cancel Button
+     * @param evt
+     */
     private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         this.DialogResult = new String("CANCEL");
         setVisible(false);
