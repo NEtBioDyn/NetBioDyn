@@ -1,3 +1,25 @@
+/* This file is part of NetMDyn.ihm
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * WndEditTraverse.java
+ *
+ * Created on February 12 2016, 16:11
+ */
+
 package NetMDyn.ihm;
 
 import java.awt.Dimension; // Width and height of a component (in integer precision) in a single object
@@ -14,6 +36,12 @@ import NetMDyn.Compartment;
 import netbiodyn.util.Lang;
 import netbiodyn.util.UtilPointF;
 
+/**
+ * Edit of the Traverse in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
 public class WndEditTraverse extends javax.swing.JDialog {
 	boolean _env_affiche3D = false;
     public Behavior_NetMDyn _r3 = null;
@@ -24,7 +52,12 @@ public class WndEditTraverse extends javax.swing.JDialog {
     private final ArrayList<Entity_NetMDyn> entities;
     private final ArrayList<Compartment> compartment;
     
-    //Initialization of a WndEditTraverse object
+    /**
+     * Initialization of a WndEditTraverse object
+     * @param entities
+     * @param behaviours
+     * @param compartment
+     */
     public WndEditTraverse(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -34,7 +67,10 @@ public class WndEditTraverse extends javax.swing.JDialog {
         initComponents();
     }
     
-    //Load a new traverse reaction
+    /**
+     * Load a new traverse reaction
+     * @param behavior
+     */
     public void WndEditTraverse_load(Behavior_NetMDyn behavior){
     	if (behavior == null){
     		_r3 = new Behavior_NetMDyn();
@@ -55,7 +91,9 @@ public class WndEditTraverse extends javax.swing.JDialog {
     	}
     }
     
-    //Initialization of parameters
+    /**
+     * Initialization of parameters
+     */
     private void initComponents() {
     	 jLabelNomOrigine = new javax.swing.JLabel();
     	 jLabelNomTarget = new javax.swing.JLabel();
@@ -232,7 +270,10 @@ public class WndEditTraverse extends javax.swing.JDialog {
          setLocationRelativeTo(null);
     }
     
-    //Action when OK button is pushed
+    /**
+     * Action when OK button is pushed
+     * @param evt
+     */
     private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	if (getComboBox_OriginEntity().equals("-")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
@@ -370,7 +411,10 @@ public class WndEditTraverse extends javax.swing.JDialog {
     	
     }
     
-    //Action when Cancel button is pushed
+    /**
+     * Action when Cancel button is pushed
+     * @param evt
+     */
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         // TODO add your handling code here:
         this.DialogResult = new String("CANCEL");
