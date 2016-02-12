@@ -1,3 +1,25 @@
+/* This file is part of NetMDyn.ihm
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * WndEditReaction_NetMDyn.java
+ *
+ * Created on February 12 2016, 16:11
+ */
+
 package NetMDyn.ihm;
 
 import netbiodyn.util.UtilPointF;
@@ -19,9 +41,11 @@ import netbiodyn.ihm.WndEditElementDeReaction;
 import netbiodyn.util.Lang;
 
 /**
- *
- * @author ballet
+ * Edit of the Reaction in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
  */
+
 public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
 
     boolean _env_affiche3D = false;
@@ -33,7 +57,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
     private final ArrayList<Compartment> compartment;
 
     /**
-     * Creates new form WndEditReaction
+     * Create new form WndEditReaction
      * @param entities
      * @param behaviours
      */
@@ -91,12 +115,12 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
 
         int posX = posX0 + 10, posY = posY0;
         for (int i = 0; i < 3; i++) {
-            // Trace de la grille 3x3
+            // Trace of the 3x3 grid
             int posYCombo = posY0 + (decalY) * i + 45 + 6;
             posY += decalY;//tailleY;
 
             if (!(dataGridView_reactifs.getValueAt(i, 0).equals("*")) || !(dataGridView_produits.getValueAt(i, 0).equals("-"))) { // Only selected are displayed           
-                // Lines between Reactives and Products
+                // Lines between Reagents and Products
                 gfx.setColor(Color.WHITE);
                 gfx.drawLine(posX - 30, posYCombo - 1, posX, posY + tailleY / 2 - 1);
                 gfx.drawLine(posX + tailleX + 30, posYCombo - 1, posX + tailleX, posY + tailleY / 2 - 1);
@@ -104,7 +128,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
                 gfx.setColor(Color.DARK_GRAY);
                 gfx.drawLine(posX - 30, posYCombo, posX, posY + tailleY / 2);
                 gfx.drawLine(posX + tailleX + 30, posYCombo, posX + tailleX, posY + tailleY / 2);
-                // Arow of the lines
+                // A row of the lines
                 gfx.setColor(Color.WHITE);
                 gfx.drawLine(posX + tailleX + 30, posY + tailleY / 2 - 1, posX + tailleX + 30 - 6, posY + tailleY / 2 - 1 - 6);
                 gfx.drawLine(posX + tailleX + 30, posY + tailleY / 2 - 1, posX + tailleX + 30 - 6, posY + tailleY / 2 - 1 + 6);
@@ -116,7 +140,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
                 //gfx.fillOval(posX+tailleX+30-6, posYCombo-6, 12, 12);
                 //gfx.setColor(Color.LIGHT_GRAY);
                 //gfx.fillRect(posX, posY, tailleX, tailleY);
-                // Trace des cases selectionnees
+                // Trace of selected cases 
                 String str_pos = _r3._positions.get(i);
                 for (int j = 0; j < 9; j++) {
                     //int sx = tailleX/3, sy = tailleY/3;               // sizes (x and y)
@@ -142,7 +166,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
                     if (cc == '2') {
                         gfx.setColor(Color.BLACK);
                         draw_state = -1;
-                    } // Impossible (black crox)
+                    } // Impossible (black cross)
                     //if(cc == '3') gfx.setColor(Color.RED); // Fixed
                     if (updatePositions == true && cc != '2' && i > 0) {
                         if (_mouseX >= posX + dx + tailleX / 3 && _mouseX < posX + dx + (2 * tailleX) / 3) {
@@ -268,7 +292,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
         textBox_etiquette.setText(_r3.getEtiquettes());
         textBox_k.setText(((Double) _r3.getProba()).toString());
 
-        // Table des reactifs
+        // Reagent table
         Object[][] donnees_reactifs = {
             {new JComboBox()}, {new JComboBox()}, {new JComboBox()}, //{new JComboBox()}, {new JComboBox()}, {new JComboBox()},
         //{new JComboBox()}, {new JComboBox()}, {new JComboBox()},
@@ -289,7 +313,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
         comboBox_reactifs.addItem("*");
         comboBox_reactifs.addItem("0");
 
-        // Table des produits
+        // Product table
         Object[][] donnees_produits = {
             {new JComboBox()}, {new JComboBox()}, {new JComboBox()}, //{new JComboBox()}, {new JComboBox()}, {new JComboBox()},
         //{new JComboBox()}, {new JComboBox()}, {new JComboBox()},
@@ -302,19 +326,19 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
         comboBox_produits.addItem("-");
         comboBox_produits.addItem("0");
 
-            // Pour les 2 tables (réactifs et produits)
-        // Entites
+            // For the 2 tables (reagents and products)
+        // Entities
         for (Entity_NetMDyn lst_cli1 : entities) {
             comboBox_reactifs.addItem(lst_cli1._etiquettes);
             comboBox_produits.addItem(lst_cli1._etiquettes);
         }
 
-        // Application du modèle de combobox
+        // Application of combobox model
         colonne_reactifs.setCellEditor(new DefaultCellEditor(comboBox_reactifs));
         colonne_produits.setCellEditor(new DefaultCellEditor(comboBox_produits));
 
-            // RAZ des combo
-        // Remplissage des bons reactifs et produits de la reaction
+            // Set to zero of the combobox
+        // Rfuelling of good reagents and products of the reaction
         for (int i = 0; i < 3; i++) {
             dataGridView_reactifs.setValueAt("*", i, 0);
             dataGridView_produits.setValueAt("-", i, 0);
@@ -334,7 +358,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
 
         jTextDescription.setText(_r3._description.getText());
 
-        // Ajout des elements de reaction
+        // Add the elements of the reaction
         for (int i = 0; i < _r3._ListElementsReactions.size(); i++) {
             WndEditElementDeReaction elt = _r3._ListElementsReactions.get(i);
             jPanel_cplx.add(elt);
@@ -342,7 +366,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
             //elt.WndEditElementDeReaction_Load();
         }
 
-        // Ajout de l'element final pour la reaction complexe (FIN)
+        // Add the final element for the complex reaction
         WndEditElementDeReaction elt = null;
         elt = new WndEditElementDeReaction();
         elt._parent = jPanel_cplx;
@@ -490,7 +514,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
         jScrollPane2.setBounds(320, 130, 170, 130);
 
         jLabelProduits.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        jLabelProduits.setText("Produits"); // NOI18N
+        jLabelProduits.setText("Products"); // NOI18N
         getContentPane().add(jLabelProduits);
         jLabelProduits.setBounds(380, 110, 63, 15);
 
@@ -503,7 +527,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
 
         jLabelComportement.setFont(new java.awt.Font("DejaVu Sans", 1, 24)); // NOI18N
         jLabelComportement.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelComportement.setText("Comportement"); // NOI18N
+        jLabelComportement.setText("Comportment"); // NOI18N
         getContentPane().add(jLabelComportement);
         jLabelComportement.setBounds(0, 0, 533, 27);
 
@@ -520,7 +544,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
 
         button_annuler.setBackground(new java.awt.Color(255, 153, 153));
         button_annuler.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        button_annuler.setText("Annuler"); // NOI18N
+        button_annuler.setText("Cancel"); // NOI18N
         button_annuler.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 button_annulerMouseClicked(evt);
@@ -583,7 +607,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
         jScrollPane4.setBounds(10, 130, 490, 140);
 
         jLabelReactifs.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        jLabelReactifs.setText("Reactifs"); // NOI18N
+        jLabelReactifs.setText("Reagents"); // NOI18N
         getContentPane().add(jLabelReactifs);
         jLabelReactifs.setBounds(90, 110, 63, 15);
 
@@ -619,9 +643,13 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Action when the OK button is pushed
+     * @param evt
+     */
     public void button_OKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_validerMouseClicked
         // TODO add your handling code here:
-        // Verification que le premier reactif n'est ni "0" ni "*"
+        // Check if the first reactive is not 0 nor *
         if (textBox_etiquette.getText().equals("")) {
             if (Lang.getInstance().getLang().equals("FR")) {
                 JOptionPane.showMessageDialog(this, "Merci de nommer le comportement.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
@@ -689,7 +717,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
 
         _r3._reactifs.clear();
         _r3._produits.clear();
-        // Affectation de la valeur par defaut des combobox
+        // Affectation of the default value of comboboxes
         for (int r = 0; r < dataGridView_reactifs.getRowCount(); r++) {
             String str = dataGridView_reactifs.getValueAt(r, 0).toString();
             if (r == 0){
@@ -787,7 +815,7 @@ public class WndEditReaction_NetMDyn extends javax.swing.JDialog {
         String titre = etiq;
         _r3.LblTitre.setText(titre);
   
-        // Memorisation de la liste des elements de reaction
+        // Memorisation of reaction elements list 
         _r3._ListElementsReactions.clear();
         for (int i = 0; i < jPanel_cplx.getComponentCount() - 1; i++) {
             WndEditElementDeReaction elt = (WndEditElementDeReaction) jPanel_cplx.getComponent(i);
