@@ -1,3 +1,25 @@
+/* This file is part of NetMDyn.ihm
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * WndReactionGlobal.java
+ *
+ * Created on February 12 2016, 16:21
+ */
+
 package NetMDyn.ihm;
 
 import netbiodyn.util.UtilPointF;
@@ -20,6 +42,12 @@ import netbiodyn.Behavior;
 import netbiodyn.Entity;
 import netbiodyn.util.Lang;
 
+/**
+ * Edit of the global reaction in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
 public class WndReactionGlobal extends javax.swing.JDialog {
     
     boolean _env_affiche3D = false;
@@ -31,7 +59,12 @@ public class WndReactionGlobal extends javax.swing.JDialog {
     private final ArrayList<Compartment> compartment;
 
 
-    //Initialization of WndReactionGlobal object
+    /**
+     * Initialization of WndReactionGlobal object
+     * @param entities
+     * @param behaviours
+     * @param compartment
+     */
     public WndReactionGlobal(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -41,7 +74,9 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         initComponents();
     }
     
-    //Initialization of the parameters
+    /**
+     * Initialization of the parameters
+     */
     private void initComponents() {
         
         jLabelNom = new javax.swing.JLabel();
@@ -258,7 +293,10 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    //Errors when OK button is pushed
+    /**
+     * Errors when OK button is pushed
+     * @param evt
+     */
     private void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	if (textBoxName.getText().equals("")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
@@ -317,10 +355,8 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         String[] substrat;
         int nbSubstrats;
         try{
-        	System.out.println("blip");
         	substrat = substrats.split("\\+");
         	nbSubstrats = substrat.length;
-        	System.out.println(nbSubstrats);
         }catch(Exception e){
         	nbSubstrats = 1;
         }
@@ -328,10 +364,8 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         String[] produit;
         int nbPrduits;
         try{
-        	System.out.println("blop");
         	produit = produits.split("\\+");
         	nbPrduits = produit.length;
-        	System.out.println(nbPrduits);
         }catch(Exception e){
         	nbPrduits = 1;
         }
@@ -411,7 +445,10 @@ public class WndReactionGlobal extends javax.swing.JDialog {
         setVisible(false);
     }
     
-  //Errors when Cancel button is pushed
+  /**
+   * Errors when Cancel button is pushed
+   * @param evt
+   */
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         this.DialogResult = new String("CANCEL");
         setVisible(false);
