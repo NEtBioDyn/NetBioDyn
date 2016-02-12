@@ -1,15 +1,44 @@
+/* This file is part of NetMDyn.ihm
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * WndEditCompartment.java
+ *
+ * Created on February 12 2016, 16:00
+ */
+
 package NetMDyn.ihm;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
+import java.awt.Dimension; // Encapsulate the width and height of a component (in integer precision) in a single object.
+import java.util.ArrayList; // Possible creation of tables 
 
-import javax.swing.JOptionPane;
+import javax.swing.JOptionPane; // Possible creation of dialog windows
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Entity_NetMDyn;
 import NetMDyn.Compartment;
 import netbiodyn.util.Lang;
 import netbiodyn.util.UtilPointF;
+
+/**
+ * Edit of the Movement in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
 
 public class WndEditMvt extends javax.swing.JDialog {
 	
@@ -21,6 +50,12 @@ public class WndEditMvt extends javax.swing.JDialog {
     private final ArrayList<Entity_NetMDyn> entities;
     private final ArrayList<Compartment> compartment;
     
+    /**
+     * Initialization of WndEditMvt object
+     * @param entities
+     * @param behaviours
+     * @param compartment
+     */
     public WndEditMvt(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -30,6 +65,10 @@ public class WndEditMvt extends javax.swing.JDialog {
         initComponents();
     }
     
+    /**
+     * Load of a movement
+     * @param behavior
+     */
     public void WndEditMvt_load(Behavior_NetMDyn behavior){
     	if (behavior == null){
     		_r3 = new Behavior_NetMDyn();
@@ -46,6 +85,9 @@ public class WndEditMvt extends javax.swing.JDialog {
     
     }
     
+    /**
+     * Initialization of the parameters of WndEditMvt 
+     */
     private void initComponents() {
     	 jLabelNom = new javax.swing.JLabel();
     	 comboBox_entity = new javax.swing.JComboBox();
@@ -68,7 +110,12 @@ public class WndEditMvt extends javax.swing.JDialog {
          getContentPane().setLayout(null);
 
          jLabelNom.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-         jLabelNom.setText("Nom");
+         if (Lang.getInstance().getLang().equals("FR")) {
+        	 jLabelNom.setText("Nom");
+         }
+         else{
+        	 jLabelNom.setText("Name");
+         }
          getContentPane().add(jLabelNom);
          jLabelNom.setBounds(80, 100, 30, 20);
          
@@ -92,7 +139,17 @@ public class WndEditMvt extends javax.swing.JDialog {
          getContentPane().add(comboBox_entity);
          comboBox_entity.setBounds(120, 100, 150, 20);
 
-         String[] mouvt = {"Protéine", "Métabolite"};
+         String textmouvt1;
+         String textmouvt2;
+         if (Lang.getInstance().getLang().equals("FR")) {
+        	 textmouvt1="Protéine";
+        	 textmouvt2="Métabolite";
+         }
+         else{
+        	 textmouvt1="Protein";
+        	 textmouvt2="Metabolite";        	 
+         }
+         String[] mouvt = {textmouvt1, textmouvt2};
          
          comboBox_mvt.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
          comboBox_mvt.setModel(new javax.swing.DefaultComboBoxModel(mouvt));
@@ -117,7 +174,12 @@ public class WndEditMvt extends javax.swing.JDialog {
 
          button_CANCEL.setBackground(new java.awt.Color(255, 153, 153));
          button_CANCEL.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-         button_CANCEL.setText("Annuler");
+         if (Lang.getInstance().getLang().equals("FR")) {
+        	 button_CANCEL.setText("Annuler");
+         }
+         else{
+        	 button_CANCEL.setText("Cancel");
+         }
          button_CANCEL.addMouseListener(new java.awt.event.MouseAdapter() {
              public void mouseClicked(java.awt.event.MouseEvent evt) {
                  button_CANCELMouseClicked(evt);
@@ -134,7 +196,12 @@ public class WndEditMvt extends javax.swing.JDialog {
          jLabelTitre.setBackground(new java.awt.Color(153, 153, 255));
          jLabelTitre.setFont(new java.awt.Font("DejaVu Sans", 1, 24)); // NOI18N
          jLabelTitre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-         jLabelTitre.setText("Mouvement");
+         if (Lang.getInstance().getLang().equals("FR")) {
+        	 jLabelTitre.setText("Mouvement");
+         }
+         else{
+        	 jLabelTitre.setText("Movement");
+         }
          getContentPane().add(jLabelTitre);
          jLabelTitre.setBounds(0, 0, 533, 28);
          
@@ -147,6 +214,11 @@ public class WndEditMvt extends javax.swing.JDialog {
          setSize(new java.awt.Dimension(533, 300));
          setLocationRelativeTo(null);
     }
+    
+    /**
+     * Action when the OK button is pushed
+     * @param evt
+     */
     public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	if (getComboBox_entity().equals("-")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
@@ -188,8 +260,11 @@ public class WndEditMvt extends javax.swing.JDialog {
     	
     }
     
+    /**
+     * Action when the Cancel button is pushed
+     * @param evt
+     */
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
-        // TODO add your handling code here:
         this.DialogResult = new String("CANCEL");
         setVisible(false);
     }//GEN-LAST:event_button_CANCELActionPerformed
@@ -201,18 +276,35 @@ public class WndEditMvt extends javax.swing.JDialog {
 
         //if()
     }//GEN-LAST:event_formKeyPressed
+	
+	/**
+	 * Return the entity of the Combo Box
+	 * @return
+	 */
     public String getComboBox_entity() {
 		return (String) comboBox_entity.getSelectedItem();
 	}
-
+    
+    /**
+     * Put a new value to the entity of the Combo Box
+     * @param comboBox_entity
+     */
 	public void setComboBox_entity(String comboBox_entity) {
 		this.comboBox_entity.setSelectedItem(comboBox_entity);
 	}
 	
+	/**
+	 * Return the movement into the Combo Box
+	 * @return
+	 */
 	public String getComboBox_mvt() {
 		return (String) comboBox_mvt.getSelectedItem();
 	}
 
+	/**
+	 * Put a new value to the movement of the Combo Box
+	 * @param comboBox_mvt
+	 */
 	public void setComboBox_mvt(String comboBox_mvt) {
 		this.comboBox_mvt.setSelectedItem(comboBox_mvt);
 	}
