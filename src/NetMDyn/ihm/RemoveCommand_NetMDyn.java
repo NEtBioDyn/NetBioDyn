@@ -1,8 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* This file is part of NetMDyn.ihm
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+/*
+ * RemoveCommand_NetMDyn.java
+ *
+ * Created on February 12 2016, 15:42
+ */
+
 package NetMDyn.ihm;
 
 import java.util.ArrayList; // Possible creation of tables
@@ -15,9 +32,11 @@ import netbiodyn.ihm.Command;
 import netbiodyn.util.UtilPoint3D;
 
 /**
- *
- * @author riviere
+ * Class of Command deletion
+ * 
+ * @author Master 2 Bioinformatique
  */
+
 public class RemoveCommand_NetMDyn implements Command {
 
     private final Model_NetMDyn model;
@@ -26,7 +45,12 @@ public class RemoveCommand_NetMDyn implements Command {
     private ArrayList<UtilPoint3D> points;
     private Command opposite;
 
-    //Initialization of a new RemoveCommand object with only one point
+    /**
+     * Initialization of a new RemoveCommand object with only one point
+     * @param model
+     * @param simulator
+     * @param point
+     */
     public RemoveCommand_NetMDyn(Model_NetMDyn model, Simulator_NetMDyn simulator, UtilPoint3D point) {
         this.points = new ArrayList<>();
         this.model = model;
@@ -34,19 +58,29 @@ public class RemoveCommand_NetMDyn implements Command {
         this.point = point;
     }
     
-    //Initialization of a new RemoveCommand object with multiple points
+    /**
+     * Initialization of a new RemoveCommand object with multiple points
+     * @param model
+     * @param simulator
+     * @param points
+     */
     public RemoveCommand_NetMDyn(Model_NetMDyn model, Simulator_NetMDyn simulator, ArrayList<UtilPoint3D> points) {
         this.model = model;
         this.simulator = simulator;
         this.points = points;
     }
     
-    //Change this parameter
+    /**
+     * Change this parameter
+     * @param opposite
+     */
     public void setOpposite(Command opposite){
         this.opposite=opposite;
     }
 
-    @Override
+    /**
+     * Execution
+     */
     public void execute() {
         if (point != null) {
             int x = point.x;
@@ -72,7 +106,9 @@ public class RemoveCommand_NetMDyn implements Command {
         }
     }
 
-    @Override
+    /**
+     * Undo the Command
+     */
     public void undo() {
         opposite.execute();
     }
