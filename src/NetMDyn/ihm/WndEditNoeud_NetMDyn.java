@@ -1,3 +1,25 @@
+/* This file is part of NetMDyn.ihm
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * WndEditNoeud_NetMDyn.java
+ *
+ * Created on February 12 2016, 16:08
+ */
+
 package NetMDyn.ihm;
 
 import netbiodyn.util.UtilFileFilter;
@@ -19,9 +41,11 @@ import netbiodyn.util.Lang;
 import netbiodyn.util.RandomGen;
 
 /**
- *
- * @author ballet
+ * Edit of the Reaxels in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
  */
+
 public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
     private final ArrayList<Entity_NetMDyn> entities;
@@ -46,7 +70,10 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         initComponents();
     }
     
-    //Load a new Reaxel
+    /**
+     * Load a new Reaxel
+     * @param reaxel
+     */
     public void WndCliValue_Load(Entity_NetMDyn reaxel) {
     	
         String[] comps = new String[compartment.size()+1];
@@ -112,7 +139,6 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         comboBox_compartment.setSelectedItem(_cli._compartment);
         richTextBox_description.setText(_cli.getDescription().getText());
         jCheckBox_vidable.setSelected(_cli.Vidable);
-            //this.setSize(new Dimension(WndEditEntite.WIDTH,WndEditEntite.HEIGHT+320));
     }
 
     public Entity_NetMDyn getCli() {
@@ -406,7 +432,10 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_CANCELMouseClicked
 
-    //Action when user wants help
+    /**
+     * Action when user wants help
+     * @param evt
+     */
     private void button_aide_descriptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_aide_descriptionMouseClicked
         // TODO add your handling code here:
         if (Lang.getInstance().getLang().equals("FR")) {
@@ -417,13 +446,19 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_aide_descriptionMouseClicked
 
-    //Action when we want no image in the background of the box
+    /**
+     * Action when we want no image in the background of the box
+     * @param evt
+     */
     private void button_pas_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_pas_imageMouseClicked
         _cli.BackgroundImage = null;
         _cli._str_image_deco = "";
     }//GEN-LAST:event_button_pas_imageMouseClicked
 
-    //Action when we want an image in the background of the box
+    /**
+     * Action when we want an image in the background of the box
+     * @param evt
+     */
     private void button_imgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_imgMouseClicked
         JFileChooser openFileDialog1 = new JFileChooser();
         UtilFileFilter filtre = new UtilFileFilter("Images", "bmp", "gif", "jpeg", "jpg", "png");
@@ -450,7 +485,10 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_button_imgMouseClicked
 
-    //Change of color
+    /**
+     * Change of color
+     * @param evt
+     */
     private void buttonCouleurMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonCouleurMouseClicked
         // List of already-existing colors
         ArrayList<Color> lst_col = new ArrayList<Color>();
@@ -497,7 +535,10 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
 
     }//GEN-LAST:event_button_OKMouseClicked
 
-    //Check if one forbidden character is typed
+    /**
+     * Check if one forbidden character is typed
+     * @param evt
+     */
     private void textBox1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBox1KeyTyped
         char c = evt.getKeyChar();
         if (c == '\\' || c == '/' || c == ',' || c == ':' || c == ' ' || c == '*' || c == '?' || c == '\"' || c == '<' || c == '>' || c == '|') {
@@ -513,7 +554,10 @@ public class WndEditNoeud_NetMDyn extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_textBox1KeyTyped
 
-    //Errors when OK button is pushed
+    /**
+     * Errors when OK button is pushed
+     * @param evt
+     */
     public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
         if (textBox1.getText().equals("")) {
             if (Lang.getInstance().getLang().equals("FR")) {
