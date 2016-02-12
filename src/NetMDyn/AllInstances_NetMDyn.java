@@ -21,17 +21,20 @@
  */
 
 
-/**
- * Class of AllInstances management
- * 
- * @author Master 2 Bioinformatique
- */
+
 package NetMDyn;
 
 import java.util.ArrayList; //Possible creation of tables
 import java.util.HashMap; //Possible creation of hashmaps
 
 import netbiodyn.util.Lang;
+
+
+/**
+ * Class of AllInstances management
+ * 
+ * @author Master 2 Bioinformatique
+ */
 
 public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> implements Cloneable{
 
@@ -63,9 +66,9 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	     * Creation of an AllInstances object, with all possible parameters 
 	     * @param l : table of InstanceReaxels
 	     * @param m : InstanceReaxel_NetMDyn[][][]
-	    * @param x : coordinate
-	    * @param y : coordinate 
-	    * @param z : coordinate
+	     * @param x : coordinate
+	     * @param y : coordinate 
+	     * @param z : coordinate
 	     */
 	    public AllInstances_NetMDyn(ArrayList<InstanceReaxel_NetMDyn> l, InstanceReaxel_NetMDyn[][][] m, int x, int y, int z) {
 	        super(l); //Creation from an ArrayList<InstanceReaxel>
@@ -326,7 +329,7 @@ public class AllInstances_NetMDyn extends ArrayList<InstanceReaxel_NetMDyn> impl
 	    }
 
 	    /**
-	     * Remove the InstanceReaxel by its coordinates, but only if it's possible
+	     * Remove the reaxel by its coordinates, but only if it's possible
 	     * @param x : coordinate
 	     * @param y : coordinate
 	     * @param z : coordinate
