@@ -49,27 +49,50 @@ public class Behavior_NetMDyn extends Behavior {
 	private double K = 0.0;
 	private double proba;
 	
-	
+	/**
+	 * Return the type of the behavior
+	 * @return the type of the behavior corresponding to an integer
+	 */
     public int getType_behavior() {
 		return type_behavior;
 	}
-
+    
+    /**
+     * Put a new value to the type of the behavior
+     * @param type_behavior : the type of the behavior corresponding to an integer
+     */
 	public void setType_behavior(int type_behavior) {
 		this.type_behavior = type_behavior;
 	}
 
+	/**
+	 * Return the K of the behavior
+	 * @return the K of the behavior corresponding to a double
+	 */
 	public double getK() {
 		return K;
 	}
 
+	/**
+	 * Put a new value to the K of the behavior
+	 * @param k : the K of the behavior corresponding to a double
+	 */
 	public void setK(double k) {
 		K = k;
 	}
 
+	/**
+	 * Return the probability of the behavior
+	 * @return the probability of the behavior corresponding to a double
+	 */
 	public double getProba() {
 		return proba;
 	}
 
+	/**
+	 * Put a new value to the probability of the behavior
+	 * @param proba : the probability of the behavior corresponding to a double
+	 */
 	public void setProba(double proba) {
 		this.proba = proba;
 	}
@@ -348,6 +371,10 @@ public class Behavior_NetMDyn extends Behavior {
         }
     }
     
+    /**
+     * Save the behavior
+     * @return all the parameters of the behavior corresponding to strings
+     */
     public ArrayList<String> toSave() {
         ArrayList<String> toSave = super.toSave();
         // Description
