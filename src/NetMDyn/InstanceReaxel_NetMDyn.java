@@ -25,6 +25,12 @@ package NetMDyn;
 import netbiodyn.Entity;
 import netbiodyn.InstanceReaxel;
 
+/**
+ * Class of Reaxel management
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
 public class InstanceReaxel_NetMDyn extends InstanceReaxel{
 	public String _compartment = "Cytosol";
 
