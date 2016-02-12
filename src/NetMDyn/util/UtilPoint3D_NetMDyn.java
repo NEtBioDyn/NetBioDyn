@@ -1,3 +1,25 @@
+/* This file is part of NetMDyn.util
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * UtilPoint3D_NetMDyn.java
+ *
+ * Created on February 12 2016, 16:32
+ */
+
 package NetMDyn.util;
 
 import java.util.ArrayList; //Possible creation of tables
@@ -5,15 +27,29 @@ import java.util.ArrayList; //Possible creation of tables
 import NetMDyn.InstanceReaxel_NetMDyn;
 import netbiodyn.util.UtilPoint3D;
 
+/**
+ * Points in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
+
 public class UtilPoint3D_NetMDyn extends UtilPoint3D{
 	
-	//Initialization of UtilPoint3D object from scratch
+	/**
+	 * Initialization of UtilPoint3D object from scratch
+	 */
 	 public UtilPoint3D_NetMDyn() {
 	        x = 0;
 	        y = 0;
 	        z = 0;
 	    }
-	 //Initialization of UtilPoint3D object with coordinates as parameters
+	 /**
+	  * Initialization of UtilPoint3D object with coordinates as parameters
+	  * @param i : X coordinate
+	  * @param j : Y coordinate
+	  * @param k : Z coordinate
+	  */
 	    public UtilPoint3D_NetMDyn(int i, int j, int k) {
 	        x = i;
 	        y = j;
