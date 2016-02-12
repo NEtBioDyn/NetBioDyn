@@ -1,3 +1,26 @@
+/* This file is part of NetMDyn.util
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * FileSaverLoader_NetMDyn.java
+ *
+ * Created on February 12 2016, 16:24
+ */
+
+
 package NetMDyn.util;
 
 import netbiodyn.ihm.Environment;
@@ -44,6 +67,12 @@ import netbiodyn.ihm.Controller;
 //import netbiodyn.JSBMLvisualizer;
 import javax.xml.stream.XMLStreamException;
 import org.sbml.jsbml.SBMLException;
+
+/**
+ * Save and load files in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
+ */
 
 public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 
@@ -152,7 +181,6 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 		try {
 			slwriter.write(doc, res[0]+".xml.xml");
 		} catch (SBMLException | FileNotFoundException | XMLStreamException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -185,7 +213,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 			}
 		}
 
-		// Sauvegarde de l'environnement
+		// Save of the environment
 		try {
 
 			Env_Parameters parameters = toSave.getParameters();
@@ -218,7 +246,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 			erreur = true;
 		}
 
-		// Sauvegarde des positions des reaxels //
+		// Save of reaxel positions //
 		// ======================================
 		try {
 			out.write("Reaxels" + "\n");
@@ -293,10 +321,10 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 
 	        try {
 	            while (in.ready()) {
-	                // Lecture du mot
+	                // Word read
 	                String ligne = in.readLine();
 	                String[] lst_mots = decoupeLigne(ligne);
-	                // Chargement Entite
+	                // Entity load
 	                if (lst_mots[0].equals("version")) {
 	                    version = lst_mots[1];
 	                }
@@ -304,12 +332,12 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	                        || lst_mots[0].equals("class NetMDyn.Entity_NetMDyn")) {
 	                    saved = ChargerNoeud(chemin, in, saved);
 	                }
-	                // Chargement Comportements
+	                // Behavior load
 	                if (lst_mots[0].equals("biodyn_net.CliMoteurDeReaction3") || lst_mots[0].equals("biodyn_net.MoteurReaction") || lst_mots[0].equals("class netbiodyn.MoteurReaction")
 	                        || lst_mots[0].equals("class NetMDyn.Behavior_NetMDyn")) {
 	                    saved = ChargerReaction(in, saved);
 	                }
-	                // Chargement Compartment
+	                // Compartment load
 	                if (lst_mots[0].equals("class NetMDyn.Compartment")) {
 	                    saved = ChargerCompartment(chemin,in, saved);
 	                }
@@ -352,7 +380,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	        try {
 
 	            while (in.ready() == true) {
-	                // Lecture du mot
+	                // Word read
 	                String ligne = in.readLine();
 	                String[] lst_mots = decoupeLigne(ligne);
 	                if (lst_mots[0].equals("Reaxels")) {
@@ -422,7 +450,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	            BufferedReader in=new BufferedReader(new FileReader(path));
 
 	            while (in.ready() == true) {
-	                // Lecture du mot
+	                // Word read
 	                existing.add(in.readLine());                
 	            }
 	            in.close();
@@ -527,18 +555,6 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	            nomFichier = nomFichier.replace('\\', '/');
 	        }
 	        return toReturn;
-	//
-//	        if (!nomFichier.equals("") && returnval == JFileChooser.APPROVE_OPTION) {
-	//
-//	            if (!nomFichier.startsWith("http") && !nomFichier.startsWith("file")) {
-//	                if (nomFichier.startsWith("/")) {
-//	                    nomFichier = "file://" + nomFichier; // Sous Linux, il y a le '/' de debut...
-//	                } else {
-//	                    nomFichier = "file:///" + nomFichier; // mais pas sous windows...
-//	                }
-//	            }
-	//
-//	        }
 	    }
 
 	    public static ArrayList<String> importCurves(String path) {
@@ -576,7 +592,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	    }
 
 	    private Serialized_NetMDyn ChargerNoeud(String abs_path, BufferedReader testLoad, Serialized_NetMDyn saved) {
-	        // Chargement Entite
+	        // Entity load
 	        Entity_NetMDyn cli = new Entity_NetMDyn();
 
 	        boolean fin_clinamon = false;
@@ -592,7 +608,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	            if (lst_mots[0].equals("Fin")) {
 	                fin_clinamon = true;
 	            } else {
-	                if (lst_mots.length == 2) { // Cas ou la valeur est ""
+	                if (lst_mots.length == 2) { // Case where the value is ""
 	                    String[] tmp = new String[3];
 	                    tmp[0] = lst_mots[0];
 	                    tmp[1] = lst_mots[1];
@@ -600,9 +616,9 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	                    lst_mots = tmp;
 	                }
 	                if (lst_mots[1].equals("Etiquettes")) {
-	                    // Etiquettes
+	                    // Tags
 	                    cli.setEtiquettes(lst_mots[2]);
-	                    // Chargement de la description
+	                    // Description load
 	                    String nom_fichier_description = path + "_Description_" + cli.getEtiquettes() + ".txt";
 
 	                    if (fichierExiste("", nom_fichier_description) == true) {
@@ -641,7 +657,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	                }
 	                if (lst_mots[1].equals("Image")) {
 	                    cli._str_image_deco = lst_mots[2];
-	                    // Chargement de l'image                        
+	                    // Image load                      
 	                    BufferedImage monImage = null;
 	                    try {
 	                        monImage = ImageIO.read(new URL(abs_path + "/" + cli._str_image_deco));
@@ -658,7 +674,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	    }
 	    
 	    private Serialized_NetMDyn ChargerCompartment(String abs_path, BufferedReader testLoad, Serialized_NetMDyn saved) {
-	        // Chargement Entite
+	        // Entity load
 	        Compartment comp = new Compartment();
 	        UtilPoint3D center =new UtilPoint3D();
 
@@ -675,7 +691,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	            if (lst_mots[0].equals("Fin")) {
 	                fin_clinamon = true;
 	            } else {
-	                if (lst_mots.length == 2) { // Cas ou la valeur est ""
+	                if (lst_mots.length == 2) { // Case where the value is ""
 	                    String[] tmp = new String[3];
 	                    tmp[0] = lst_mots[0];
 	                    tmp[1] = lst_mots[1];
@@ -683,15 +699,8 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	                    lst_mots = tmp;
 	                }
 	                if (lst_mots[1].equals("Etiquettes")) {
-	                    // Etiquettes
+	                    // Tags
 	                    comp.setEtiquettes(lst_mots[2]);
-//	                	System.out.println(comp.getEtiquette());                   
-	                    // Chargement de la description
-//	                    String nom_fichier_description = path + "_Description_" + cli.getEtiquettes() + ".txt";
-	//
-//	                    if (fichierExiste("", nom_fichier_description) == true) {
-//	                        cli.getDescription().setText(chargerTexte(nom_fichier_description));
-//	                    }
 	                }
 	                if (lst_mots[1].equals("centerX")) {
 	                    center.x=Integer.parseInt(lst_mots[2]);
@@ -706,17 +715,6 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	                if (lst_mots[1].equals("radius")) {
 	                    comp.setRadius(Integer.parseInt(lst_mots[2]));
 	                }
-	                //if (lst_mots[1].equals("menbrane")) {
-	                  //  ArrayList<Entity> noeuds = saved.getListManipulesNoeuds();
-
-	                    //for (int i = 0; i < noeuds.size(); i++) {
-	                    	//if (noeuds.get(i).getEtiquettes().equals(lst_mots[2])){
-	                    		//comp.setEnt(noeuds.get(i));
-	                    	//}
-	                    //}
-//	                	System.out.println("toto"+saved.getListManipulesNoeuds());
-//	                    comp.setEnt(saved.getListManipulesNoeuds());
-	                //}
 
 	            }
 	        }
@@ -751,7 +749,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	                }
 	                if (lst_mots[1].equals("Etiquettes")) {
 	                    react3.setEtiquettes(lst_mots[2]);
-	                    // Chargement de la description
+	                    // Description load
 	                    String nom_fichier_description = path + "_Description_" + react3.getEtiquettes() + ".txt";
 	                    if (fichierExiste("", nom_fichier_description) == true) {
 	                        react3._description.setText(chargerTexte(nom_fichier_description));
@@ -812,7 +810,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	            }
 	        }
 	        if (react3._positions.isEmpty()) {
-	            // Init des positions
+	            // Position initialization
 	            react3._positions.add("122222222");
 	            for (int i = 1; i < 9; i++) {
 	                react3._positions.add("212121212");
@@ -865,7 +863,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	            if (lst_mots[0].equals("Fin")) {
 	                fin = true;
 	            } else {
-	                if (lst_mots.length == 2) { // Cas ou la valeur est ""
+	                if (lst_mots.length == 2) { // Case where the value is ""
 	                    String[] tmp = new String[3];
 	                    tmp[0] = lst_mots[0];
 	                    tmp[1] = lst_mots[1];
@@ -875,7 +873,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 
 	                if (lst_mots[1].equals("Image")) {
 	                    p.setStr_image_deco(lst_mots[2]);
-	                    // Chargement de l'image                        
+	                    // Image load                       
 	                    BufferedImage monImage = null;
 	                    try {
 	                        monImage = ImageIO.read(new URL(abs_path + "/" + lst_mots[2]));
@@ -889,7 +887,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	            }
 	        }
 
-	        // Chargement de la description
+	        // Description load
 	        String nom_fichier_description = path + "_Description_Simulation.txt";
 	        if (fichierExiste("", nom_fichier_description) == true) {
 	            p.setDescription(chargerTexte(nom_fichier_description));
@@ -913,9 +911,9 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	    public boolean URLexiste(String URLName) {
 	        if (!URLName.startsWith("http") && !URLName.startsWith("file")) {
 	            if (URLName.startsWith("/")) {
-	                URLName = "file://" + URLName; // Fichier Linux
+	                URLName = "file://" + URLName; // File Linux
 	            } else {
-	                URLName = "file:///" + URLName; // Fichier Windows
+	                URLName = "file:///" + URLName; // File Windows
 	            }
 	        }
 	        try {
