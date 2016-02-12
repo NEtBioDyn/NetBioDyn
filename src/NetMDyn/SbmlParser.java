@@ -1,74 +1,43 @@
-import java.io.File;
+package NetMDyn;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
-import javax.swing.JTree;
 import javax.xml.stream.XMLStreamException;
 
-import org.sbml.jsbml.Annotation;
 import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.KineticLaw;
-import org.sbml.jsbml.ListOf;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.SBMLDocument;
-import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.Species;
 import org.sbml.jsbml.SpeciesReference;
-import org.sbml.jsbml.util.SimpleTreeNodeChangeListener;
-import org.sbml.jsbml.util.TreeNodeChangeListener;
 
-public class Sbml_parser{
-	private SBMLDocument document;
+public class SbmlParser{
 	private ArrayList<Reaction>reactions= new ArrayList<Reaction>();
 	private ArrayList<Compartment>compartments=new ArrayList<Compartment>();
-	private ArrayList<Species>entities=new ArrayList<Species>();
+	private Set<Species>entities=new HashSet<Species>();
+	private ArrayList<String> entities_name= new ArrayList<String>();
 	
 	
-	public Sbml_parser() {
+	
+	public SbmlParser() {
 	
 		
 	}
-	public void parse_species(SBMLDocument document) throws XMLStreamException, IOException{
-	//	System.out.println(document);
+	public void parseSpecies(SBMLDocument document) throws XMLStreamException, IOException{
 	Model model = document.getModel();
-//	System.out.println(model);
-//	String modelName = model.getName();
-//	ListOf<Compartment> compartiments = model.getListOfCompartments();
-//	System.out.println(modelName);
-//	Map<String, String> attribut = document.getSBMLDocumentAttributes();
-//	System.out.println(attribut);
-//	System.out.println(compartiments);
-//	JTree tree = new JTree(document);
-//	System.out.println(tree);
-//	Compartment compartment = model.getCompartment(0);
-//	System.out.println(compartment);
-//	System.out.println( model.getCompartmentCount());
-// 
-//	System.out.println(model.getReactionCount());
-	
-//Reaction reac=model.getReaction(2);
-//		System.out.println(reac.getListOfReactants());
-//		System.out.println(reac.getListOfProducts());
-//		System.out.println(reac.getListOfReactants());
-//		System.out.println(reac.getListOfModifiers());
-//		System.out.println(reac.getKineticLaw());
-//		System.out.println(reac.getKineticLaw().getFormula());
-//		for (int i = 0; i < reac.getKineticLaw().(); i++) {
-//			
-//		}
-//		for (SpeciesReference entitie : reac.getListOfReactants()) {
-//			System.out.println(entitie);
-//		}
 	for (int k = 0; k <model.getSpeciesCount() ; k++) {
 		entities.add(model.getSpecies(k));
-		
 	}
-		
+	}
+	public void parseSpeciesName(SBMLDocument document){
+		Model model = document.getModel();
+		for (int k = 0; k <model.getSpeciesCount() ; k++) {
+			entities_name.add(model.getSpecies(k).getName()+"_"+model.getSpecies(k).getCompartment());
+	}
 		}
 	public void parse_compartment(SBMLDocument document){
 		Model model = document.getModel();
@@ -106,12 +75,16 @@ public class Sbml_parser{
 	}
 	public void setCompartments(ArrayList<Compartment> compartments) {
 		this.compartments = compartments;
-		System.out.println(compartments);
+		
 	}
-	public ArrayList<Species> getEntities() {
+	public Set<Species> getEntities() {
 		return entities;
 	}
-	public void setEntities(ArrayList<Species> entities) {
+	public ArrayList<String> getEntitiesName(){
+		return entities_name;
+		
+	}
+	public void setEntities(Set<Species> entities) {
 		this.entities = entities;
 		
 	}

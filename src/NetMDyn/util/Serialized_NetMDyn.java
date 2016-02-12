@@ -6,8 +6,8 @@
 package NetMDyn.util;
 
 import netbiodyn.ihm.Env_Parameters;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.ArrayList; //Possible creation of tables
+import java.util.HashMap; // Possible creation of hashmaps
 
 import NetMDyn.AllInstances_NetMDyn;
 import NetMDyn.Behavior_NetMDyn;
@@ -32,9 +32,10 @@ public class Serialized_NetMDyn {
 
     private HashMap<String, Integer> entitesBook;
 
-    //Environnement
+    //Environment
     private Env_Parameters parameters;
-
+    
+    //Initialization of Serialized object from scratch
     public Serialized_NetMDyn() {
         _ListManipulesNoeuds = new ArrayList<>();
         _ListManipulesReactions = new ArrayList<>();
@@ -44,6 +45,7 @@ public class Serialized_NetMDyn {
         entitesBook = new HashMap<>();
     }
 
+    //Initialization of Serialized object with parameters
     public Serialized_NetMDyn(Env_Parameters parameters) {
         _ListManipulesNoeuds = new ArrayList<>();
         _ListManipulesReactions = new ArrayList<>();
@@ -99,10 +101,6 @@ public class Serialized_NetMDyn {
         this._ListManipulesCompartments = _ListManipulesCompartments;
     }
     
-    
-    
-    
-
     public AllInstances_NetMDyn getInstances() {
         return instances;
     }

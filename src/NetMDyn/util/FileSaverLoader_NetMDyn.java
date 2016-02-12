@@ -14,6 +14,7 @@ import java.awt.image.RenderedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -40,6 +41,10 @@ import netbiodyn.ProtoBioDyn;
 import netbiodyn.Entity;
 import netbiodyn.ihm.Controller;
 
+//import netbiodyn.JSBMLvisualizer;
+import javax.xml.stream.XMLStreamException;
+import org.sbml.jsbml.SBMLException;
+
 public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 
 	    private String path;
@@ -55,131 +60,202 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	    public void save(Serialized_NetMDyn toSave) {
 	        boolean erreur = false;
 
-	        FileWriter testSave = null;
-	        try {
-	            testSave = new FileWriter(path);
-	        } catch (Exception e) {
-	            erreur = true;
-	        }
+		FileWriter testSave = null;
+		try {
+			testSave = new FileWriter(path);
+		} catch (Exception e) {
+			erreur = true;
+		}
 
-	        BufferedWriter out = new BufferedWriter(testSave);
-	        ArrayList<ProtoBioDyn> list_BioDyn = new ArrayList<>();
+		org.sbml.jsbml.SBMLWriter slwriter = new org.sbml.jsbml.SBMLWriter();
+		org.sbml.jsbml.SBMLDocument doc = new org.sbml.jsbml.SBMLDocument();
+		doc.setLevelAndVersion(3, 1);
+		org.sbml.jsbml.Model model = doc.createModel("test_model");
+		org.sbml.jsbml.Compartment compartment = model.createCompartment("Cytosol");
+		compartment.setName(compartment.getId());
+		compartment.setSize(1d);
+		
 
-	        try {
-	            out.write("version:NetMDyn\n");
-	        } catch (Exception e) {
-	            erreur = true;
-	        }
+		BufferedWriter out = new BufferedWriter(testSave);
+		ArrayList<ProtoBioDyn> list_BioDyn = new ArrayList<>();
 
-	        for (int i = 0; i < toSave.getListManipulesNoeuds().size(); i++) {
-	            list_BioDyn.add(toSave.getListManipulesNoeuds().get(i));
-	        }
-	        for (int i = 0; i < toSave.getListManipulesReactions().size(); i++) {
-	            list_BioDyn.add(toSave.getListManipulesReactions().get(i));
-	        }
-	        System.out.println("lol"+toSave.getListManipulesCompartment());
-	        for (int i = 0; i < toSave.getListManipulesCompartment().size(); i++) {
-	            list_BioDyn.add(toSave.getListManipulesCompartment().get(i));        
-	        }
+		try {
+			out.write("version:NetMDyn\n");
+		} catch (Exception e) {
+			erreur = true;
+		}
 
-	        for (ProtoBioDyn list_BioDyn1 : list_BioDyn) {
-	            ArrayList<String> toString = list_BioDyn1.toSave();
-	            try {
-	                for (String toString1 : toString) {
-	                    out.write(toString1);
-	                }
-	                // Save image related to a Entity
-	                if (list_BioDyn1 instanceof Entity_NetMDyn) {
-	                    Entity_NetMDyn reaxel = (Entity_NetMDyn) list_BioDyn1;
-	                    if (reaxel.BackgroundImage != null) {
-	                        File F = new File(path_parent + "/" + reaxel._str_image_deco);
-	                        String str_image_modifie = reaxel._str_image_deco.replace('.', ';');
-	                        String[] tab_str = str_image_modifie.split(";");
-	                        String ext = tab_str[1];
-	                        if (F.exists()) {
-	                            F.delete();
-	                        }
-	                        ImageIO.write((RenderedImage) reaxel.BackgroundImage, ext, F);
-	                    }
-	                }
-	                else if (list_BioDyn1 instanceof Compartment) {
-						System.out.println("toto");
+		for (int i = 0; i < toSave.getListManipulesCompartment().size(); i++) {
+			list_BioDyn.add(toSave.getListManipulesCompartment().get(i));
+			compartment = model.createCompartment(toSave.getListManipulesCompartment().get(i).getEtiquettes());
+			compartment.setName(compartment.getId());
+			compartment.setSize(1d);
+		}
+		for (int i = 0; i < toSave.getListManipulesNoeuds().size(); i++) {
+			list_BioDyn.add(toSave.getListManipulesNoeuds().get(i));
+			for (int j = 0; j < model.getListOfCompartments().size(); j++) {
+				// System.out.println(toSave.getListManipulesNoeuds().get(i).getCompartment());
+				// System.out.println(model.getListOfCompartments().get(j).getId());
+				if ((toSave.getListManipulesNoeuds().get(i).getCompartment()
+						.equals(model.getListOfCompartments().get(j).getId()))) {
+					compartment = model.getListOfCompartments().get(j);
+					org.sbml.jsbml.Species spec = model
+							.createSpecies(toSave.getListManipulesNoeuds().get(i).getEtiquettes(), compartment);
+					spec.setName(spec.getId());
+
+				}
+			}
+		}
+		for (int i = 0; i < toSave.getListManipulesReactions().size(); i++) {
+			list_BioDyn.add(toSave.getListManipulesReactions().get(i));
+			if (!(toSave.getListManipulesReactions().get(i).getType_behavior()==3)){
+				continue;
+			}
+			org.sbml.jsbml.Reaction sbReaction = model
+					.createReaction(toSave.getListManipulesReactions().get(i).getEtiquettes());
+			sbReaction.setName(sbReaction.getId());
+			for (int j = 0; j < toSave.getListManipulesReactions().get(i)._reactifs.size(); j++) {
+				// System.out.println(toSave.getListManipulesReactions().get(i)._reactifs.get(j));
+				for (int v = 0; v < model.getListOfSpecies().size(); v++) {
+					// System.out.println(model.getListOfSpecies().get(v).getId());
+					if (model.getListOfSpecies().get(v).getId().equals(toSave.getListManipulesReactions().get(i)._reactifs.get(j))) {
+						System.out.println("enregistre reactif");
+						org.sbml.jsbml.Species spec = model.getListOfSpecies().get(v);
+						org.sbml.jsbml.SpeciesReference subs = sbReaction.createReactant(spec);
+						sbReaction.setCompartment(spec.getCompartment());
+						subs.setName(subs.getId());
+						subs.setSBOTerm(15);
 					}
-	                out.write("Fin\n");
-	                out.write("\n");
-	            } catch (Exception e) {
-	                erreur = true;
-	            }
-	        }        
-	        
-	        //Sauvegarde de l'environnement
-	        try {
+				}
 
-	            Env_Parameters parameters = toSave.getParameters();
-	            out.write("netbiodyn.Environnement\n");
+			}
+			for (int j = 0; j < toSave.getListManipulesReactions().get(i)._produits.size(); j++) {
+				// System.out.println(toSave.getListManipulesReactions().get(i)._produits.get(j));
+				for (int v = 0; v < model.getListOfSpecies().size(); v++) {
+					// System.out.println(model.getListOfSpecies().get(v).getId());
+					if (model.getListOfSpecies().get(v).getId()
+							.equals(toSave.getListManipulesReactions().get(i)._produits.get(j))) {
+						System.out.println("enregistre produits");
+						org.sbml.jsbml.Species spec = model.getListOfSpecies().get(v);
+						org.sbml.jsbml.SpeciesReference subs = sbReaction.createProduct(spec);
+						subs.setName(subs.getId());
+						subs.setSBOTerm(11);
+					}
+				}
+			}
+		}
+//		new JSBMLvisualizer(doc);
+		String[] res = path.split("\\.");
+		System.out.println(res[0]);
+		System.out.println(path);
+		System.out.println(path_parent);
+		try {
+			slwriter.write(doc, res[0]+".xml.xml");
+		} catch (SBMLException | FileNotFoundException | XMLStreamException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-	            out.write("\ttailleX:" + Integer.toString(parameters.getX()) + "\n");
-	            out.write("\ttailleY:" + Integer.toString(parameters.getY()) + "\n");
-	            out.write("\ttailleZ:" + Integer.toString(parameters.getZ()) + "\n");
+		for (ProtoBioDyn list_BioDyn1 : list_BioDyn) {
+			ArrayList<String> toString = list_BioDyn1.toSave();
+			try {
+				for (String toString1 : toString) {
+					out.write(toString1);
+				}
+				// Save image related to a Entity
+				if (list_BioDyn1 instanceof Entity) {
+					Entity reaxel = (Entity) list_BioDyn1;
+					if (reaxel.BackgroundImage != null) {
+						File F = new File(path_parent + "/" + reaxel._str_image_deco);
+						String str_image_modifie = reaxel._str_image_deco.replace('.', ';');
+						String[] tab_str = str_image_modifie.split(";");
+						String ext = tab_str[1];
+						if (F.exists()) {
+							F.delete();
+						}
+						ImageIO.write((RenderedImage) reaxel.BackgroundImage, ext, F);
+					}
+				} else if (list_BioDyn1 instanceof Compartment) {
 
-	            if (parameters.getImage() != null) {
-	                out.write("\tImage:" + parameters.getStr_image_deco() + "\n");
-	                //BackgroundImage.save(_str_image_deco);                    
-	                File F = new File(path_parent + "/" + parameters.getStr_image_deco());
-	                String str_image_modifie = parameters.getStr_image_deco().replace('.', ';');
-	                String[] tab_str = str_image_modifie.split(";");
-	                String ext = tab_str[1];
-	                if (F.exists()) {
-	                    F.delete();
-	                }
-	                try {
-	                    ImageIO.write((RenderedImage) parameters.getImage(), ext, F);
-	                } catch (Exception e) {
-	                    erreur = true;
-	                }
-	            }
+				}
+				out.write("Fin\n");
+				out.write("\n");
+			} catch (Exception e) {
+				erreur = true;
+			}
+		}
 
-	            out.write("Fin\n");
-	            out.write("\n");
-	        } catch (Exception e) {
-	            erreur = true;
-	        }
-	                   
-	        // Sauvegarde des positions des reaxels // ======================================
-	        try {
-	            out.write("Reaxels" + "\n");
-	            for (int i1 = 0; i1 < toSave.getInstances().getSize(); i1++) {
-	                InstanceReaxel r = toSave.getInstances().getInList(i1);
-	                Integer x0, y0, z0;
-	                x0 = r.getX();
-	                y0 = r.getY();
-	                z0 = r.getZ();
-	                out.write("\tReaxel:" + r.getNom() + ":" + x0.toString() + ":" + y0.toString() + ":" + z0.toString() + "\n");
-	            }
+		// Sauvegarde de l'environnement
+		try {
 
-	            out.write("Fin\n");
-	            out.write("\n");
-	            out.close();
-	        } catch (Exception e) {
-	            System.err.println("5");
-	            erreur = true;
-	        }
+			Env_Parameters parameters = toSave.getParameters();
+			out.write("netbiodyn.Environnement\n");
 
-	        if (!erreur) {
-	            if (Lang.getInstance().getLang().equals("FR")) {
-	                JOptionPane.showMessageDialog(ihm, "Enregistrement effectue", "Information", JOptionPane.INFORMATION_MESSAGE);
-	            } else {
-	                JOptionPane.showMessageDialog(ihm, "Saved", "Information", JOptionPane.INFORMATION_MESSAGE);
-	            }
-	        } else {
-	            if (Lang.getInstance().getLang().equals("FR")) {
-	                JOptionPane.showMessageDialog(ihm, "L'enregistrement a echoue", "Attention", JOptionPane.INFORMATION_MESSAGE);
-	            } else {
-	                JOptionPane.showMessageDialog(ihm, "Saving failed", "Warning", JOptionPane.INFORMATION_MESSAGE);
-	            }
-	        }
+			out.write("\ttailleX:" + Integer.toString(parameters.getX()) + "\n");
+			out.write("\ttailleY:" + Integer.toString(parameters.getY()) + "\n");
+			out.write("\ttailleZ:" + Integer.toString(parameters.getZ()) + "\n");
 
-	    }
+			if (parameters.getImage() != null) {
+				out.write("\tImage:" + parameters.getStr_image_deco() + "\n");
+				// BackgroundImage.save(_str_image_deco);
+				File F = new File(path_parent + "/" + parameters.getStr_image_deco());
+				String str_image_modifie = parameters.getStr_image_deco().replace('.', ';');
+				String[] tab_str = str_image_modifie.split(";");
+				String ext = tab_str[1];
+				if (F.exists()) {
+					F.delete();
+				}
+				try {
+					ImageIO.write((RenderedImage) parameters.getImage(), ext, F);
+				} catch (Exception e) {
+					erreur = true;
+				}
+			}
+
+			out.write("Fin\n");
+			out.write("\n");
+		} catch (Exception e) {
+			erreur = true;
+		}
+
+		// Sauvegarde des positions des reaxels //
+		// ======================================
+		try {
+			out.write("Reaxels" + "\n");
+			for (int i1 = 0; i1 < toSave.getInstances().getSize(); i1++) {
+				InstanceReaxel r = toSave.getInstances().getInList(i1);
+				Integer x0, y0, z0;
+				x0 = r.getX();
+				y0 = r.getY();
+				z0 = r.getZ();
+				out.write("\tReaxel:" + r.getNom() + ":" + x0.toString() + ":" + y0.toString() + ":" + z0.toString()
+						+ "\n");
+			}
+
+			out.write("Fin\n");
+			out.write("\n");
+			out.close();
+		} catch (Exception e) {
+			System.err.println("5");
+			erreur = true;
+		}
+
+		if (!erreur) {
+			if (Lang.getInstance().getLang().equals("FR")) {
+				JOptionPane.showMessageDialog(ihm, "Enregistrement effectue", "Information",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(ihm, "Saved", "Information", JOptionPane.INFORMATION_MESSAGE);
+			}
+		} else {
+			if (Lang.getInstance().getLang().equals("FR")) {
+				JOptionPane.showMessageDialog(ihm, "L'enregistrement a echoue", "Attention",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(ihm, "Saving failed", "Warning", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+	}
 
 	    @Override
 	    public Serialized_NetMDyn load() {
@@ -274,7 +350,6 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	        }
 
 	        try {
-
 	            while (in.ready() == true) {
 	                // Lecture du mot
 	                String ligne = in.readLine();
@@ -425,7 +500,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	     * @param filter
 	     * @return
 	     */
-	    public static File chooseFileToLoad(String nameSaved, UtilFileFilter filter) {
+	    public static File chooseFileToLoad(String nameSaved, UtilFileFilter filter,UtilFileFilter filter2) {
 	        File toReturn = null;
 
 	        String nomFichier = nameSaved;
@@ -434,6 +509,7 @@ public class FileSaverLoader_NetMDyn extends SaverLoader_NetMDyn {
 	        //String path = null;
 	        JFileChooser loadFileDialog1 = new JFileChooser();
 	        loadFileDialog1.setFileFilter(filter);
+	        loadFileDialog1.setFileFilter(filter2);
 	        if (Lang.getInstance().getLang().equals("FR")) {
 	            loadFileDialog1.setDialogTitle("Charger une simulation");
 	        } else {

@@ -2,6 +2,7 @@ package NetMDyn.ihm;
 
 import netbiodyn.util.UtilAnimatedGifEncoder;
 import netbiodyn.util.UtilPoint3D;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -11,9 +12,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -30,7 +33,10 @@ import NetMDyn.util.UtilPoint3D_NetMDyn;
 
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+
 import javax.swing.JList;
+import javax.xml.stream.XMLStreamException;
+
 import netbiodyn.AllInstances;
 import netbiodyn.InstanceReaxel;
 import netbiodyn.Behavior;
@@ -303,7 +309,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
 	        controller.saveModel(_nom_sauvegarde);
 	    }//GEN-LAST:event_bouton_saveMouseClicked
 
-	    protected void bouton_openMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bouton_openMouseClicked
+	    protected void bouton_openMouseClicked(java.awt.event.MouseEvent evt) throws XMLStreamException, IOException {//GEN-FIRST:event_bouton_openMouseClicked
 	        controller.loadModel(_nom_sauvegarde);
 	    }//GEN-LAST:event_bouton_openMouseClicked
 
@@ -1421,7 +1427,7 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         }
     }
     
-    protected void initComponents() {
+protected void initComponents() {
 
         bouton_save = new javax.swing.JButton();
         bouton_new = new javax.swing.JButton();
@@ -1558,7 +1564,12 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         bouton_open.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bouton_open.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                bouton_openMouseClicked(evt);
+                try {
+					bouton_openMouseClicked(evt);
+				} catch (XMLStreamException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         add(bouton_open);
@@ -2615,7 +2626,6 @@ public class Environment_NetMDyn extends javax.swing.JPanel implements IhmListen
         add(jPanelSimulator);
         jPanelSimulator.setBounds(175, 30, 725, 680);
     }// </editor-fold>//GEN-END:initComponents
-
     protected void checkBox_paint_rondMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkBox_paint_ligneMouseClicked
         releverToutesCheckBoxPaint(checkBox_paint_rond);
 	}//GEN-LAST:event_checkBox_paint_ligneMouseClicked

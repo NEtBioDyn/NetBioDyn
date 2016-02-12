@@ -76,19 +76,10 @@ public class WndEditMvt extends javax.swing.JDialog {
          comps.add("-");
          
          for(int i = 1; i< entities.size()+1; i++){
-        	 boolean present = false;
         	 if (entities.get(i-1).getEtiquettes().contains("Membrane_")){
         		 continue;
         	 }
-        	 for (int j = 0; j<behaviors.size();j++){
-        		 if (behaviors.get(j).getEtiquettes().equals("Move_"+ entities.get(i-1).getEtiquettes())){
-        			 present= true;
-        			 break;
-        		 }
-        	 }
-        	 if (present == false){
          	comps.add(entities.get(i-1).getEtiquettes());
-        	 }
          }
          
          String[] remain_entity = new String[comps.size()];

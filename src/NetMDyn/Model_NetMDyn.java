@@ -549,7 +549,7 @@ public class Model_NetMDyn {
             
             for (final IhmListener_NetMDyn listen : listeners.getListeners(IhmListener_NetMDyn.class)) {
                 listen.newEnvLoaded(saved, getInitialState());
-                listen.CompartmentUpdate(getCopyListManipulesCompartment());
+                listen.CompartmentUpdate(saved.getListManipulesCompartment());
             }
         }
     }

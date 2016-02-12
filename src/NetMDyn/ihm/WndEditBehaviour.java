@@ -1,9 +1,10 @@
 package NetMDyn.ihm;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
+import java.awt.Dimension;// Encapsulate the width and height of a component (in integer precision) in a single object.
+import java.awt.FlowLayout; // A flow layout arranges components in a directional flow, much like lines of text in a paragraph
+import java.util.ArrayList; // Possible creation of tables
+
+import javax.swing.JOptionPane; // Possible creation of dialog windows
 
 import NetMDyn.Behavior_NetMDyn;
 import NetMDyn.Entity_NetMDyn;
@@ -21,7 +22,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     private final ArrayList<Entity_NetMDyn> entities;
     private final ArrayList<Compartment> compartment;
 
-    
+    //Initialization of WndEditBehavior object
     public WndEditBehaviour(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -31,8 +32,10 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         initComponents();
     }
     
+
     public void WndEditBehaviour_load(Behavior_NetMDyn behavior, Behavior_NetMDyn behavior2){
     	if (behavior == null && behavior2 == null){
+
     		_r3 = new Behavior_NetMDyn();
     		_r3rev = new Behavior_NetMDyn();
     	}
@@ -82,6 +85,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	
     }
     
+    //Initialization of the parameters of WndEditBehavior 
     private void initComponents() {
 
         jLabelNom = new javax.swing.JLabel();
@@ -123,11 +127,22 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         getContentPane().add(jLabelNom);
         jLabelNom.setBounds(10, 40, 60, 20);
         
-        String[] ents = new String[entities.size()+1];
-        ents[0] = "*";
+        
+        ArrayList<String> comps = new ArrayList<String>();
+        comps.add("*");
+        
         for(int i = 1; i< entities.size()+1; i++){
-        	ents[i] = entities.get(i-1).getEtiquettes();
+       	 if (entities.get(i-1).getEtiquettes().contains("Membrane_")){
+       		 continue;
+       	 }
+        	comps.add(entities.get(i-1).getEtiquettes());
         }
+        
+        String[] ents = new String[comps.size()];
+        for (int i =0; i<comps.size();i++){
+       	 ents[i]=comps.get(i);
+        }
+        
 
         comboBoxName.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         comboBoxName.setModel(new javax.swing.DefaultComboBoxModel(ents));
@@ -196,11 +211,20 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         getContentPane().add(comboBox_S2);
         comboBox_S2.setBounds(80, 130, 150, 20);
         
-        String[] entp = new String[entities.size()+1];
-        entp[0] = "-";
+        ArrayList<String> comps2 = new ArrayList<String>();
+        comps2.add("-");
+        
         for(int i = 1; i< entities.size()+1; i++){
-        	entp[i] = entities.get(i-1).getEtiquettes();
-        }        
+       	 if (entities.get(i-1).getEtiquettes().contains("Membrane_")){
+       		 continue;
+       	 }
+        	comps2.add(entities.get(i-1).getEtiquettes());
+        }
+        
+        String[] entp = new String[comps2.size()];
+        for (int i =0; i<comps2.size();i++){
+       	 entp[i]=comps2.get(i);
+        }   
         
         jLabelP1.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         jLabelP1.setText("Produit 1");
@@ -274,17 +298,16 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    
-
-	public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
-//    	if (comboBoxName.getSelectedItem().equals("")) {
-//    		if (Lang.getInstance().getLang().equals("FR")) {
-//    			JOptionPane.showMessageDialog(this, "Merci de nommer l'enzyme.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-//            }else {
-//                JOptionPane.showMessageDialog(this, "Please name the enzyme.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
-//            }
-//            return;
-//    	}
+    //Action when OK button is used
+     public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
+    	if (comboBoxName.getSelectedItem().equals("")) {
+    		if (Lang.getInstance().getLang().equals("FR")) {
+    			JOptionPane.showMessageDialog(this, "Merci de nommer l'enzyme.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }else {
+                JOptionPane.showMessageDialog(this, "Please name the enzyme.", "Information", JOptionPane.INFORMATION_MESSAGE, null);
+            }
+            return;
+    	}
     
     	if (getComboBox_S1().equals(getComboBox_P1()) || getComboBox_S1().equals(getComboBox_P2())|| getComboBox_S2().equals(getComboBox_P1()) || getComboBox_S2().equals(getComboBox_P2()) ) {
     		if (Lang.getInstance().getLang().equals("FR")) {
@@ -328,9 +351,9 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	System.out.println(compartment);
     	boolean erreur=false;
     	for (int i=1; i<compartment.size();i++){
-    		if (compartment.get(0)!=compartment.get(i)){
+    		if (!compartment.get(0).equals(compartment.get(i))){
     			erreur=true;
-    			continue;
+    			break;
     		}
     	}
 		if (erreur==true){
@@ -390,6 +413,12 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         	else{
         	_r3rev._produits.add((String) comboBox_S2.getSelectedItem());
         	}
+        	if (comboBoxName.getSelectedItem().equals("*")){
+        		_r3._reactifs.add("*");
+        		_r3._produits.add("-");
+        		_r3rev._reactifs.add("*");
+        		_r3rev._produits.add("-");
+        	}
         	_r3rev._positions.add("122222222");
         	_r3rev._positions.add("212111211");
         	_r3rev._positions.add("212111211");
@@ -409,6 +438,7 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	
     }
     
+  //Action when Cancel button is used
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         // TODO add your handling code here:
         this.DialogResult = new String("CANCEL");
@@ -422,23 +452,27 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     }//GEN-LAST:event_formKeyPressed
 
     
-    
+    // Return the text inside this JField
     public String getTextBoxName() {
 		return (String) comboBoxName.getSelectedItem();
 	}
 
+    // Put a new value inside this JField
 	public void setTextBoxName(String textBoxName) {
 		this.comboBoxName.setSelectedItem(textBoxName);
 	}
 
-	
+	// Return the text inside this JField
 	public String getTextBoxKCst() {
 		return textBoxKCst.getText();
 	}
 
+	// Put a new value inside this JField
 	public void setTextBoxKCst(String textBoxCoefP1) {
 		this.textBoxKCst.setText(textBoxCoefP1);
 	}
+
+	// Return the text inside this ComboBox
 	
     public String getTextBoxKCst2() {
 		return textBoxKCst2.getText();
@@ -448,38 +482,48 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 		this.textBoxKCst2 .setText(textBoxKCst2);
 	}
 
+
+	// Return the text inside this ComboBox
+
 	public String getComboBox_S1() {
 		return (String) comboBox_S1.getSelectedItem();
 	}
 
+	// Put a new value inside this ComboBox
 	public void setComboBox_S1(String comboBox_S1) {
 		this.comboBox_S1.setSelectedItem(comboBox_S1);
 	}
-
+	
+	// Return the text inside this ComboBox
 	public String getComboBox_S2() {
 		return (String) comboBox_S2.getSelectedItem();
 	}
-
+	
+	// Put a new value inside this ComboBox
 	public void setComboBox_S2(String comboBox_S2) {
 		this.comboBox_S2.setSelectedItem(comboBox_S2);
 	}
 
-	
+	// Return the text inside this ComboBox
 	public String getComboBox_P1() {
 		return (String) comboBox_P1.getSelectedItem();
 	}
 
+	// Put a new value inside this ComboBox
 	public void setComboBox_P1(String comboBox_P1) {
 		this.comboBox_P1.setSelectedItem(comboBox_P1);
 	}
-
+	
+	// Return the text inside this ComboBox
 	public String getComboBox_P2() {
 		return (String) comboBox_P2.getSelectedItem();
 	}
 
+	// Put a new value inside this ComboBox
 	public void setComboBox_P2(String comboBox_P2) {
 		this.comboBox_P2.setSelectedItem(comboBox_P2);
 	}
+
 
 	public String getComboBox_reaction() {
 		return (String) comboBox_reaction.getSelectedItem();
@@ -489,10 +533,13 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 		this.comboBox_reaction.setSelectedItem(comboBox_reaction);
 	}
 	
+	// Return this DialogResult
+
 	public String getDialogResult() {
 		return DialogResult;
 	}
 
+	// Put a new value to this DialogResult
 	public void setDialogResult(String dialogResult) {
 		DialogResult = dialogResult;
 	}
