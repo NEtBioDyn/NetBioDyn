@@ -1,8 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* This file is part of NetMDyn.util
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+/*
+ * Serialized_NetMDyn.java
+ *
+ * Created on February 12 2016, 16:30
+ */
+
 package NetMDyn.util;
 
 import netbiodyn.ihm.Env_Parameters;
@@ -20,8 +37,9 @@ import netbiodyn.Behavior;
 import netbiodyn.Entity;
 
 /**
- *
- * @author riviere
+ * Serialized part in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
  */
 public class Serialized_NetMDyn {
 
@@ -35,7 +53,9 @@ public class Serialized_NetMDyn {
     //Environment
     private Env_Parameters parameters;
     
-    //Initialization of Serialized object from scratch
+    /**
+     * Initialization of Serialized object from scratch
+     */
     public Serialized_NetMDyn() {
         _ListManipulesNoeuds = new ArrayList<>();
         _ListManipulesReactions = new ArrayList<>();
@@ -45,7 +65,10 @@ public class Serialized_NetMDyn {
         entitesBook = new HashMap<>();
     }
 
-    //Initialization of Serialized object with parameters
+    /**
+     * Initialization of Serialized object with parameters
+     * @param parameters
+     */
     public Serialized_NetMDyn(Env_Parameters parameters) {
         _ListManipulesNoeuds = new ArrayList<>();
         _ListManipulesReactions = new ArrayList<>();
