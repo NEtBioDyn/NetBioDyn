@@ -81,6 +81,8 @@ import java.awt.event.ActionEvent; //A semantic event which indicates that a com
 	 * JOGL 2.0 Program Template (GLJPanel) This is a "Component" which can be added
 	 * into a top-level "Container". It also handles the OpenGL events to render
 	 * graphics.
+	 * 
+	 * @author Master 2 Bioinformatique
 	 */
 	@SuppressWarnings("serial")
 	public class JOGL2Setup_GLJPanel_NetMDyn extends GLJPanel implements IhmListener_NetMDyn, GLEventListener, KeyListener, MouseListener, MouseMotionListener, MouseWheelListener, ActionListener {
