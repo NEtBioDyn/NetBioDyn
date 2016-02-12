@@ -1,3 +1,25 @@
+/* This file is part of NetMDyn.ihm
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * WndEditBehaviour.java
+ *
+ * Created on February 12 2016, 15:52
+ */
+
 package NetMDyn.ihm;
 
 import java.awt.Dimension;// Encapsulate the width and height of a component (in integer precision) in a single object.
@@ -12,6 +34,12 @@ import NetMDyn.Compartment;
 import netbiodyn.util.Lang;
 import netbiodyn.util.UtilPointF;
 
+/**
+ * Edit of the Behavior in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
 public class WndEditBehaviour extends javax.swing.JDialog{
 	boolean _env_affiche3D = false;
     public Behavior_NetMDyn _r3 = null;
@@ -22,7 +50,12 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     private final ArrayList<Entity_NetMDyn> entities;
     private final ArrayList<Compartment> compartment;
 
-    //Initialization of WndEditBehavior object
+    /**
+     * Initialization of WndEditBehavior object
+     * @param entities
+     * @param behaviours
+     * @param compartment
+     */
     public WndEditBehaviour(ArrayList<Entity_NetMDyn> entities, ArrayList<Behavior_NetMDyn> behaviours, ArrayList<Compartment> compartment) {
         this.setModal(true);
         this.behaviors = behaviours;
@@ -32,7 +65,11 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         initComponents();
     }
     
-
+    /**
+     * Load of a behavior
+     * @param behavior
+     * @param behavior2
+     */
     public void WndEditBehaviour_load(Behavior_NetMDyn behavior, Behavior_NetMDyn behavior2){
     	if (behavior == null && behavior2 == null){
 
@@ -85,7 +122,9 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	
     }
     
-    //Initialization of the parameters of WndEditBehavior 
+    /**
+     * Initialization of the parameters of WndEditBehavior 
+     */
     private void initComponents() {
 
         jLabelNom = new javax.swing.JLabel();
@@ -298,7 +337,10 @@ public class WndEditBehaviour extends javax.swing.JDialog{
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    //Action when OK button is used
+    /**
+     * Action when OK button is used
+     * @param evt
+     */
      public void button_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_OKActionPerformed
     	if (comboBoxName.getSelectedItem().equals("")) {
     		if (Lang.getInstance().getLang().equals("FR")) {
@@ -432,7 +474,10 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     	
     }
     
-  //Action when Cancel button is used
+  /**
+   * Action when Cancel button is used
+   * @param evt
+   */
 	private void button_CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CANCELActionPerformed
         // TODO add your handling code here:
         this.DialogResult = new String("CANCEL");
@@ -446,27 +491,42 @@ public class WndEditBehaviour extends javax.swing.JDialog{
     }//GEN-LAST:event_formKeyPressed
 
     
-    // Return the text inside this JField
+    /**
+     *  Return the text inside this JField
+     * @return
+     */
     public String getTextBoxName() {
 		return (String) comboBoxName.getSelectedItem();
 	}
 
-    // Put a new value inside this JField
+    /**
+     *  Put a new value inside this JField
+     * @param textBoxName
+     */
 	public void setTextBoxName(String textBoxName) {
 		this.comboBoxName.setSelectedItem(textBoxName);
 	}
 
-	// Return the text inside this JField
+	/**
+	 *  Return the text inside this JField
+	 * @return
+	 */
 	public String getTextBoxKCst() {
 		return textBoxKCst.getText();
 	}
 
-	// Put a new value inside this JField
+	/**
+	 *  Put a new value inside this JField
+	 * @param textBoxCoefP1
+	 */
 	public void setTextBoxKCst(String textBoxCoefP1) {
 		this.textBoxKCst.setText(textBoxCoefP1);
 	}
 
-	// Return the text inside this ComboBox
+	/**
+	 *  Return the text inside this ComboBox
+	 * @return
+	 */
 	
     public String getTextBoxKCst2() {
 		return textBoxKCst2.getText();
@@ -477,43 +537,67 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 	}
 
 
-	// Return the text inside this ComboBox
+	/**
+	 *  Return the text inside this ComboBox
+	 * @return
+	 */
 
 	public String getComboBox_S1() {
 		return (String) comboBox_S1.getSelectedItem();
 	}
 
-	// Put a new value inside this ComboBox
+	/**
+	 *  Put a new value inside this ComboBox
+	 * @param comboBox_S1
+	 */
 	public void setComboBox_S1(String comboBox_S1) {
 		this.comboBox_S1.setSelectedItem(comboBox_S1);
 	}
 	
-	// Return the text inside this ComboBox
+	/**
+	 *  Return the text inside this ComboBox
+	 * @return
+	 */
 	public String getComboBox_S2() {
 		return (String) comboBox_S2.getSelectedItem();
 	}
 	
-	// Put a new value inside this ComboBox
+	/**
+	 *  Put a new value inside this ComboBox
+	 * @param comboBox_S2
+	 */
 	public void setComboBox_S2(String comboBox_S2) {
 		this.comboBox_S2.setSelectedItem(comboBox_S2);
 	}
 
-	// Return the text inside this ComboBox
+	/**
+	 *  Return the text inside this ComboBox
+	 * @return
+	 */
 	public String getComboBox_P1() {
 		return (String) comboBox_P1.getSelectedItem();
 	}
 
-	// Put a new value inside this ComboBox
+	/**
+	 *  Put a new value inside this ComboBox
+	 * @param comboBox_P1
+	 */
 	public void setComboBox_P1(String comboBox_P1) {
 		this.comboBox_P1.setSelectedItem(comboBox_P1);
 	}
 	
-	// Return the text inside this ComboBox
+	/**
+	 *  Return the text inside this ComboBox
+	 * @return
+	 */
 	public String getComboBox_P2() {
 		return (String) comboBox_P2.getSelectedItem();
 	}
 
-	// Put a new value inside this ComboBox
+	/**
+	 *  Put a new value inside this ComboBox
+	 * @param comboBox_P2
+	 */
 	public void setComboBox_P2(String comboBox_P2) {
 		this.comboBox_P2.setSelectedItem(comboBox_P2);
 	}
@@ -527,13 +611,19 @@ public class WndEditBehaviour extends javax.swing.JDialog{
 		this.comboBox_reaction.setSelectedItem(comboBox_reaction);
 	}
 	
-	// Return this DialogResult
+	/**
+	 *  Return this DialogResult
+	 * @return
+	 */
 
 	public String getDialogResult() {
 		return DialogResult;
 	}
 
-	// Put a new value to this DialogResult
+	/**
+	 *  Put a new value to this DialogResult
+	 * @param dialogResult
+	 */
 	public void setDialogResult(String dialogResult) {
 		DialogResult = dialogResult;
 	}
