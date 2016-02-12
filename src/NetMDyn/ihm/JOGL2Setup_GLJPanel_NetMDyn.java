@@ -1,3 +1,25 @@
+/* This file is part of NetMDyn.
+ *
+ *   NetMDyn is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or
+ *   any later version.
+ *
+ *   NetMDyn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with NetBioDyn; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+/*
+ * JOGL2Setup_GLJPanel_NetMDyn.java
+ *
+ * Created on February 12 2016, 15:23
+ */
+
 package NetMDyn.ihm;
 
 	import static com.jogamp.opengl.GL.GL_BLEND;
@@ -33,20 +55,21 @@ import NetMDyn.Entity_NetMDyn;
 import NetMDyn.InstanceReaxel_NetMDyn;
 import NetMDyn.util.Serialized_NetMDyn;
 
-import java.awt.event.ActionEvent;
-	import java.awt.event.ActionListener;
-	import java.awt.event.KeyEvent;
-	import java.awt.event.KeyListener;
-	import java.awt.event.MouseEvent;
-	import java.awt.event.MouseListener;
-	import java.awt.event.MouseMotionListener;
-	import java.awt.event.MouseWheelEvent;
-	import java.awt.event.MouseWheelListener;
-	import java.io.IOException;
-	import java.net.URL;
-	import java.nio.FloatBuffer;
-	import java.util.ArrayList;
-	import java.util.HashMap;
+import java.awt.event.ActionEvent; //A semantic event which indicates that a component-defined action occurred
+	import java.awt.event.ActionListener; // The listener interface for receiving action events
+	import java.awt.event.KeyEvent; // An event which indicates that a keystroke occurred in a component
+	import java.awt.event.KeyListener; // The listener interface for receiving keyboard events (keystrokes)
+	import java.awt.event.MouseEvent; // An event which indicates that a mouse action occurred in a component
+	import java.awt.event.MouseListener; // The listener interface for receiving "interesting" mouse events (press, release, click, enter, and exit) on a component
+	import java.awt.event.MouseMotionListener; // The listener interface for receiving mouse motion events on a component
+	import java.awt.event.MouseWheelEvent; // An event which indicates that the mouse wheel was rotated in a component
+	import java.awt.event.MouseWheelListener; // The listener interface for receiving mouse wheel events on a component
+	import java.io.IOException; // Signals that an I/O exception of some sort has occurred
+	import java.net.URL; // A Uniform Resource Locator, a pointer to a "resource" on the World Wide Web
+	import java.nio.FloatBuffer; // A float buffer
+	import java.util.ArrayList; // Possible creation of tables
+	import java.util.HashMap; // Possible creation of hashmaps
+	
 	import netbiodyn.AllInstances;
 	import netbiodyn.util.Serialized;
 	import netbiodyn.InstanceReaxel;
@@ -71,16 +94,16 @@ import java.awt.event.ActionEvent;
 	    private int tailleX;
 	    private int tailleY;
 	    private int tailleZ;
-
+	    
 	    private ArrayList<InstanceReaxel_NetMDyn> reaxels;
 
 	    /**
 	     * constructor to set up the GUI for this Component
 	     *
-	     * @param X
-	     * @param Y
-	     * @param Z
-	     * @param reaxels
+	     * @param X : size
+	     * @param Y : size
+	     * @param Z : size
+	     * @param reaxels : list of reaxels
 	     */
 	    public JOGL2Setup_GLJPanel_NetMDyn (int X, int Y, int Z, ArrayList<InstanceReaxel_NetMDyn> reaxels) {
 	        this.addGLEventListener(this);
@@ -133,6 +156,10 @@ import java.awt.event.ActionEvent;
 
 	    }
 
+	    /**
+	     * Initialization of the Light
+	     * @param gl
+	     */
 	    public void initLight(GL2 gl) {
 
 	        if (true) {
@@ -203,7 +230,6 @@ import java.awt.event.ActionEvent;
 	     * Call-back handler for window re-size event. Also called when the drawable
 	     * is first set to visible.
 	     */
-	    @Override
 	    public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 	        GL2 gl = drawable.getGL().getGL2();  // get the OpenGL 2 graphics context
 
@@ -533,6 +559,9 @@ import java.awt.event.ActionEvent;
 	        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	    }
 
+	    /**
+	     * Action when the mouse wheel is used
+	     */
 	    @Override
 	    public void mouseWheelMoved(MouseWheelEvent e) {
 	        int val = e.getScrollAmount();
@@ -550,27 +579,50 @@ import java.awt.event.ActionEvent;
 	        }
 	    }
 
+	    /**
+	     * 
+	     * @return X size
+	     */
 	    public int getTailleX() {
 	        return tailleX;
 	    }
 
+	    /**
+	     * 
+	     * @return Y size
+	     */
 	    public int getTailleY() {
 	        return tailleY;
 	    }
 
+	    /**
+	     * 
+	     * @return Z size
+	     */
 	    public int getTailleZ() {
 	        return tailleZ;
 	    }
 
+	    /**
+	     * 
+	     * @return the list of Reaxels
+	     */
 	    public ArrayList<InstanceReaxel_NetMDyn> getReaxels() {
 	        return reaxels;
 	    }
 
+	    /**
+	     * Put new values of Reaxels
+	     * @param reaxels
+	     */
 	    public void setReaxels(ArrayList<InstanceReaxel_NetMDyn> reaxels) {
 	        this.reaxels = reaxels;
 	    }
 
-	    @Override
+	    /**
+	     * Put new Environment Parameters
+	     * @param parameters
+	     */
 	    public void newEnvParameters(Env_Parameters parameters) {
 	        this.tailleX = parameters.getX();
 	        this.tailleY = parameters.getY();
@@ -578,11 +630,16 @@ import java.awt.event.ActionEvent;
 	        reaxels = new ArrayList<>();
 	    }
 
-	    @Override
+	    /**
+	     * Update of Behaviors
+	     * @param behaviours
+	     */
 	    public void moteurReactionUpdate(ArrayList<Behavior_NetMDyn> behaviours) {
 	    }
 
-	    @Override
+	    /**
+	     * Load of a new environment
+	     */
 	    public void newEnvLoaded(Serialized_NetMDyn saved, HashMap<String, Integer> entitesBook) {
 	        this.tailleX = saved.getParameters().getX();
 	        this.tailleY = saved.getParameters().getY();
