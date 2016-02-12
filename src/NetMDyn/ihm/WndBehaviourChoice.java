@@ -46,6 +46,12 @@ import netbiodyn.Entity;
 import netbiodyn.util.Lang;
 import netbiodyn.util.UtilPointF;
 
+/**
+ * Choice of the Behavior in NetMDyn
+ * 
+ * @author Master 2 Bioinformatique
+ */
+
 public class WndBehaviourChoice extends javax.swing.JDialog{
 	boolean _env_affiche3D = false;
     public Behavior_NetMDyn _r3 = null;
